@@ -1,21 +1,133 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Colors -->
+    <!-- ===== Color Definitions ===== -->
     <Color x:Key="WindowBgColor">#F6FBFF</Color>
-    <Color x:Key="NavBgColor">#E8F6FF</Color>
+    <Color x:Key="NavBgStartColor">#E8F6FF</Color>
+    <Color x:Key="NavBgEndColor">#F0F8FF</Color>
     <Color x:Key="CardBgColor">#FFFFFF</Color>
     <Color x:Key="HeaderBgColor">#EAF6FF</Color>
-    <Color x:Key="ForegroundColor">#0B1620</Color>
+    <Color x:Key="TextColor">#0B1620</Color>
+    <Color x:Key="TextSecondaryColor">#5A6B7D</Color>
     <Color x:Key="AccentColor">#0077CC</Color>
+    <Color x:Key="AccentLightColor">#339FDD</Color>
+    <Color x:Key="AccentDarkColor">#005599</Color>
+    <Color x:Key="HoverColor">#E0F2FF</Color>
+    <Color x:Key="SelectedColor">#D0EBFF</Color>
 
-    <!-- Brushes -->
+    <!-- ========== Brush Definitions ========== -->
     <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBgColor}" />
-    <SolidColorBrush x:Key="NavBackgroundBrush" Color="{StaticResource NavBgColor}" />
+    <SolidColorBrush x:Key="NavBackgroundBrush" Color="{StaticResource NavBgStartColor}" />
     <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBgColor}" />
     <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="{StaticResource HeaderBgColor}" />
-    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+    <SolidColorBrush x:Key="AccentLightBrush" Color="{StaticResource AccentLightColor}" />
+    <SolidColorBrush x:Key="AccentDarkBrush" Color="{StaticResource AccentDarkColor}" />
+    <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}" />
+    <SolidColorBrush x:Key="SelectedBrush" Color="{StaticResource SelectedColor}" />
 
-    <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="8" ShadowDepth="2" Opacity="0.18"/>
+    <!-- ========== GradientBrush Definitions ========== -->
+    <LinearGradientBrush x:Key="NavGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource NavBgStartColor}" Offset="0"/>
+        <GradientStop Color="{StaticResource NavBgEndColor}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="WindowGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#F6FBFF" Offset="0"/>
+        <GradientStop Color="#EFF7FF" Offset="0.5"/>
+        <GradientStop Color="#F6FBFF" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="{StaticResource AccentLightColor}" Offset="0"/>
+        <GradientStop Color="{StaticResource AccentColor}" Offset="0.5"/>
+        <GradientStop Color="{StaticResource AccentDarkColor}" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- ========== Shadow ========== -->
+    <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.15"/>
+    <DropShadowEffect x:Key="AccentGlow" Color="{StaticResource AccentColor}" BlurRadius="16" ShadowDepth="0" Opacity="0.4"/>
+
+    <!-- ========== Button Property ========== -->
+    <Style x:Key="AccentButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource AccentGradientBrush}" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NavButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="12,10" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource HoverBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{StaticResource SelectedBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NavButtonSelectedStyle" TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+        <Setter Property="Background" Value="{StaticResource SelectedBrush}" />
+        <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style x:Key="IconBoxStyle" TargetType="Border">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Background" Value="{StaticResource AccentGradientBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Effect" Value="{StaticResource AccentGlow}"/>
+    </Style>
+
+    <Style x:Key="DashboardCard" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+    </Style>
+
 </ResourceDictionary>

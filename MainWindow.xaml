@@ -12,93 +12,304 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="NavColumn" Width="200" />
+            <ColumnDefinition x:Name="NavColumn" Width="260" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Nav -->
-        <Border x:Name="NavPanel" Grid.Column="0" Background="{DynamicResource NavGradientBrush}" Opacity="0.94" CornerRadius="0,8,8,0" Padding="12">
+        <!-- 导航栏 -->
+        <Border x:Name="NavPanel" 
+                Grid.Column="0" 
+                Background="{DynamicResource NavGradientBrush}" 
+                Opacity="0.96" 
+                CornerRadius="0,12,12,0" 
+                Padding="16">
             <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
-                    <Border Width="40" Height="40" CornerRadius="8" Background="{StaticResource AccentBrush}">
-                        <TextBlock Text="D" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold"/>
+                <!-- Logo 区域 -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                    <Border Style="{StaticResource IconBoxStyle}">
+                        <TextBlock Text="D" 
+                                   VerticalAlignment="Center" 
+                                   HorizontalAlignment="Center" 
+                                   FontSize="22" 
+                                   FontWeight="Bold"
+                                   Foreground="White"/>
                     </Border>
-                    <TextBlock Text="  DASHBOARD" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                    <TextBlock x:Name="DashboardTitle" 
+                               Text="  DASHBOARD" 
+                               VerticalAlignment="Center" 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               Foreground="{DynamicResource TextBrush}"
+                               Margin="12,0,0,0"
+                               Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
                 </StackPanel>
 
-                <StackPanel>
-                    <Button Style="{StaticResource NavButtonStyle}" Margin="0,0,0,6">
+                <!-- 导航按钮组 -->
+                <StackPanel x:Name="NavButtonsPanel">
+                    <Button x:Name="BtnOverview"
+                            Style="{StaticResource NavButtonSelectedStyle}" 
+                            Margin="0,0,0,8"
+                            Click="NavButton_Click"
+                            Tag="Overview">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="  Overview" Margin="8,0,0,0" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                            <TextBlock Text="&#xE80F;" 
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtOverview" 
+                                       Text="  Overview" 
+                                       Margin="12,0,0,0" 
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
                     </Button>
 
-                    <Button Style="{StaticResource NavButtonStyle}" Margin="0,0,0,6">
+                    <Button x:Name="BtnAnalytics"
+                            Style="{StaticResource NavButtonStyle}" 
+                            Margin="0,0,0,8"
+                            Click="NavButton_Click"
+                            Tag="Analytics">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="  Analytics" Margin="8,0,0,0" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                            <TextBlock Text="&#xE9D9;" 
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtAnalytics" 
+                                       Text="  Analytics" 
+                                       Margin="12,0,0,0" 
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
                     </Button>
 
-                    <Button Style="{StaticResource NavButtonStyle}" Margin="0,0,0,6">
+                    <Button x:Name="BtnReports"
+                            Style="{StaticResource NavButtonStyle}" 
+                            Margin="0,0,0,8"
+                            Click="NavButton_Click"
+                            Tag="Reports">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="  Reports" Margin="8,0,0,0" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                            <TextBlock Text="&#xE8A5;" 
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtReports" 
+                                       Text="  Reports" 
+                                       Margin="12,0,0,0" 
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
                     </Button>
 
-                    <Button Style="{StaticResource NavButtonStyle}" Margin="0,0,0,6">
+                    <Button x:Name="BtnSettings"
+                            Style="{StaticResource NavButtonStyle}" 
+                            Margin="0,0,0,8"
+                            Click="NavButton_Click"
+                            Tag="Settings">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Text="  Settings" Margin="8,0,0,0" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                            <TextBlock Text="&#xE713;" 
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="18"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtSettings" 
+                                       Text="  Settings" 
+                                       Margin="12,0,0,0" 
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Left">
-                    <Button Command="{Binding ToggleNavCommand}" Style="{StaticResource AccentButton}" Width="40" Height="36" Margin="0,0,6,0">
-                        <TextBlock Text="" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <!-- 底部控制按钮 -->
+                <StackPanel Orientation="Horizontal" 
+                            Margin="0,30,0,0" 
+                            HorizontalAlignment="Left">
+                    <Button x:Name="BtnToggleNav"
+                            Command="{Binding ToggleNavCommand}" 
+                            Style="{StaticResource AccentButton}" 
+                            Width="48" 
+                            Height="40" 
+                            Margin="0,0,8,0">
+                        <TextBlock x:Name="ToggleIcon" 
+                                   Text="&#xE76B;" 
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="16"
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
                     </Button>
-                    <Button Command="{Binding ToggleThemeCommand}" Style="{StaticResource AccentButton}" Width="110" Height="36">
-                        <TextBlock Text="切换主题" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <Button x:Name="BtnToggleTheme"
+                            Command="{Binding ToggleThemeCommand}" 
+                            Style="{StaticResource AccentButton}" 
+                            Height="40">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE706;" 
+                                       FontFamily="Segoe MDL2 Assets" 
+                                       FontSize="16"
+                                       Margin="0,0,8,0"/>
+                            <TextBlock x:Name="TxtTheme" 
+                                       Text="切换主题"
+                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                        </StackPanel>
                     </Button>
                 </StackPanel>
             </StackPanel>
         </Border>
 
-        <!-- Content -->
-        <Grid Grid.Column="1" Margin="18">
+        <!-- 主内容区 -->
+        <Grid Grid.Column="1" Margin="24">
             <Grid.RowDefinitions>
-                <RowDefinition Height="220" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="0">
-                <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="10" Padding="14" Width="260" Margin="0,0,16,0" Effect="{StaticResource CardShadow}">
+            <!-- 统计卡片区 -->
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,20">
+                <Border Style="{StaticResource DashboardCard}" 
+                        Width="260" 
+                        Margin="0,0,16,0">
                     <StackPanel>
-                        <TextBlock Text="Active Users" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" />
-                        <TextBlock Text="1,243" FontSize="28" FontWeight="SemiBold" Margin="0,8,0,0" Foreground="{DynamicResource AccentBrush}" />
+                        <TextBlock Text="Active Users" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" />
+                        <TextBlock Text="1,243" 
+                                   FontSize="36" 
+                                   FontWeight="Bold" 
+                                   Margin="0,12,0,8" 
+                                   Foreground="{DynamicResource AccentBrush}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="↑ 12.5%" 
+                                       FontSize="12" 
+                                       Foreground="#00E676" 
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Text=" vs last month" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource TextSecondaryBrush}" 
+                                       Margin="4,0,0,0"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
-                <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="10" Padding="14" Width="260" Margin="0,0,16,0" Effect="{StaticResource CardShadow}">
+                <Border Style="{StaticResource DashboardCard}" 
+                        Width="260" 
+                        Margin="0,0,16,0">
                     <StackPanel>
-                        <TextBlock Text="CPU Load" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" />
-                        <TextBlock Text="68%" FontSize="28" FontWeight="SemiBold" Margin="0,8,0,0" Foreground="{DynamicResource AccentBrush}" />
+                        <TextBlock Text="CPU Load" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" />
+                        <TextBlock Text="68%" 
+                                   FontSize="36" 
+                                   FontWeight="Bold" 
+                                   Margin="0,12,0,8" 
+                                   Foreground="{DynamicResource AccentBrush}"/>
+                        <ProgressBar Value="68" 
+                                     Maximum="100" 
+                                     Height="6" 
+                                     Background="{DynamicResource HeaderBackgroundBrush}"
+                                     Foreground="{DynamicResource AccentGradientBrush}"
+                                     BorderThickness="0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="10" Padding="14" Width="260" Effect="{StaticResource CardShadow}">
+                <Border Style="{StaticResource DashboardCard}" 
+                        Width="260">
                     <StackPanel>
-                        <TextBlock Text="Errors (24h)" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" />
-                        <TextBlock Text="3" FontSize="28" FontWeight="SemiBold" Margin="0,8,0,0" Foreground="{DynamicResource AccentBrush}" />
+                        <TextBlock Text="Errors (24h)" 
+                                   FontWeight="SemiBold" 
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" />
+                        <TextBlock Text="3" 
+                                   FontSize="36" 
+                                   FontWeight="Bold" 
+                                   Margin="0,12,0,8" 
+                                   Foreground="{DynamicResource AccentBrush}"/>
+                        <TextBlock Text="All systems operational" 
+                                   FontSize="12" 
+                                   Foreground="#00E676" 
+                                   FontWeight="SemiBold"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
 
-            <Border Grid.Row="1" CornerRadius="12" Background="{DynamicResource CardBackgroundBrush}" Padding="12" Margin="0,16,0,0" Effect="{StaticResource CardShadow}">
-                <TextBlock Text="主内容区域 — 在这里放图表、日志、表格等。" Foreground="{DynamicResource TextBrush}" Opacity="0.9"/>
+            <!-- 主内容卡片 -->
+            <Border Grid.Row="1" 
+                    Style="{StaticResource DashboardCard}" 
+                    Padding="24">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBlock Text="System Performance" 
+                                   FontSize="20" 
+                                   FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextBrush}"/>
+                        <Border Width="4" 
+                                Height="24" 
+                                Background="{DynamicResource AccentBrush}" 
+                                CornerRadius="2" 
+                                Margin="12,0,0,0"
+                                VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <ScrollViewer Grid.Row="1" 
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <TextBlock Text="实时监控图表、日志和系统数据将在这里显示" 
+                                       FontSize="14"
+                                       Foreground="{DynamicResource TextSecondaryBrush}" 
+                                       TextWrapping="Wrap"
+                                       Margin="0,0,0,16"/>
+
+                            <StackPanel Margin="0,0,0,12">
+                                <TextBlock Text="Memory Usage" 
+                                           FontSize="12" 
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Margin="0,0,0,6"/>
+                                <ProgressBar Value="75" 
+                                             Maximum="100" 
+                                             Height="8" 
+                                             Background="{DynamicResource HeaderBackgroundBrush}"
+                                             Foreground="{DynamicResource AccentGradientBrush}"
+                                             BorderThickness="0"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,0,12">
+                                <TextBlock Text="Disk I/O" 
+                                           FontSize="12" 
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Margin="0,0,0,6"/>
+                                <ProgressBar Value="45" 
+                                             Maximum="100" 
+                                             Height="8" 
+                                             Background="{DynamicResource HeaderBackgroundBrush}"
+                                             Foreground="{DynamicResource AccentGradientBrush}"
+                                             BorderThickness="0"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <TextBlock Text="Network Traffic" 
+                                           FontSize="12" 
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Margin="0,0,0,6"/>
+                                <ProgressBar Value="92" 
+                                             Maximum="100" 
+                                             Height="8" 
+                                             Background="{DynamicResource HeaderBackgroundBrush}"
+                                             Foreground="{DynamicResource AccentGradientBrush}"
+                                             BorderThickness="0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
             </Border>
         </Grid>
     </Grid>

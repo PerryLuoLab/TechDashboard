@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Colors -->
+    <Color x:Key="WindowBgColor">#F6FBFF</Color>
+    <Color x:Key="NavBgColor">#E8F6FF</Color>
+    <Color x:Key="CardBgColor">#FFFFFF</Color>
+    <Color x:Key="HeaderBgColor">#EAF6FF</Color>
+    <Color x:Key="ForegroundColor">#0B1620</Color>
+    <Color x:Key="AccentColor">#0077CC</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBgColor}" />
+    <SolidColorBrush x:Key="NavBackgroundBrush" Color="{StaticResource NavBgColor}" />
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBgColor}" />
+    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="{StaticResource HeaderBgColor}" />
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}" />
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+
+    <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="8" ShadowDepth="2" Opacity="0.18"/>
+</ResourceDictionary>

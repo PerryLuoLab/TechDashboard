@@ -8,6 +8,7 @@
             <!-- Converters -->
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <converters:ThemeConverter x:Key="ThemeConverter"/>
+            <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis"/>
 
             <!-- Merged Dictionaries -->
             <ResourceDictionary.MergedDictionaries>

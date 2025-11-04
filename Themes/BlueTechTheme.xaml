@@ -25,13 +25,16 @@
     <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
 
     <!-- Window Background Gradient with Transparency -->
-    <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
+    <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.85">
         <GradientStop Color="#0F1419" Offset="0"/>
         <GradientStop Color="#1A2535" Offset="0.25"/>
         <GradientStop Color="#0A2540" Offset="0.5"/>
         <GradientStop Color="#1A2535" Offset="0.75"/>
         <GradientStop Color="#0F1419" Offset="1"/>
     </LinearGradientBrush>
+
+    <!-- Progress Bar Background - 鲜明的蓝色背景 -->
+    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="#1A3A5C"/>
 
     <!-- Accent Gradient -->
     <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="1,0">
@@ -123,6 +126,10 @@
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
     </Style>
 
+    <!-- Green Selected Color for Theme Toggle -->
+    <Color x:Key="ThemeSelectedColor">#00C853</Color>
+    <SolidColorBrush x:Key="ThemeSelectedBrush" Color="{StaticResource ThemeSelectedColor}"/>
+
     <Style x:Key="ThemeToggleButton" TargetType="ToggleButton">
         <Setter Property="Width" Value="120"/>
         <Setter Property="Height" Value="80"/>
@@ -134,17 +141,27 @@
                     <Border x:Name="border" Background="{DynamicResource CardBackgroundBrush}" 
                             BorderBrush="{DynamicResource BorderBrush}" BorderThickness="2" 
                             CornerRadius="8" Padding="8">
-                        <StackPanel>
-                            <TextBlock Text="{TemplateBinding Content}" FontWeight="SemiBold" 
-                                       Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
-                            <Border Height="30" Margin="0,8,0,0" CornerRadius="4" 
-                                    Background="{TemplateBinding Tag}"/>
-                        </StackPanel>
+                        <Grid>
+                            <StackPanel>
+                                <TextBlock Text="{TemplateBinding Content}" FontWeight="SemiBold" 
+                                           Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
+                                <Border Height="30" Margin="0,8,0,0" CornerRadius="4" 
+                                        Background="{TemplateBinding Tag}"/>
+                            </StackPanel>
+                            <!-- Green Checkmark Icon - 右上角 -->
+                            <TextBlock x:Name="CheckmarkIcon" Text="&#xE73E;" 
+                                       FontFamily="Segoe MDL2 Assets" FontSize="18" 
+                                       Foreground="{StaticResource ThemeSelectedBrush}"
+                                       HorizontalAlignment="Right" VerticalAlignment="Top"
+                                       Margin="0,2,2,0"
+                                       Visibility="Collapsed"/>
+                        </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource ThemeSelectedBrush}"/>
                             <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                            <Setter TargetName="CheckmarkIcon" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Effect" Value="{StaticResource CardShadow}"/>

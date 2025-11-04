@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using TechDashboard.ViewModels;
 
+
 namespace TechDashboard
 {
     public partial class MainWindow : Window

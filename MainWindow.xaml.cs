@@ -5,20 +5,17 @@ using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using TechDashboard.ViewModels;
 
-
 namespace TechDashboard
 {
     public partial class MainWindow : Window
     {
         private const double ExpandedNavWidth = 260;
-        private const double CollapsedNavWidth = 70;
-        private Button? _selectedButton;
+        private const double CollapsedNavWidth = 48;
 
         public MainWindow()
         {
             InitializeComponent();
             Loaded += OnLoaded;
-            _selectedButton = BtnOverview;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -26,7 +23,6 @@ namespace TechDashboard
             if (DataContext is MainViewModel vm)
             {
                 vm.PropertyChanged += Vm_PropertyChanged;
-                UpdateNavWidth(vm.IsNavExpanded, false);
             }
         }
 
@@ -34,57 +30,26 @@ namespace TechDashboard
         {
             if (e.PropertyName == nameof(MainViewModel.IsNavExpanded) && sender is MainViewModel vm)
             {
-                UpdateNavWidth(vm.IsNavExpanded, true);
-                UpdateToggleIcon(vm.IsNavExpanded);
+                AnimateNavWidth(vm.IsNavExpanded);
             }
         }
 
-        private void UpdateNavWidth(bool expanded, bool animate)
+        private void AnimateNavWidth(bool expanded)
         {
             double targetWidth = expanded ? ExpandedNavWidth : CollapsedNavWidth;
 
-            if (!animate)
-            {
-                NavColumn.Width = new GridLength(targetWidth);
-                return;
-            }
+            // Update collapse icon
+            ToggleIcon.Text = expanded ? "\uE76B" : "\uE76C";
 
-            double currentWidth = NavColumn.ActualWidth;
-            var widthAnimation = new DoubleAnimation
+            // Animate width
+            var animation = new DoubleAnimation
             {
-                From = currentWidth,
                 To = targetWidth,
-                Duration = TimeSpan.FromMilliseconds(300),
+                Duration = TimeSpan.FromMilliseconds(250),
                 EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
             };
 
-            widthAnimation.Completed += (_, _) =>
-            {
-                NavColumn.Width = new GridLength(targetWidth);
-            };
-
-            NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, widthAnimation);
-        }
-
-        private void UpdateToggleIcon(bool expanded)
-        {
-            ToggleIcon.Text = expanded ? "\uE76B" : "\uE76C";
-        }
-
-        private void NavButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is not Button clickedButton) return;
-
-            if (_selectedButton != null && _selectedButton != clickedButton)
-            {
-                _selectedButton.Style = FindResource("NavButtonStyle") as Style;
-            }
-
-            clickedButton.Style = FindResource("NavButtonSelectedStyle") as Style;
-            _selectedButton = clickedButton;
-
-            var pageName = clickedButton.Tag?.ToString() ?? "Unknown";
-            System.Diagnostics.Debug.WriteLine($"µ¼º½µ½: {pageName}");
+            NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, animation);
         }
     }
 }

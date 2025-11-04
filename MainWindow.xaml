@@ -4,313 +4,326 @@
         xmlns:vm="clr-namespace:TechDashboard.ViewModels"
         Title="TechDashboard" Height="720" Width="1100"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource WindowBackgroundBrush}"
-        Foreground="{DynamicResource TextBrush}">
+        Background="{DynamicResource WindowBackgroundBrush}">
+
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="NavColumn" Width="260" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition x:Name="NavColumn" Width="260"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- 导航栏 -->
-        <Border x:Name="NavPanel" 
-                Grid.Column="0" 
-                Background="{DynamicResource NavGradientBrush}" 
-                Opacity="0.96" 
-                CornerRadius="0,12,12,0" 
-                Padding="16">
-            <StackPanel>
-                <!-- Logo 区域 -->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-                    <Border Style="{StaticResource IconBoxStyle}">
-                        <TextBlock Text="D" 
-                                   VerticalAlignment="Center" 
-                                   HorizontalAlignment="Center" 
-                                   FontSize="22" 
-                                   FontWeight="Bold"
-                                   Foreground="White"/>
-                    </Border>
-                    <TextBlock x:Name="DashboardTitle" 
-                               Text="  DASHBOARD" 
-                               VerticalAlignment="Center" 
-                               FontSize="18" 
-                               FontWeight="Bold" 
-                               Foreground="{DynamicResource TextBrush}"
-                               Margin="12,0,0,0"
-                               Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+        <!-- Navigation Panel -->
+        <Border x:Name="NavPanel" Grid.Column="0" 
+                Background="{DynamicResource NavBackgroundBrush}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Navigation Content -->
+                <StackPanel Grid.Row="0" Margin="12">
+                    <!-- Logo -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                        <Border Style="{StaticResource IconBoxStyle}">
+                            <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
+                                       Foreground="White" HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="  DASHBOARD" 
+                                   VerticalAlignment="Center" FontSize="16" FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextBrush}" Margin="12,0,0,0"
+                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+
+                    <!-- Navigation Buttons -->
+                    <StackPanel>
+                        <!-- Overview Button -->
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Overview"
+                                Margin="0,0,0,4">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOverviewPage}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="16" VerticalAlignment="Center"/>
+                                <TextBlock Text="  Overview" Margin="12,0,0,0" 
+                                           VerticalAlignment="Center"
+                                           Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Analytics Button -->
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Analytics"
+                                Margin="0,0,0,4">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAnalyticsPage}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="16" VerticalAlignment="Center"/>
+                                <TextBlock Text="  Analytics" Margin="12,0,0,0" 
+                                           VerticalAlignment="Center"
+                                           Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Reports Button -->
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Reports"
+                                Margin="0,0,0,4">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsReportsPage}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="16" VerticalAlignment="Center"/>
+                                <TextBlock Text="  Reports" Margin="12,0,0,0" 
+                                           VerticalAlignment="Center"
+                                           Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Settings Button -->
+                        <Button Command="{Binding NavigateCommand}" CommandParameter="Settings"
+                                Margin="0,0,0,4">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSettingsPage}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="16" VerticalAlignment="Center"/>
+                                <TextBlock Text="  Settings" Margin="12,0,0,0" 
+                                           VerticalAlignment="Center"
+                                           Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
 
-                <!-- 导航按钮组 -->
-                <StackPanel x:Name="NavButtonsPanel">
-                    <Button x:Name="BtnOverview"
-                            Style="{StaticResource NavButtonSelectedStyle}" 
-                            Margin="0,0,0,8"
-                            Click="NavButton_Click"
-                            Tag="Overview">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE80F;" 
-                                       FontFamily="Segoe MDL2 Assets" 
-                                       FontSize="18"
-                                       VerticalAlignment="Center"/>
-                            <TextBlock x:Name="TxtOverview" 
-                                       Text="  Overview" 
-                                       Margin="12,0,0,0" 
-                                       FontSize="14"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button x:Name="BtnAnalytics"
-                            Style="{StaticResource NavButtonStyle}" 
-                            Margin="0,0,0,8"
-                            Click="NavButton_Click"
-                            Tag="Analytics">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE9D9;" 
-                                       FontFamily="Segoe MDL2 Assets" 
-                                       FontSize="18"
-                                       VerticalAlignment="Center"/>
-                            <TextBlock x:Name="TxtAnalytics" 
-                                       Text="  Analytics" 
-                                       Margin="12,0,0,0" 
-                                       FontSize="14"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button x:Name="BtnReports"
-                            Style="{StaticResource NavButtonStyle}" 
-                            Margin="0,0,0,8"
-                            Click="NavButton_Click"
-                            Tag="Reports">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE8A5;" 
-                                       FontFamily="Segoe MDL2 Assets" 
-                                       FontSize="18"
-                                       VerticalAlignment="Center"/>
-                            <TextBlock x:Name="TxtReports" 
-                                       Text="  Reports" 
-                                       Margin="12,0,0,0" 
-                                       FontSize="14"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button x:Name="BtnSettings"
-                            Style="{StaticResource NavButtonStyle}" 
-                            Margin="0,0,0,8"
-                            Click="NavButton_Click"
-                            Tag="Settings">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE713;" 
-                                       FontFamily="Segoe MDL2 Assets" 
-                                       FontSize="18"
-                                       VerticalAlignment="Center"/>
-                            <TextBlock x:Name="TxtSettings" 
-                                       Text="  Settings" 
-                                       Margin="12,0,0,0" 
-                                       FontSize="14"
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-
-                <!-- 底部控制按钮 -->
-                <StackPanel Orientation="Horizontal" 
-                            Margin="0,30,0,0" 
-                            HorizontalAlignment="Left">
-                    <Button x:Name="BtnToggleNav"
-                            Command="{Binding ToggleNavCommand}" 
-                            Style="{StaticResource AccentButton}" 
-                            Width="48" 
-                            Height="40" 
-                            Margin="0,0,8,0">
-                        <TextBlock x:Name="ToggleIcon" 
-                                   Text="&#xE76B;" 
-                                   FontFamily="Segoe MDL2 Assets" 
-                                   FontSize="16"
-                                   HorizontalAlignment="Center" 
+                <!-- Collapse Button (VSCode Style) -->
+                <Button Grid.Row="1" Command="{Binding ToggleNavCommand}" 
+                        Style="{StaticResource NavButtonStyle}" 
+                        Height="48" Padding="12" Margin="4">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock x:Name="ToggleIcon" Text="&#xE76B;" 
+                                   FontFamily="Segoe MDL2 Assets" FontSize="16" 
                                    VerticalAlignment="Center"/>
-                    </Button>
-
-                    <Button x:Name="BtnToggleTheme"
-                            Command="{Binding ToggleThemeCommand}" 
-                            Style="{StaticResource AccentButton}" 
-                            Height="40">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE706;" 
-                                       FontFamily="Segoe MDL2 Assets" 
-                                       FontSize="16"
-                                       Margin="0,0,8,0"/>
-                            <TextBlock x:Name="TxtTheme" 
-                                       Text="切换主题"
-                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </StackPanel>
+                        <TextBlock Text="  Collapse" Margin="8,0,0,0" 
+                                   VerticalAlignment="Center"
+                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
         </Border>
 
-        <!-- 主内容区 -->
-        <Grid Grid.Column="1" Margin="24">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1">
+            <!-- Overview Page -->
+            <Grid Visibility="{Binding IsOverviewPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <!-- 统计卡片区 -->
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,20">
-                <Border Style="{StaticResource DashboardCard}" 
-                        Width="260" 
-                        Margin="0,0,16,0">
-                    <StackPanel>
-                        <TextBlock Text="Active Users" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"
-                                   Foreground="{DynamicResource TextSecondaryBrush}" />
-                        <TextBlock Text="1,243" 
-                                   FontSize="36" 
-                                   FontWeight="Bold" 
-                                   Margin="0,12,0,8" 
-                                   Foreground="{DynamicResource AccentBrush}"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="↑ 12.5%" 
-                                       FontSize="12" 
-                                       Foreground="#00E676" 
-                                       FontWeight="SemiBold"/>
-                            <TextBlock Text=" vs last month" 
-                                       FontSize="12" 
-                                       Foreground="{DynamicResource TextSecondaryBrush}" 
-                                       Margin="4,0,0,0"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource DashboardCard}" 
-                        Width="260" 
-                        Margin="0,0,16,0">
-                    <StackPanel>
-                        <TextBlock Text="CPU Load" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"
-                                   Foreground="{DynamicResource TextSecondaryBrush}" />
-                        <TextBlock Text="68%" 
-                                   FontSize="36" 
-                                   FontWeight="Bold" 
-                                   Margin="0,12,0,8" 
-                                   Foreground="{DynamicResource AccentBrush}"/>
-                        <ProgressBar Value="68" 
-                                     Maximum="100" 
-                                     Height="6" 
-                                     Background="{DynamicResource HeaderBackgroundBrush}"
-                                     Foreground="{DynamicResource AccentGradientBrush}"
-                                     BorderThickness="0"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource DashboardCard}" 
-                        Width="260">
-                    <StackPanel>
-                        <TextBlock Text="Errors (24h)" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"
-                                   Foreground="{DynamicResource TextSecondaryBrush}" />
-                        <TextBlock Text="3" 
-                                   FontSize="36" 
-                                   FontWeight="Bold" 
-                                   Margin="0,12,0,8" 
-                                   Foreground="{DynamicResource AccentBrush}"/>
-                        <TextBlock Text="All systems operational" 
-                                   FontSize="12" 
-                                   Foreground="#00E676" 
-                                   FontWeight="SemiBold"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-
-            <!-- 主内容卡片 -->
-            <Border Grid.Row="1" 
-                    Style="{StaticResource DashboardCard}" 
-                    Padding="24">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                        <TextBlock Text="System Performance" 
-                                   FontSize="20" 
-                                   FontWeight="Bold" 
-                                   Foreground="{DynamicResource TextBrush}"/>
-                        <Border Width="4" 
-                                Height="24" 
-                                Background="{DynamicResource AccentBrush}" 
-                                CornerRadius="2" 
-                                Margin="12,0,0,0"
-                                VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <ScrollViewer Grid.Row="1" 
-                                  VerticalScrollBarVisibility="Auto"
-                                  HorizontalScrollBarVisibility="Disabled">
+                <!-- Stats Cards -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,0">
                         <StackPanel>
-                            <TextBlock Text="实时监控图表、日志和系统数据将在这里显示" 
-                                       FontSize="14"
-                                       Foreground="{DynamicResource TextSecondaryBrush}" 
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,16"/>
-
-                            <StackPanel Margin="0,0,0,12">
-                                <TextBlock Text="Memory Usage" 
-                                           FontSize="12" 
-                                           Foreground="{DynamicResource TextSecondaryBrush}"
-                                           Margin="0,0,0,6"/>
-                                <ProgressBar Value="75" 
-                                             Maximum="100" 
-                                             Height="8" 
-                                             Background="{DynamicResource HeaderBackgroundBrush}"
-                                             Foreground="{DynamicResource AccentGradientBrush}"
-                                             BorderThickness="0"/>
-                            </StackPanel>
-
-                            <StackPanel Margin="0,0,0,12">
-                                <TextBlock Text="Disk I/O" 
-                                           FontSize="12" 
-                                           Foreground="{DynamicResource TextSecondaryBrush}"
-                                           Margin="0,0,0,6"/>
-                                <ProgressBar Value="45" 
-                                             Maximum="100" 
-                                             Height="8" 
-                                             Background="{DynamicResource HeaderBackgroundBrush}"
-                                             Foreground="{DynamicResource AccentGradientBrush}"
-                                             BorderThickness="0"/>
-                            </StackPanel>
-
-                            <StackPanel>
-                                <TextBlock Text="Network Traffic" 
-                                           FontSize="12" 
-                                           Foreground="{DynamicResource TextSecondaryBrush}"
-                                           Margin="0,0,0,6"/>
-                                <ProgressBar Value="92" 
-                                             Maximum="100" 
-                                             Height="8" 
-                                             Background="{DynamicResource HeaderBackgroundBrush}"
-                                             Foreground="{DynamicResource AccentGradientBrush}"
-                                             BorderThickness="0"/>
-                            </StackPanel>
+                            <TextBlock Text="Active Users" FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="1,243" FontSize="32" FontWeight="Bold" 
+                                       Margin="0,8,0,4" Foreground="{DynamicResource AccentBrush}"/>
+                            <TextBlock Text="↑ 12.5% vs last month" FontSize="11" 
+                                       Foreground="#00C853"/>
                         </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-            </Border>
+                    </Border>
+
+                    <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,0">
+                        <StackPanel>
+                            <TextBlock Text="CPU Load" FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="68%" FontSize="32" FontWeight="Bold" 
+                                       Margin="0,8,0,8" Foreground="{DynamicResource AccentBrush}"/>
+                            <ProgressBar Value="68" Maximum="100" Height="6" 
+                                         Background="{DynamicResource HeaderBackgroundBrush}"
+                                         Foreground="{DynamicResource ProgressGradientBrush}"
+                                         BorderThickness="0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource DashboardCard}" Width="260">
+                        <StackPanel>
+                            <TextBlock Text="Errors (24h)" FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBlock Text="3" FontSize="32" FontWeight="Bold" 
+                                       Margin="0,8,0,4" Foreground="{DynamicResource AccentBrush}"/>
+                            <TextBlock Text="All systems operational" FontSize="11" 
+                                       Foreground="#00C853"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Performance Chart -->
+                <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="System Performance" FontSize="18" FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
+
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel Margin="0,0,0,16">
+                                    <TextBlock Text="Memory Usage" FontSize="12" 
+                                               Foreground="{DynamicResource TextSecondaryBrush}" 
+                                               Margin="0,0,0,6"/>
+                                    <ProgressBar Value="75" Maximum="100" Height="8" 
+                                                 Background="{DynamicResource HeaderBackgroundBrush}"
+                                                 Foreground="{DynamicResource ProgressGradientBrush}"
+                                                 BorderThickness="0"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="0,0,0,16">
+                                    <TextBlock Text="Disk I/O" FontSize="12" 
+                                               Foreground="{DynamicResource TextSecondaryBrush}" 
+                                               Margin="0,0,0,6"/>
+                                    <ProgressBar Value="45" Maximum="100" Height="8" 
+                                                 Background="{DynamicResource HeaderBackgroundBrush}"
+                                                 Foreground="{DynamicResource ProgressGradientBrush}"
+                                                 BorderThickness="0"/>
+                                </StackPanel>
+
+                                <StackPanel>
+                                    <TextBlock Text="Network Traffic" FontSize="12" 
+                                               Foreground="{DynamicResource TextSecondaryBrush}" 
+                                               Margin="0,0,0,6"/>
+                                    <ProgressBar Value="92" Maximum="100" Height="8" 
+                                                 Background="{DynamicResource HeaderBackgroundBrush}"
+                                                 Foreground="{DynamicResource ProgressGradientBrush}"
+                                                 BorderThickness="0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- Settings Page -->
+            <Grid Visibility="{Binding IsSettingsPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="Appearance" FontSize="24" FontWeight="Bold" 
+                                   Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
+
+                        <TextBlock Text="Choose Theme" FontSize="14" 
+                                   Foreground="{DynamicResource TextSecondaryBrush}" 
+                                   Margin="0,0,0,12"/>
+
+                        <!-- Theme Selector -->
+                        <WrapPanel>
+                            <!-- Dark Theme -->
+                            <ToggleButton Content="Dark" 
+                                          Style="{StaticResource ThemeToggleButton}"
+                                          IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Dark}"
+                                          Command="{Binding ChangeThemeCommand}"
+                                          CommandParameter="Dark">
+                                <ToggleButton.Tag>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#0A0E1A" Offset="0"/>
+                                        <GradientStop Color="#1A1F35" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </ToggleButton.Tag>
+                            </ToggleButton>
+
+                            <!-- Light Theme -->
+                            <ToggleButton Content="Light" 
+                                          Style="{StaticResource ThemeToggleButton}"
+                                          IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Light}"
+                                          Command="{Binding ChangeThemeCommand}"
+                                          CommandParameter="Light">
+                                <ToggleButton.Tag>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#F6F8FA" Offset="0"/>
+                                        <GradientStop Color="#EDF2F7" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </ToggleButton.Tag>
+                            </ToggleButton>
+
+                            <!-- Blue Tech Theme -->
+                            <ToggleButton Content="Blue Tech" 
+                                          Style="{StaticResource ThemeToggleButton}"
+                                          IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=BlueTech}"
+                                          Command="{Binding ChangeThemeCommand}"
+                                          CommandParameter="BlueTech">
+                                <ToggleButton.Tag>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
+                                        <GradientStop Color="#0F1419" Offset="0"/>
+                                        <GradientStop Color="#0A2540" Offset="0.5"/>
+                                        <GradientStop Color="#0F1419" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </ToggleButton.Tag>
+                            </ToggleButton>
+                        </WrapPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+
+            <!-- Analytics Page -->
+            <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                <Border Style="{StaticResource DashboardCard}" Padding="20">
+                    <TextBlock Text="Analytics Page" FontSize="24" 
+                               Foreground="{DynamicResource TextBrush}"/>
+                </Border>
+            </Grid>
+
+            <!-- Reports Page -->
+            <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                <Border Style="{StaticResource DashboardCard}" Padding="20">
+                    <TextBlock Text="Reports Page" FontSize="24" 
+                               Foreground="{DynamicResource TextBrush}"/>
+                </Border>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

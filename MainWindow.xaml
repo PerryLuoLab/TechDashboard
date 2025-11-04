@@ -29,25 +29,25 @@
 
                 <!-- Menu Items -->
                 <Menu Grid.Column="0" Background="Transparent" VerticalAlignment="Center" Margin="8,0">
-                    <MenuItem Header="文件" Foreground="{DynamicResource TextBrush}">
-                        <MenuItem Header="新建" Foreground="{DynamicResource TextBrush}"/>
-                        <MenuItem Header="打开" Foreground="{DynamicResource TextBrush}"/>
+                    <MenuItem Header="File" Foreground="{DynamicResource TextBrush}">
+                        <MenuItem Header="New" Foreground="{DynamicResource TextBrush}"/>
+                        <MenuItem Header="Open" Foreground="{DynamicResource TextBrush}"/>
                         <Separator/>
-                        <MenuItem Header="退出" Foreground="{DynamicResource TextBrush}"/>
+                        <MenuItem Header="Exit" Foreground="{DynamicResource TextBrush}"/>
                     </MenuItem>
-                    <MenuItem Header="编辑" Foreground="{DynamicResource TextBrush}">
-                        <MenuItem Header="撤销" Foreground="{DynamicResource TextBrush}"/>
-                        <MenuItem Header="重做" Foreground="{DynamicResource TextBrush}"/>
+                    <MenuItem Header="Edit" Foreground="{DynamicResource TextBrush}">
+                        <MenuItem Header="Undo" Foreground="{DynamicResource TextBrush}"/>
+                        <MenuItem Header="Redo" Foreground="{DynamicResource TextBrush}"/>
                         <Separator/>
-                        <MenuItem Header="复制" Foreground="{DynamicResource TextBrush}"/>
-                        <MenuItem Header="粘贴" Foreground="{DynamicResource TextBrush}"/>
+                        <MenuItem Header="Copy" Foreground="{DynamicResource TextBrush}"/>
+                        <MenuItem Header="Paste" Foreground="{DynamicResource TextBrush}"/>
                     </MenuItem>
-                    <MenuItem Header="视图" Foreground="{DynamicResource TextBrush}">
-                        <MenuItem Header="刷新" Foreground="{DynamicResource TextBrush}"/>
-                        <MenuItem Header="全屏" Foreground="{DynamicResource TextBrush}"/>
+                    <MenuItem Header="View" Foreground="{DynamicResource TextBrush}">
+                        <MenuItem Header="Refresh" Foreground="{DynamicResource TextBrush}"/>
+                        <MenuItem Header="Fullscreen" Foreground="{DynamicResource TextBrush}"/>
                     </MenuItem>
-                    <MenuItem Header="帮助" Foreground="{DynamicResource TextBrush}">
-                        <MenuItem Header="关于" Foreground="{DynamicResource TextBrush}"/>
+                    <MenuItem Header="Help" Foreground="{DynamicResource TextBrush}">
+                        <MenuItem Header="About" Foreground="{DynamicResource TextBrush}"/>
                     </MenuItem>
                 </Menu>
 
@@ -62,7 +62,7 @@
         <!-- Main Content Area (Navigation + Content) -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="NavColumn" Width="260"/>
+                <ColumnDefinition x:Name="NavColumn" Width="260" MinWidth="60" MaxWidth="260"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -78,221 +78,210 @@
                     </Grid.RowDefinitions>
 
                     <!-- Navigation Content -->
-                    <StackPanel Grid.Row="0" Margin="12">
-                        <!-- Logo -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,24"
-                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
-                            <Border Style="{StaticResource IconBoxStyle}">
-                                <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
-                                           Foreground="White" HorizontalAlignment="Center" 
-                                           VerticalAlignment="Center"/>
-                            </Border>
-                            <TextBlock Text="  DASHBOARD" 
-                                       VerticalAlignment="Center" FontSize="16" FontWeight="Bold" 
-                                       Foreground="{DynamicResource TextBrush}" Margin="12,0,0,0"/>
-                        </StackPanel>
-                        <!-- Logo Icon Only (Collapsed) -->
-                        <Border Margin="0,0,0,24" 
-                                Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
-                                HorizontalAlignment="Center"
-                                Style="{StaticResource IconBoxStyle}">
-                            <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
-                                       Foreground="White" HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center"/>
-                        </Border>
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="8">
+                            <!-- Logo Section -->
+                            <Grid Margin="0,8,0,24">
+                                <!-- Expanded Logo -->
+                                <StackPanel Orientation="Horizontal" 
+                                            Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"
+                                            HorizontalAlignment="Left">
+                                    <Border Style="{StaticResource IconBoxStyle}">
+                                        <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
+                                                   Foreground="White" HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="  DASHBOARD" 
+                                               VerticalAlignment="Center" FontSize="16" FontWeight="Bold" 
+                                               Foreground="{DynamicResource TextBrush}" Margin="12,0,0,0"/>
+                                </StackPanel>
 
-                        <!-- Navigation Buttons -->
-                        <StackPanel>
-                            <!-- Overview Button -->
-                            <Button Command="{Binding NavigateCommand}" CommandParameter="Overview"
-                                    Margin="0,0,0,4">
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsOverviewPage}" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                                                                               From="0,0,0,4" To="4,0,0,4" Duration="0:0:0.15"
-                                                                               AutoReverse="True"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsNavExpanded}" Value="False">
-                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="8,10"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <Grid>
-                                    <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" 
-                                               FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                               Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
-                                        <ToolTip>
-                                            <TextBlock Text="Overview"/>
-                                        </ToolTip>
-                                    </TextBlock>
-                                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                <!-- Collapsed Logo (Centered) -->
+                                <Border Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource IconBoxStyle}">
+                                    <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
+                                               Foreground="White" HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+
+                            <!-- Navigation Buttons -->
+                            <StackPanel>
+                                <!-- Overview Button -->
+                                <Button Command="{Binding NavigateCommand}" CommandParameter="Overview"
+                                        Margin="0,0,0,4" Height="44">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsOverviewPage}" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Grid>
+                                        <!-- Collapsed State: Icon Only (Centered) -->
                                         <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" 
-                                                   FontSize="16" VerticalAlignment="Center"/>
-                                        <TextBlock Text="  Overview" Margin="12,0,0,0" 
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Button>
+                                                   FontSize="20" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                   ToolTip="Overview"/>
 
-                            <!-- Analytics Button -->
-                            <Button Command="{Binding NavigateCommand}" CommandParameter="Analytics"
-                                    Margin="0,0,0,4">
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsAnalyticsPage}" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                                                                               From="0,0,0,4" To="4,0,0,4" Duration="0:0:0.15"
-                                                                               AutoReverse="True"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsNavExpanded}" Value="False">
-                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="8,10"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <Grid>
-                                    <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
-                                               FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                               Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
-                                        <ToolTip>
-                                            <TextBlock Text="Analytics"/>
-                                        </ToolTip>
-                                    </TextBlock>
-                                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                        <!-- Expanded State: Icon + Text (Left Aligned) -->
+                                        <StackPanel Orientation="Horizontal" 
+                                                    HorizontalAlignment="Left"
+                                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                            <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" 
+                                                       FontSize="16" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Overview" Margin="12,0,0,0" 
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+
+                                <!-- Analytics Button -->
+                                <Button Command="{Binding NavigateCommand}" CommandParameter="Analytics"
+                                        Margin="0,0,0,4" Height="44">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsAnalyticsPage}" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Grid>
+                                        <!-- Collapsed State: Icon Only (Centered) -->
                                         <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
-                                                   FontSize="16" VerticalAlignment="Center"/>
-                                        <TextBlock Text="  Analytics" Margin="12,0,0,0" 
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Button>
+                                                   FontSize="20" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                   ToolTip="Analytics"/>
 
-                            <!-- Reports Button -->
-                            <Button Command="{Binding NavigateCommand}" CommandParameter="Reports"
-                                    Margin="0,0,0,4">
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsReportsPage}" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                                                                               From="0,0,0,4" To="4,0,0,4" Duration="0:0:0.15"
-                                                                               AutoReverse="True"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsNavExpanded}" Value="False">
-                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="8,10"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <Grid>
-                                    <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" 
-                                               FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                               Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
-                                        <ToolTip>
-                                            <TextBlock Text="Reports"/>
-                                        </ToolTip>
-                                    </TextBlock>
-                                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                        <!-- Expanded State: Icon + Text (Left Aligned) -->
+                                        <StackPanel Orientation="Horizontal" 
+                                                    HorizontalAlignment="Left"
+                                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                            <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
+                                                       FontSize="16" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Analytics" Margin="12,0,0,0" 
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+
+                                <!-- Reports Button -->
+                                <Button Command="{Binding NavigateCommand}" CommandParameter="Reports"
+                                        Margin="0,0,0,4" Height="44">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsReportsPage}" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Grid>
+                                        <!-- Collapsed State: Icon Only (Centered) -->
                                         <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" 
-                                                   FontSize="16" VerticalAlignment="Center"/>
-                                        <TextBlock Text="  Reports" Margin="12,0,0,0" 
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Button>
+                                                   FontSize="20" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                   ToolTip="Reports"/>
 
-                            <!-- Settings Button -->
-                            <Button Command="{Binding NavigateCommand}" CommandParameter="Settings"
-                                    Margin="0,0,0,4">
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsSettingsPage}" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-                                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                                                                               From="0,0,0,4" To="4,0,0,4" Duration="0:0:0.15"
-                                                                               AutoReverse="True"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsNavExpanded}" Value="False">
-                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                <Setter Property="Padding" Value="8,10"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <Grid>
-                                    <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" 
-                                               FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                               Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
-                                        <ToolTip>
-                                            <TextBlock Text="Settings"/>
-                                        </ToolTip>
-                                    </TextBlock>
-                                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                        <!-- Expanded State: Icon + Text (Left Aligned) -->
+                                        <StackPanel Orientation="Horizontal" 
+                                                    HorizontalAlignment="Left"
+                                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" 
+                                                       FontSize="16" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Reports" Margin="12,0,0,0" 
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+
+                                <!-- Settings Button -->
+                                <Button Command="{Binding NavigateCommand}" CommandParameter="Settings"
+                                        Margin="0,0,0,4" Height="44">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSettingsPage}" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Grid>
+                                        <!-- Collapsed State: Icon Only (Centered) -->
                                         <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" 
-                                                   FontSize="16" VerticalAlignment="Center"/>
-                                        <TextBlock Text="  Settings" Margin="12,0,0,0" 
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Button>
-                        </StackPanel>
-                    </StackPanel>
+                                                   FontSize="20" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                   ToolTip="Settings"/>
 
-                    <!-- Collapse Button (VSCode Style) - Bottom of Nav -->
+                                        <!-- Expanded State: Icon + Text (Left Aligned) -->
+                                        <StackPanel Orientation="Horizontal" 
+                                                    HorizontalAlignment="Left"
+                                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                            <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" 
+                                                       FontSize="16" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Settings" Margin="12,0,0,0" 
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Collapse/Expand Toggle Button -->
                     <Button Grid.Row="1" Command="{Binding ToggleNavCommand}" 
                             Style="{StaticResource NavButtonStyle}" 
-                            Height="48" Padding="12" Margin="4">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock x:Name="ToggleIcon" Text="&#xE76B;" 
-                                       FontFamily="Segoe MDL2 Assets" FontSize="16" 
-                                       VerticalAlignment="Center"/>
-                            <TextBlock Text="  Collapse" Margin="8,0,0,0" 
-                                       VerticalAlignment="Center"
-                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"/>
-                        </StackPanel>
+                            Height="48" Margin="4">
+                        <Button.Content>
+                            <Grid>
+                                <!-- Collapsed State: Icon Only (Centered) -->
+                                <Grid Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
+                                    <TextBlock x:Name="ToggleIcon" Text="&#xE76C;" 
+                                               FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               ToolTip="Expand Navigation"/>
+                                </Grid>
+
+                                <!-- Expanded State: Icon + Text (Centered) -->
+                                <StackPanel Orientation="Horizontal" 
+                                            HorizontalAlignment="Center"
+                                            Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                    <TextBlock Text="&#xE76B;" 
+                                               FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="  Collapse" Margin="8,0,0,0" 
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Button.Content>
                     </Button>
                 </Grid>
             </Border>
@@ -307,8 +296,8 @@
                     </Grid.RowDefinitions>
 
                     <!-- Stats Cards -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                        <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,0">
+                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,20">
+                        <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
                             <StackPanel>
                                 <TextBlock Text="Active Users" FontWeight="SemiBold" 
                                            Foreground="{DynamicResource TextSecondaryBrush}"/>
@@ -319,7 +308,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,0">
+                        <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
                             <StackPanel>
                                 <TextBlock Text="CPU Load" FontWeight="SemiBold" 
                                            Foreground="{DynamicResource TextSecondaryBrush}"/>
@@ -332,7 +321,7 @@
                             </StackPanel>
                         </Border>
 
-                        <Border Style="{StaticResource DashboardCard}" Width="260">
+                        <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,0,16">
                             <StackPanel>
                                 <TextBlock Text="Errors (24h)" FontWeight="SemiBold" 
                                            Foreground="{DynamicResource TextSecondaryBrush}"/>
@@ -342,7 +331,7 @@
                                            Foreground="#00C853"/>
                             </StackPanel>
                         </Border>
-                    </StackPanel>
+                    </WrapPanel>
 
                     <!-- Performance Chart -->
                     <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20">
@@ -457,16 +446,24 @@
                 <!-- Analytics Page -->
                 <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVis}}" Margin="24">
                     <Border Style="{StaticResource DashboardCard}" Padding="20">
-                        <TextBlock Text="Analytics Page" FontSize="24" 
-                                   Foreground="{DynamicResource TextBrush}"/>
+                        <StackPanel>
+                            <TextBlock Text="Analytics Page" FontSize="24" 
+                                       Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
+                            <TextBlock Text="Analytics data and charts will be displayed here." 
+                                       FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        </StackPanel>
                     </Border>
                 </Grid>
 
                 <!-- Reports Page -->
                 <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVis}}" Margin="24">
                     <Border Style="{StaticResource DashboardCard}" Padding="20">
-                        <TextBlock Text="Reports Page" FontSize="24" 
-                                   Foreground="{DynamicResource TextBrush}"/>
+                        <StackPanel>
+                            <TextBlock Text="Reports Page" FontSize="24" 
+                                       Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
+                            <TextBlock Text="Generated reports and export options will be displayed here." 
+                                       FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        </StackPanel>
                     </Border>
                 </Grid>
             </Grid>
@@ -484,23 +481,23 @@
 
                 <!-- Status Text -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center">
-                    <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="12" 
-                               Foreground="{DynamicResource TextSecondaryBrush}" 
+                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" 
+                               Foreground="#00C853" 
                                VerticalAlignment="Center" Margin="0,0,6,0"/>
-                    <TextBlock Text="就绪" FontSize="11" 
+                    <TextBlock Text="Ready" FontSize="11" 
                                Foreground="{DynamicResource TextSecondaryBrush}" 
                                VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- Status Info -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,8,0">
-                    <TextBlock Text="当前页面: " FontSize="11" 
+                    <TextBlock Text="Current Page: " FontSize="11" 
                                Foreground="{DynamicResource TextSecondaryBrush}" 
                                VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <TextBlock Text="{Binding CurrentPage}" FontSize="11" 
                                Foreground="{DynamicResource AccentBrush}" 
                                FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,16,0"/>
-                    <TextBlock Text="主题: " FontSize="11" 
+                    <TextBlock Text="Theme: " FontSize="11" 
                                Foreground="{DynamicResource TextSecondaryBrush}" 
                                VerticalAlignment="Center" Margin="0,0,4,0"/>
                     <TextBlock Text="{Binding CurrentTheme}" FontSize="11" 

@@ -57,6 +57,7 @@ namespace TechDashboard
                 }
 
                 // Setup drag handlers
+                NavPanel.PreviewMouseLeftButtonDown += NavPanel_PreviewMouseLeftButtonDown;
                 NavPanel.MouseLeftButtonDown += NavPanel_MouseLeftButtonDown;
                 NavPanel.MouseMove += NavPanel_MouseMove;
                 NavPanel.MouseLeftButtonUp += NavPanel_MouseLeftButtonUp;
@@ -131,20 +132,75 @@ namespace TechDashboard
 
         #region Double-Click Expand
 
+        // Double-click detection is now handled directly in NavPanel_MouseLeftButtonDown using e.ClickCount
+        // This method is kept for backward compatibility but not used
         private bool IsDoubleClick(DateTime currentTime, Point currentPosition)
         {
+            // If never clicked before, this is not a double-click
+            if (_lastClickTime == DateTime.MinValue)
+            {
+                return false;
+            }
+
             var timeSinceLastClick = (currentTime - _lastClickTime).TotalMilliseconds;
             var distance = Math.Sqrt(
                 Math.Pow(currentPosition.X - _lastClickPosition.X, 2) +
                 Math.Pow(currentPosition.Y - _lastClickPosition.Y, 2));
 
-            return timeSinceLastClick < DoubleClickTimeThresholdMs &&
-                   distance < DoubleClickDistanceThreshold;
+            bool isDoubleClick = timeSinceLastClick < DoubleClickTimeThresholdMs &&
+                                distance < DoubleClickDistanceThreshold;
+
+            System.Diagnostics.Debug.WriteLine($"Double-click check: time={timeSinceLastClick}ms, distance={distance:F2}px, result={isDoubleClick}");
+
+            return isDoubleClick;
         }
 
         #endregion
 
         #region Drag Functionality
+
+        private void NavPanel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (_isAnimating) return;
+
+                var pos = e.GetPosition(NavPanel);
+                var currentWidth = NavColumn.ActualWidth;
+
+                // Check for double-click when collapsed using ClickCount
+                if (currentWidth <= CollapsedNavWidth + 10 && DataContext is MainViewModel vm && !vm.IsNavExpanded)
+                {
+                    var hitElement = NavPanel.InputHitTest(pos);
+                    bool isOnEmptyArea = !(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button)));
+
+                    if (isOnEmptyArea)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Click detected: ClickCount={e.ClickCount}, Position=({pos.X:F2}, {pos.Y:F2}), EmptyArea={isOnEmptyArea}");
+
+                        // Use ClickCount to detect double-click (WPF built-in feature)
+                        if (e.ClickCount == 2)
+                        {
+                            System.Diagnostics.Debug.WriteLine("*** Double-click detected! Expanding navigation panel. ***");
+                            vm.IsNavExpanded = true;
+                            e.Handled = true;
+                            return;
+                        }
+                        else if (e.ClickCount == 1)
+                        {
+                            // Single click on empty area - don't start dragging, just mark as handled
+                            System.Diagnostics.Debug.WriteLine("Single click on empty area - waiting for possible double-click");
+                            e.Handled = true;
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"PreviewMouseLeftButtonDown error: {ex.Message}");
+            }
+        }
 
         private void NavPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -154,39 +210,29 @@ namespace TechDashboard
 
                 var pos = e.GetPosition(NavPanel);
                 var currentWidth = NavColumn.ActualWidth;
-                var currentTime = DateTime.Now;
 
-                // Check for double-click when collapsed
-                if (currentWidth <= CollapsedNavWidth + 10 && DataContext is MainViewModel vm && !vm.IsNavExpanded)
+                // Don't handle double-click here, it's handled in PreviewMouseLeftButtonDown
+                // Just prevent dragging when collapsed
+                if (currentWidth <= CollapsedNavWidth + 10)
                 {
                     var hitElement = NavPanel.InputHitTest(pos);
                     bool isOnEmptyArea = !(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button)));
 
-                    if (isOnEmptyArea && IsDoubleClick(currentTime, pos))
-                    {
-                        vm.IsNavExpanded = true;
-                        e.Handled = true;
-                        _lastClickTime = DateTime.MinValue; // Reset to prevent triple-click
-                        return;
-                    }
-
                     if (isOnEmptyArea)
                     {
-                        _lastClickTime = currentTime;
-                        _lastClickPosition = pos;
+                        // Don't start dragging in collapsed state
+                        e.Handled = true;
+                        return;
                     }
                 }
 
+                // Only allow dragging when expanded
                 bool isInDragZone = false;
 
                 if (currentWidth > CollapsedNavWidth + 10)
                 {
+                    // Expanded state: drag zone is at the right edge
                     isInDragZone = pos.X >= NavPanel.ActualWidth - 5;
-                }
-                else
-                {
-                    var hitElement = NavPanel.InputHitTest(pos);
-                    isInDragZone = !(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button)));
                 }
 
                 if (isInDragZone)

@@ -1,10 +1,38 @@
 # TechDashboard - Modern WPF Dashboard Application
 
+**English** | [简体中文](README.zh-CN.md)
+
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![WPF](https://img.shields.io/badge/WPF-Windows-blue.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing advanced UI/UX patterns and MVVM architecture.
+
+## 📸 Screenshots
+
+### Main Interface
+![Main Interface](images/main-interface.png)
+
+*Main dashboard interface with navigation panel*
+
+### Theme Showcase
+<div align="center">
+  <img src="images/theme-dark.png" alt="Dark Theme" width="45%">
+  <img src="images/theme-light.png" alt="Light Theme" width="45%">
+  <img src="images/theme-bluetech.png" alt="Blue Tech Theme" width="45%">
+</div>
+
+*Three premium themes: Dark (Gray-Black), Light, and Blue Tech*
+
+### Language Support
+![Language Support](images/language-support.png)
+
+*Multi-language support with 5 languages: English, Simplified Chinese, Traditional Chinese, Korean, and Japanese*
+
+### Navigation Panel
+![Navigation Panel](images/navigation-panel.png)
+
+*Smart navigation panel with auto-width calculation and drag-to-resize*
 
 ## ✨ Features
 
@@ -15,15 +43,16 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 - **Gradient Effects**: Beautiful gradients and shadow effects throughout
 
 ### 🌐 Internationalization (i18n)
-- **Multi-Language Support**: English, Simplified Chinese (简体中文), Korean (한국어)
+- **Multi-Language Support**: English, Simplified Chinese (简体中文), Traditional Chinese (繁體中文), Korean (한국어), Japanese (日本語)
 - **Dynamic Switching**: Change language on-the-fly without restart
 - **Resource-Based**: Easy to add more languages by creating new resource dictionaries
 
 ### 🔄 Smart Navigation
 - **Collapsible Sidebar**: Smooth expand/collapse with 200ms animation
-- **Auto-Width Calculation**: Navigation width automatically adjusts to longest text
+- **Auto-Width Calculation**: Navigation width automatically adjusts to longest text (including DASHBOARD logo and all navigation items)
+- **Language-Aware Resize**: Automatically recalculates and updates width when language changes
 - **Drag-to-Resize**: Drag the navigation panel edge to custom resize
-- **Double-Click Expand**: Double-click collapsed panel to quickly expand
+- **Double-Click Expand/Collapse**: Double-click empty area to expand (when collapsed) or collapse (when expanded)
 - **Visual Feedback**: Hover effects and selected state indicators
 
 ### 🎯 Technical Highlights
@@ -45,7 +74,7 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/TechDashboard.git
+   git clone https://github.com/PerryLuoLab/TechDashboard.git
    cd TechDashboard
    ```
 
@@ -94,8 +123,10 @@ TechDashboard/
 │
 └── Languages/
     ├── en-US.xaml              # English resources
-    ├── zh-CN.xaml              # Chinese resources
-    └── ko-KR.xaml              # Korean resources
+    ├── zh-CN.xaml              # Simplified Chinese resources
+    ├── zh-TW.xaml              # Traditional Chinese resources
+    ├── ko-KR.xaml              # Korean resources
+    └── ja-JP.xaml              # Japanese resources
 ```
 
 ## 🎨 Theme Customization
@@ -290,9 +321,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/TechDashboard/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/TechDashboard/discussions)
-- **Email**: your.email@example.com
+- **Issues**: [GitHub Issues](https://github.com/PerryLuoLab/TechDashboard/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/PerryLuoLab/TechDashboard/discussions)
+- **Email**: perryluox@yeah.net
 
 ---
 

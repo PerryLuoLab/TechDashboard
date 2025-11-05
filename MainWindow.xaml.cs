@@ -82,58 +82,128 @@ namespace TechDashboard
         {
             try
             {
-                double maxWidth = 0;
-                const double iconWidth = 40; // Icon + padding
-                const double margin = 50; // Left/right margins and spacing
+                double maxContentWidth = 0;
+                const double iconWidth = 16; // 导航按钮图标宽度（FontSize 16）
+                const double iconTextSpacing = 12; // 图标和文本之间的间距（Margin="12,0,0,0"）
+                const double buttonPadding = 12; // 按钮左右padding（来自NavButtonStyle）
+                const double stackPanelMargin = 8; // StackPanel的Margin（左右各8）
+                
+                // DASHBOARD Logo部分的尺寸
+                const double dashboardIconWidth = 40; // DASHBOARD图标框宽度（IconBoxStyle）
+                const double dashboardIconTextSpacing = 12; // DASHBOARD图标和文本间距（Margin="12,0,0,0"）
 
-                // 获取所有导航按钮的文本
+                var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+                var typefaceBold = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
+                var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+
+                // 强制刷新资源，确保获取到最新的语言资源
+                // 使用TryFindResource确保能获取到资源，如果失败则使用默认值
+                string GetResourceString(string key, string defaultValue)
+                {
+                    // 尝试从Application资源中获取
+                    var resource = Application.Current?.TryFindResource(key);
+                    if (resource != null)
+                    {
+                        var str = resource.ToString();
+                        if (!string.IsNullOrEmpty(str))
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Found resource {key}: {str}");
+                            return str;
+                        }
+                    }
+                    
+                    // 尝试从当前窗口资源中获取
+                    resource = this.TryFindResource(key);
+                    if (resource != null)
+                    {
+                        var str = resource.ToString();
+                        if (!string.IsNullOrEmpty(str))
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Found resource in window {key}: {str}");
+                            return str;
+                        }
+                    }
+                    
+                    System.Diagnostics.Debug.WriteLine($"Resource {key} not found, using default: {defaultValue}");
+                    return defaultValue ?? string.Empty;
+                }
+
+                // 1. 计算DASHBOARD Logo部分的宽度
+                var dashboardText = GetResourceString("Nav_Dashboard", "DASHBOARD");
+                var dashboardTextWidth = new FormattedText(
+                    dashboardText,
+                    System.Globalization.CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typefaceBold,
+                    16, // FontSize 16, Bold
+                    Brushes.White,
+                    dpi).Width;
+                
+                var dashboardWidth = dashboardIconWidth + dashboardIconTextSpacing + dashboardTextWidth;
+                maxContentWidth = Math.Max(maxContentWidth, dashboardWidth);
+                System.Diagnostics.Debug.WriteLine($"Dashboard text: '{dashboardText}', width: {dashboardTextWidth}, total: {dashboardWidth}");
+
+                // 2. 计算所有导航按钮的宽度
                 var navTexts = new[]
                 {
-                    FindResource("Nav_Overview")?.ToString() ?? "Overview",
-                    FindResource("Nav_Analytics")?.ToString() ?? "Analytics",
-                    FindResource("Nav_Reports")?.ToString() ?? "Reports",
-                    FindResource("Nav_Settings")?.ToString() ?? "Settings",
-                    FindResource("Nav_Collapse")?.ToString() ?? "Collapse"
+                    GetResourceString("Nav_Overview", "Overview"),
+                    GetResourceString("Nav_Analytics", "Analytics"),
+                    GetResourceString("Nav_Reports", "Reports"),
+                    GetResourceString("Nav_Settings", "Settings"),
+                    GetResourceString("Nav_Collapse", "Collapse")
                 };
 
                 // 根据当前语言可能需要包含展开文本（某些语言较长）
-                var expandText = FindResource("Nav_Expand")?.ToString() ?? "Expand Navigation";
+                var expandText = GetResourceString("Nav_Expand", "Expand Navigation");
                 if (!string.IsNullOrEmpty(expandText) && expandText.Length > 0)
                 {
-                    // 如果展开文本更长，也考虑它
                     var allTexts = navTexts.ToList();
                     allTexts.Add(expandText);
                     navTexts = allTexts.ToArray();
                 }
 
-                // 测量每个文本的宽度
-                var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-
+                // 测量每个导航按钮文本的宽度
                 foreach (var text in navTexts)
                 {
-                    var formattedText = new FormattedText(
+                    var textWidth = new FormattedText(
                         text,
                         System.Globalization.CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         typeface,
                         14, // Font size
                         Brushes.White,
-                        VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                        dpi).Width;
 
-                    maxWidth = Math.Max(maxWidth, formattedText.Width);
+                    // 导航按钮宽度 = 图标宽度 + 图标文本间距 + 文本宽度
+                    var buttonContentWidth = iconWidth + iconTextSpacing + textWidth;
+                    maxContentWidth = Math.Max(maxContentWidth, buttonContentWidth);
+                    System.Diagnostics.Debug.WriteLine($"Nav text: '{text}', width: {textWidth}, button content: {buttonContentWidth}");
                 }
 
-                // 计算总宽度: Icon + 间距 + 最长文本 + 额外边距
-                _expandedNavWidth = Math.Max(260, iconWidth + margin + maxWidth);
-                _expandedNavWidth = Math.Min(_expandedNavWidth, 350); // 设置最大宽度限制
+                // 3. 计算总宽度
+                // DASHBOARD部分：StackPanel左边距 + DASHBOARD内容宽度 + StackPanel右边距（不需要按钮padding）
+                // 导航按钮部分：StackPanel左边距 + 按钮左边距 + 按钮内容宽度 + 按钮右边距 + StackPanel右边距
+                // 为了统一处理，我们取两者中较大的值
+                // 但考虑到DASHBOARD也可能需要一些右边距，我们统一使用按钮padding作为安全边距
+                _expandedNavWidth = stackPanelMargin + // StackPanel左边距
+                                   buttonPadding + // 左边距（确保按钮padding足够，也作为DASHBOARD的右边距）
+                                   maxContentWidth + // 最长内容宽度（已包含DASHBOARD或按钮的完整宽度）
+                                   buttonPadding + // 右边距（确保按钮padding足够）
+                                   stackPanelMargin; // StackPanel右边距
+
+                // 设置最小宽度（确保折叠状态可用）
+                _expandedNavWidth = Math.Max(CollapsedNavWidth, _expandedNavWidth);
+                // 设置最大宽度限制（防止过长）
+                _expandedNavWidth = Math.Min(_expandedNavWidth, 350);
 
                 NavColumn.MaxWidth = _expandedNavWidth;
 
-                System.Diagnostics.Debug.WriteLine($"Calculated optimal nav width: {_expandedNavWidth}");
+                System.Diagnostics.Debug.WriteLine($"=== Calculated optimal nav width: {_expandedNavWidth} (max content width: {maxContentWidth}, dashboard width: {dashboardWidth}) ===");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"CalculateOptimalNavWidth error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
                 _expandedNavWidth = 260; // Fallback
             }
         }
@@ -468,11 +538,47 @@ namespace TechDashboard
                 else if (e.PropertyName == nameof(MainViewModel.CurrentLanguage))
                 {
                     // 语言切换后重新计算导航栏宽度
-                    CalculateOptimalNavWidth();
-                    if (sender is MainViewModel viewModel && viewModel.IsNavExpanded)
+                    // 使用Dispatcher延迟执行，确保资源字典已完全更新
+                    // 使用ApplicationIdle优先级，确保资源字典更新完成后再计算
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        AnimateNavWidth(true);
-                    }
+                        try
+                        {
+                            // 强制刷新布局和资源
+                            this.UpdateLayout();
+                            this.InvalidateVisual();
+                            
+                            // 等待一个渲染周期，确保资源字典完全加载
+                            Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                try
+                                {
+                                    // 重新计算导航栏宽度
+                                    CalculateOptimalNavWidth();
+                                    
+                                    if (sender is MainViewModel viewModel)
+                                    {
+                                        // 如果导航栏是展开状态，使用新的宽度
+                                        if (viewModel.IsNavExpanded)
+                                        {
+                                            // 直接设置新宽度，无需动画（因为语言切换应该立即更新）
+                                            NavColumn.Width = new GridLength(_expandedNavWidth);
+                                            viewModel.NavWidth = _expandedNavWidth;
+                                            System.Diagnostics.Debug.WriteLine($"Language changed to {viewModel.CurrentLanguage}, updated nav width to: {_expandedNavWidth}");
+                                        }
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Diagnostics.Debug.WriteLine($"Error calculating nav width after language change: {ex.Message}");
+                                }
+                            }), System.Windows.Threading.DispatcherPriority.Loaded);
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Error updating layout after language change: {ex.Message}");
+                        }
+                    }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
                 }
             }
             catch (Exception ex)

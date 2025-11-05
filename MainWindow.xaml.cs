@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using TechDashboard.ViewModels;
 
@@ -11,9 +13,9 @@ namespace TechDashboard
     public partial class MainWindow : Window
     {
         // Navigation panel width constants
-        private const double ExpandedNavWidth = 260;
         private const double CollapsedNavWidth = 60;
-        private const double SnapThreshold = 100; // Midpoint for snapping decision
+        private const double SnapThreshold = 100;
+        private double _expandedNavWidth = 260; // 动态计算的展开宽度
 
         // Drag state
         private bool _isDragging = false;
@@ -33,12 +35,16 @@ namespace TechDashboard
             {
                 if (DataContext is MainViewModel vm)
                 {
+                    // 计算最佳导航栏宽度
+                    CalculateOptimalNavWidth();
+
                     // Subscribe to property changes
                     vm.PropertyChanged += Vm_PropertyChanged;
 
                     // Set initial width without animation
-                    double initialWidth = vm.IsNavExpanded ? ExpandedNavWidth : CollapsedNavWidth;
+                    double initialWidth = vm.IsNavExpanded ? _expandedNavWidth : CollapsedNavWidth;
                     NavColumn.Width = new GridLength(initialWidth);
+                    vm.NavWidth = initialWidth;
 
                     // Update toggle icon
                     UpdateToggleIcon(vm.IsNavExpanded);
@@ -50,16 +56,100 @@ namespace TechDashboard
                 NavPanel.MouseLeftButtonUp += NavPanel_MouseLeftButtonUp;
                 NavPanel.MouseLeave += NavPanel_MouseLeave;
 
-                // Window-level handlers for better drag experience
+                // Double-click to expand when collapsed 
+                //NavPanel.PreviewMouseDoubleClick += NavPanel_PreviewMouseDoubleClick;
+                
+
+                // Window-level handlers
                 this.MouseMove += MainWindow_MouseMove;
                 this.MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"OnLoaded error: {ex.Message}");
-                MessageBox.Show($"Initialization error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        #region Navigation Width Calculation
+
+        private void CalculateOptimalNavWidth()
+        {
+            try
+            {
+                double maxWidth = 0;
+                const double iconWidth = 40; // Icon + padding
+                const double margin = 50; // Left/right margins and spacing
+
+                // 获取所有导航按钮的文本
+                var navTexts = new[]
+                {
+                    FindResource("Nav_Overview")?.ToString() ?? "Overview",
+                    FindResource("Nav_Analytics")?.ToString() ?? "Analytics",
+                    FindResource("Nav_Reports")?.ToString() ?? "Reports",
+                    FindResource("Nav_Settings")?.ToString() ?? "Settings",
+                    FindResource("Nav_Collapse")?.ToString() ?? "Collapse"
+                };
+
+                // 测量每个文本的宽度
+                var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
+
+                foreach (var text in navTexts)
+                {
+                    var formattedText = new FormattedText(
+                        text,
+                        System.Globalization.CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        14, // Font size
+                        Brushes.White,
+                        VisualTreeHelper.GetDpi(this).PixelsPerDip);
+
+                    maxWidth = Math.Max(maxWidth, formattedText.Width);
+                }
+
+                // 计算总宽度: Icon + 间距 + 最长文本 + 额外边距
+                _expandedNavWidth = Math.Max(260, iconWidth + margin + maxWidth);
+                _expandedNavWidth = Math.Min(_expandedNavWidth, 350); // 设置最大宽度限制
+
+                NavColumn.MaxWidth = _expandedNavWidth;
+
+                System.Diagnostics.Debug.WriteLine($"Calculated optimal nav width: {_expandedNavWidth}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"CalculateOptimalNavWidth error: {ex.Message}");
+                _expandedNavWidth = 260; // Fallback
+            }
+        }
+
+        #endregion
+
+        #region Double-Click Expand
+
+        private void NavPanel_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (DataContext is MainViewModel vm && !vm.IsNavExpanded)
+                {
+                    // Only expand if collapsed and not clicking on a button
+                    var pos = e.GetPosition(NavPanel);
+                    var hitElement = NavPanel.InputHitTest(pos);
+
+                    if (!(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button))))
+                    {
+                        vm.IsNavExpanded = true;
+                        e.Handled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"NavPanel_PreviewMouseDoubleClick error: {ex.Message}");
+            }
+        }
+
+        #endregion
 
         #region Drag Functionality
 
@@ -72,17 +162,14 @@ namespace TechDashboard
                 var pos = e.GetPosition(NavPanel);
                 var currentWidth = NavColumn.ActualWidth;
 
-                // Define drag zone
                 bool isInDragZone = false;
 
                 if (currentWidth > CollapsedNavWidth + 10)
                 {
-                    // Expanded: drag from right edge (5px zone)
                     isInDragZone = pos.X >= NavPanel.ActualWidth - 5;
                 }
                 else
                 {
-                    // Collapsed: drag from entire panel except buttons
                     var hitElement = NavPanel.InputHitTest(pos);
                     isInDragZone = !(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button)));
                 }
@@ -95,8 +182,6 @@ namespace TechDashboard
                     NavPanel.CaptureMouse();
                     Mouse.OverrideCursor = Cursors.SizeWE;
                     e.Handled = true;
-
-                    System.Diagnostics.Debug.WriteLine($"Drag started from width: {_dragStartWidth}");
                 }
             }
             catch (Exception ex)
@@ -137,7 +222,6 @@ namespace TechDashboard
                     var pos = e.GetPosition(this);
                     var currentWidth = NavColumn.ActualWidth;
 
-                    // Show resize cursor near edge
                     if (Math.Abs(pos.X - currentWidth) < 5)
                     {
                         Mouse.OverrideCursor = Cursors.SizeWE;
@@ -161,26 +245,19 @@ namespace TechDashboard
                 var deltaX = currentPoint.X - _dragStartPoint.X;
                 var newWidth = _dragStartWidth + deltaX;
 
-                // Clamp width between collapsed and expanded
-                newWidth = Math.Max(CollapsedNavWidth, Math.Min(ExpandedNavWidth, newWidth));
+                newWidth = Math.Max(CollapsedNavWidth, Math.Min(_expandedNavWidth, newWidth));
 
-                // Stop any running animations
                 NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
-
-                // Update width directly during drag
                 NavColumn.Width = new GridLength(newWidth);
 
-                // Update ViewModel state in real-time based on width
                 if (DataContext is MainViewModel vm)
                 {
-                    // Determine if we should show as expanded or collapsed
                     bool shouldShowExpanded = newWidth > SnapThreshold;
-
-                    // Only update if state actually changed
                     if (vm.IsNavExpanded != shouldShowExpanded)
                     {
                         vm.IsNavExpanded = shouldShowExpanded;
                     }
+                    vm.NavWidth = newWidth;
                 }
             }
             catch (Exception ex)
@@ -195,10 +272,8 @@ namespace TechDashboard
             {
                 var currentWidth = NavColumn.ActualWidth;
 
-                // Show resize cursor at appropriate locations
                 if (currentWidth > CollapsedNavWidth + 10)
                 {
-                    // Expanded state: resize cursor at right edge
                     if (pos.X >= NavPanel.ActualWidth - 5)
                     {
                         Mouse.OverrideCursor = Cursors.SizeWE;
@@ -207,7 +282,6 @@ namespace TechDashboard
                 }
                 else
                 {
-                    // Collapsed state: resize cursor on entire panel (except buttons)
                     var hitElement = NavPanel.InputHitTest(pos);
                     if (!(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button))))
                     {
@@ -247,20 +321,12 @@ namespace TechDashboard
                 NavPanel.ReleaseMouseCapture();
                 Mouse.OverrideCursor = null;
 
-                // Get final width after drag
                 var finalWidth = NavColumn.ActualWidth;
-
-                System.Diagnostics.Debug.WriteLine($"Drag ended at width: {finalWidth}");
 
                 if (DataContext is MainViewModel vm)
                 {
-                    // Snap to nearest state based on threshold
                     bool shouldExpand = finalWidth >= SnapThreshold;
-
-                    // Always animate to the target state after drag
                     vm.IsNavExpanded = shouldExpand;
-
-                    // Force animation to snap position
                     AnimateNavWidth(shouldExpand);
                 }
             }
@@ -288,17 +354,23 @@ namespace TechDashboard
             {
                 if (e.PropertyName == nameof(MainViewModel.IsNavExpanded) && sender is MainViewModel vm)
                 {
-                    // Only animate if not currently dragging
                     if (!_isDragging)
                     {
-                        System.Diagnostics.Debug.WriteLine($"VM PropertyChanged: IsNavExpanded = {vm.IsNavExpanded}");
                         AnimateNavWidth(vm.IsNavExpanded);
                         UpdateToggleIcon(vm.IsNavExpanded);
                     }
                     else
                     {
-                        // During drag, just update the icon
                         UpdateToggleIcon(vm.IsNavExpanded);
+                    }
+                }
+                else if (e.PropertyName == nameof(MainViewModel.CurrentLanguage))
+                {
+                    // 语言切换后重新计算导航栏宽度
+                    CalculateOptimalNavWidth();
+                    if (sender is MainViewModel viewModel && viewModel.IsNavExpanded)
+                    {
+                        AnimateNavWidth(true);
                     }
                 }
             }
@@ -314,7 +386,6 @@ namespace TechDashboard
             {
                 if (ToggleIcon != null)
                 {
-                    // E76B = ChevronLeft (◀), E76C = ChevronRight (▶)
                     ToggleIcon.Text = expanded ? "\uE76B" : "\uE76C";
                 }
             }
@@ -328,22 +399,21 @@ namespace TechDashboard
         {
             try
             {
-                double targetWidth = expanded ? ExpandedNavWidth : CollapsedNavWidth;
+                double targetWidth = expanded ? _expandedNavWidth : CollapsedNavWidth;
                 double currentWidth = NavColumn.ActualWidth;
 
-                System.Diagnostics.Debug.WriteLine($"AnimateNavWidth: {currentWidth} -> {targetWidth} (expanded={expanded})");
-
-                // Skip if already at target (within 1px tolerance)
                 if (Math.Abs(currentWidth - targetWidth) < 1)
                 {
                     NavColumn.Width = new GridLength(targetWidth);
+                    if (DataContext is MainViewModel vm)
+                    {
+                        vm.NavWidth = targetWidth;
+                    }
                     return;
                 }
 
-                // Stop any running animation
                 NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
 
-                // Ensure we have a pixel width to animate from
                 if (NavColumn.Width.IsAuto || NavColumn.Width.IsStar)
                 {
                     NavColumn.Width = new GridLength(currentWidth);
@@ -351,7 +421,6 @@ namespace TechDashboard
 
                 _isAnimating = true;
 
-                // Create smooth animation
                 var animation = new DoubleAnimation
                 {
                     From = currentWidth,
@@ -367,7 +436,11 @@ namespace TechDashboard
                         _isAnimating = false;
                         NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
                         NavColumn.Width = new GridLength(targetWidth);
-                        System.Diagnostics.Debug.WriteLine($"Animation completed at: {targetWidth}");
+
+                        if (DataContext is MainViewModel vm)
+                        {
+                            vm.NavWidth = targetWidth;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -380,11 +453,10 @@ namespace TechDashboard
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"AnimateNavWidth error: {ex.Message}");
-                // Fallback: set width directly
                 try
                 {
                     _isAnimating = false;
-                    double targetWidth = expanded ? ExpandedNavWidth : CollapsedNavWidth;
+                    double targetWidth = expanded ? _expandedNavWidth : CollapsedNavWidth;
                     NavColumn.Width = new GridLength(targetWidth);
                 }
                 catch { }
@@ -395,19 +467,18 @@ namespace TechDashboard
 
         #region Helper Methods
 
-        // Check if element is child of specific type
         private bool IsChildOf(DependencyObject child, Type parentType)
         {
             if (child == null) return false;
 
-            DependencyObject parent = System.Windows.Media.VisualTreeHelper.GetParent(child);
+            DependencyObject parent = VisualTreeHelper.GetParent(child);
 
             while (parent != null)
             {
                 if (parent.GetType() == parentType)
                     return true;
 
-                parent = System.Windows.Media.VisualTreeHelper.GetParent(parent);
+                parent = VisualTreeHelper.GetParent(parent);
             }
 
             return false;

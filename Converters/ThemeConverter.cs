@@ -13,6 +13,7 @@ namespace TechDashboard.Converters
             {
                 return currentTheme.Equals(targetTheme, StringComparison.OrdinalIgnoreCase);
             }
+
             return false;
         }
 
@@ -22,6 +23,7 @@ namespace TechDashboard.Converters
             {
                 return themeName;
             }
+
             return Binding.DoNothing;
         }
     }
@@ -34,6 +36,7 @@ namespace TechDashboard.Converters
             {
                 return boolValue ? Visibility.Collapsed : Visibility.Visible;
             }
+
             return Visibility.Collapsed;
         }
 
@@ -43,6 +46,7 @@ namespace TechDashboard.Converters
             {
                 return visibility == Visibility.Collapsed;
             }
+
             return false;
         }
     }

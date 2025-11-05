@@ -9,26 +9,26 @@ namespace TechDashboard
         public static void ApplyTheme(string themeName)
         {
             if (Application.Current == null) return;
-            
-            // å¤„ç†ä¸»é¢˜åç§°ï¼ŒBlueTech -> BlueTechTheme.xaml
+
+            // ´¦ÀíÖ÷ÌâÃû³Æ
             string themeFileName = themeName;
             if (!themeFileName.EndsWith("Theme", StringComparison.OrdinalIgnoreCase))
             {
                 themeFileName = themeName + "Theme";
             }
-            
+
             var themePath = $"Themes/{themeFileName}.xaml";
 
-            // ç§»é™¤æ‰€æœ‰ç°æœ‰ä¸»é¢˜
+            // ÒÆ³ıËùÓĞÏÖÓĞÖ÷Ìâ
             var toRemove = Application.Current.Resources.MergedDictionaries
                 .Where(d => d.Source != null && d.Source.OriginalString.Contains("Themes/")).ToList();
 
-            foreach (var d in toRemove) 
+            foreach (var d in toRemove)
             {
                 Application.Current.Resources.MergedDictionaries.Remove(d);
             }
 
-            // æ·»åŠ æ–°ä¸»é¢˜
+            // Ìí¼ÓĞÂÖ÷Ìâ
             try
             {
                 var dict = new ResourceDictionary() { Source = new Uri(themePath, UriKind.Relative) };
@@ -36,8 +36,37 @@ namespace TechDashboard
             }
             catch
             {
-                // å¦‚æœä¸»é¢˜æ–‡ä»¶ä¸å­˜åœ¨ï¼Œå›é€€åˆ°é»˜è®¤ä¸»é¢˜
+                // Èç¹ûÖ÷ÌâÎÄ¼ş²»´æÔÚ£¬»ØÍËµ½Ä¬ÈÏÖ÷Ìâ
                 var defaultDict = new ResourceDictionary() { Source = new Uri("Themes/DarkTheme.xaml", UriKind.Relative) };
+                Application.Current.Resources.MergedDictionaries.Add(defaultDict);
+            }
+        }
+
+        public static void ApplyLanguage(string languageCode)
+        {
+            if (Application.Current == null) return;
+
+            var languagePath = $"Languages/{languageCode}.xaml";
+
+            // ÒÆ³ıËùÓĞÏÖÓĞÓïÑÔ°ü
+            var toRemove = Application.Current.Resources.MergedDictionaries
+                .Where(d => d.Source != null && d.Source.OriginalString.Contains("Languages/")).ToList();
+
+            foreach (var d in toRemove)
+            {
+                Application.Current.Resources.MergedDictionaries.Remove(d);
+            }
+
+            // Ìí¼ÓĞÂÓïÑÔ°ü
+            try
+            {
+                var dict = new ResourceDictionary() { Source = new Uri(languagePath, UriKind.Relative) };
+                Application.Current.Resources.MergedDictionaries.Add(dict);
+            }
+            catch
+            {
+                // Èç¹ûÓïÑÔÎÄ¼ş²»´æÔÚ£¬»ØÍËµ½Ó¢Óï
+                var defaultDict = new ResourceDictionary() { Source = new Uri("Languages/en-US.xaml", UriKind.Relative) };
                 Application.Current.Resources.MergedDictionaries.Add(defaultDict);
             }
         }

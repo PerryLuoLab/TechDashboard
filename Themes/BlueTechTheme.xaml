@@ -33,7 +33,7 @@
         <GradientStop Color="#0F1419" Offset="1"/>
     </LinearGradientBrush>
 
-    <!-- Progress Bar Background - 鲜明的蓝色背景 -->
+    <!-- Progress Bar Background -->
     <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="#1A3A5C"/>
 
     <!-- Accent Gradient -->
@@ -52,6 +52,17 @@
     <!-- Effects -->
     <DropShadowEffect x:Key="CardShadow" Color="#00294D" BlurRadius="22" ShadowDepth="0" Opacity="0.6"/>
     <DropShadowEffect x:Key="AccentGlow" Color="#00A8FF" BlurRadius="18" ShadowDepth="0" Opacity="0.7"/>
+
+    <!-- Menu Style -->
+    <Style TargetType="MenuItem">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource HeaderBackgroundBrush}"/>
+        <Style.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <!-- Button Styles -->
     <Style x:Key="AccentButton" TargetType="Button">
@@ -103,12 +114,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="NavButtonSelectedStyle" TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-        <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-    </Style>
-
     <Style x:Key="IconBoxStyle" TargetType="Border">
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>
@@ -126,7 +131,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
     </Style>
 
-    <!-- Green Selected Color for Theme Toggle -->
+    <!-- Theme/Language Toggle Button Style -->
     <Color x:Key="ThemeSelectedColor">#00C853</Color>
     <SolidColorBrush x:Key="ThemeSelectedBrush" Color="{StaticResource ThemeSelectedColor}"/>
 
@@ -148,13 +153,11 @@
                                 <Border Height="30" Margin="0,8,0,0" CornerRadius="4" 
                                         Background="{TemplateBinding Tag}"/>
                             </StackPanel>
-                            <!-- Green Checkmark Icon - 右上角 -->
                             <TextBlock x:Name="CheckmarkIcon" Text="&#xE73E;" 
                                        FontFamily="Segoe MDL2 Assets" FontSize="18" 
                                        Foreground="{StaticResource ThemeSelectedBrush}"
                                        HorizontalAlignment="Right" VerticalAlignment="Top"
-                                       Margin="0,2,2,0"
-                                       Visibility="Collapsed"/>
+                                       Margin="0,2,2,0" Visibility="Collapsed"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -171,5 +174,8 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Language Toggle Button Style -->
+    <Style x:Key="LanguageToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource ThemeToggleButton}"/>
 
 </ResourceDictionary>

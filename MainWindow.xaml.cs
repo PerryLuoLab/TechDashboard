@@ -23,6 +23,12 @@ namespace TechDashboard
         private double _dragStartWidth;
         private bool _isAnimating = false;
 
+        // Double-click detection
+        private DateTime _lastClickTime = DateTime.MinValue;
+        private Point _lastClickPosition = new Point(0, 0);
+        private const int DoubleClickTimeThresholdMs = 400;
+        private const double DoubleClickDistanceThreshold = 10.0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -56,8 +62,7 @@ namespace TechDashboard
                 NavPanel.MouseLeftButtonUp += NavPanel_MouseLeftButtonUp;
                 NavPanel.MouseLeave += NavPanel_MouseLeave;
 
-                // Double-click to expand when collapsed 
-                //NavPanel.PreviewMouseDoubleClick += NavPanel_PreviewMouseDoubleClick;
+                // Double-click detection is handled in NavPanel_MouseLeftButtonDown
                 
 
                 // Window-level handlers
@@ -126,27 +131,15 @@ namespace TechDashboard
 
         #region Double-Click Expand
 
-        private void NavPanel_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private bool IsDoubleClick(DateTime currentTime, Point currentPosition)
         {
-            try
-            {
-                if (DataContext is MainViewModel vm && !vm.IsNavExpanded)
-                {
-                    // Only expand if collapsed and not clicking on a button
-                    var pos = e.GetPosition(NavPanel);
-                    var hitElement = NavPanel.InputHitTest(pos);
+            var timeSinceLastClick = (currentTime - _lastClickTime).TotalMilliseconds;
+            var distance = Math.Sqrt(
+                Math.Pow(currentPosition.X - _lastClickPosition.X, 2) +
+                Math.Pow(currentPosition.Y - _lastClickPosition.Y, 2));
 
-                    if (!(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button))))
-                    {
-                        vm.IsNavExpanded = true;
-                        e.Handled = true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"NavPanel_PreviewMouseDoubleClick error: {ex.Message}");
-            }
+            return timeSinceLastClick < DoubleClickTimeThresholdMs &&
+                   distance < DoubleClickDistanceThreshold;
         }
 
         #endregion
@@ -161,6 +154,28 @@ namespace TechDashboard
 
                 var pos = e.GetPosition(NavPanel);
                 var currentWidth = NavColumn.ActualWidth;
+                var currentTime = DateTime.Now;
+
+                // Check for double-click when collapsed
+                if (currentWidth <= CollapsedNavWidth + 10 && DataContext is MainViewModel vm && !vm.IsNavExpanded)
+                {
+                    var hitElement = NavPanel.InputHitTest(pos);
+                    bool isOnEmptyArea = !(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button)));
+
+                    if (isOnEmptyArea && IsDoubleClick(currentTime, pos))
+                    {
+                        vm.IsNavExpanded = true;
+                        e.Handled = true;
+                        _lastClickTime = DateTime.MinValue; // Reset to prevent triple-click
+                        return;
+                    }
+
+                    if (isOnEmptyArea)
+                    {
+                        _lastClickTime = currentTime;
+                        _lastClickPosition = pos;
+                    }
+                }
 
                 bool isInDragZone = false;
 
@@ -467,11 +482,11 @@ namespace TechDashboard
 
         #region Helper Methods
 
-        private bool IsChildOf(DependencyObject child, Type parentType)
+        private bool IsChildOf(DependencyObject? child, Type parentType)
         {
             if (child == null) return false;
 
-            DependencyObject parent = VisualTreeHelper.GetParent(child);
+            DependencyObject? parent = VisualTreeHelper.GetParent(child);
 
             while (parent != null)
             {

@@ -150,14 +150,16 @@
                             <StackPanel>
                                 <TextBlock Text="{TemplateBinding Content}" FontWeight="SemiBold" 
                                            Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"/>
-                                <Border Height="30" Margin="0,8,0,0" CornerRadius="4" 
-                                        Background="{TemplateBinding Tag}"/>
+                                <Grid Height="30" Margin="0,8,0,0">
+                                    <Border x:Name="ColorBlock" Height="30" CornerRadius="4" 
+                                            Background="{TemplateBinding Tag}"/>
+                                    <TextBlock x:Name="CheckmarkIcon" Text="&#xE73E;" 
+                                               FontFamily="Segoe MDL2 Assets" FontSize="18" 
+                                               Foreground="{StaticResource ThemeSelectedBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               Visibility="Collapsed"/>
+                                </Grid>
                             </StackPanel>
-                            <TextBlock x:Name="CheckmarkIcon" Text="&#xE73E;" 
-                                       FontFamily="Segoe MDL2 Assets" FontSize="18" 
-                                       Foreground="{StaticResource ThemeSelectedBrush}"
-                                       HorizontalAlignment="Right" VerticalAlignment="Top"
-                                       Margin="0,2,2,0" Visibility="Collapsed"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -175,7 +177,36 @@
         </Setter>
     </Style>
 
-    <!-- Language Toggle Button Style -->
-    <Style x:Key="LanguageToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource ThemeToggleButton}"/>
+    <!-- Language Toggle Button Style (without color block and checkmark) -->
+    <Style x:Key="LanguageToggleButton" TargetType="ToggleButton">
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="Margin" Value="8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="border" Background="{DynamicResource CardBackgroundBrush}" 
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="2" 
+                            CornerRadius="8" Padding="8">
+                        <Grid>
+                            <TextBlock Text="{TemplateBinding Content}" FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource TextBrush}" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource ThemeSelectedBrush}"/>
+                            <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource CardShadow}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

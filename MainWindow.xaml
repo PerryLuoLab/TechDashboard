@@ -405,38 +405,22 @@
                                 <ToggleButton Content="{DynamicResource Settings_Lang_English}" 
                                               Style="{StaticResource LanguageToggleButton}"
                                               IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=en-US}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US">
-                                    <ToggleButton.Tag>
-                                        <SolidColorBrush Color="#4A90E2"/>
-                                    </ToggleButton.Tag>
-                                </ToggleButton>
+                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
 
                                 <ToggleButton Content="{DynamicResource Settings_Lang_Chinese}" 
                                               Style="{StaticResource LanguageToggleButton}"
                                               IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=zh-CN}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="zh-CN">
-                                    <ToggleButton.Tag>
-                                        <SolidColorBrush Color="#DE2910"/>
-                                    </ToggleButton.Tag>
-                                </ToggleButton>
+                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="zh-CN"/>
 
                                 <ToggleButton Content="{DynamicResource Settings_Lang_Korean}" 
                                               Style="{StaticResource LanguageToggleButton}"
                                               IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ko-KR}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="ko-KR">
-                                    <ToggleButton.Tag>
-                                        <SolidColorBrush Color="#0047A0"/>
-                                    </ToggleButton.Tag>
-                                </ToggleButton>
+                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="ko-KR"/>
 
                                 <ToggleButton Content="{DynamicResource Settings_Lang_Japanese}" 
                                               Style="{StaticResource LanguageToggleButton}"
                                               IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ja-JP}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="ja-JP">
-                                    <ToggleButton.Tag>
-                                        <SolidColorBrush Color="#FF6B35"/>
-                                    </ToggleButton.Tag>
-                                </ToggleButton>
+                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="ja-JP"/>
                             </WrapPanel>
                         </StackPanel>
                     </ScrollViewer>

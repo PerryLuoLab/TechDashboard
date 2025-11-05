@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace TechDashboard.Commands
+namespace TechDashboard.Infrastructure
 {
     public class RelayCommand : ICommand
     {

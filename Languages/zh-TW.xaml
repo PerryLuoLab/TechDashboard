@@ -1,0 +1,81 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Menu Items -->
+    <system:String x:Key="Menu_File">檔案</system:String>
+    <system:String x:Key="Menu_File_New">新增</system:String>
+    <system:String x:Key="Menu_File_Open">開啟</system:String>
+    <system:String x:Key="Menu_File_Exit">結束</system:String>
+
+    <system:String x:Key="Menu_Edit">編輯</system:String>
+    <system:String x:Key="Menu_Edit_Undo">復原</system:String>
+    <system:String x:Key="Menu_Edit_Redo">取消復原</system:String>
+    <system:String x:Key="Menu_Edit_Copy">複製</system:String>
+    <system:String x:Key="Menu_Edit_Paste">貼上</system:String>
+
+    <system:String x:Key="Menu_View">檢視</system:String>
+    <system:String x:Key="Menu_View_Refresh">重新整理</system:String>
+    <system:String x:Key="Menu_View_Fullscreen">全螢幕</system:String>
+
+    <system:String x:Key="Menu_Help">說明</system:String>
+    <system:String x:Key="Menu_Help_About">關於</system:String>
+
+    <!-- Navigation -->
+    <system:String x:Key="Nav_Dashboard">儀表板</system:String>
+    <system:String x:Key="Nav_Overview">概覽</system:String>
+    <system:String x:Key="Nav_Analytics">分析</system:String>
+    <system:String x:Key="Nav_Reports">報告</system:String>
+    <system:String x:Key="Nav_Settings">設定</system:String>
+    <system:String x:Key="Nav_Collapse">收合</system:String>
+    <system:String x:Key="Nav_Expand">展開導航</system:String>
+
+    <!-- Dashboard -->
+    <system:String x:Key="Dashboard_Title">技術儀表板</system:String>
+    <system:String x:Key="Dashboard_ActiveUsers">活躍用戶</system:String>
+    <system:String x:Key="Dashboard_CPULoad">CPU 負載</system:String>
+    <system:String x:Key="Dashboard_Errors24h">錯誤數（24小時）</system:String>
+    <system:String x:Key="Dashboard_VsLastMonth">↑ 較上月增長 12.5%</system:String>
+    <system:String x:Key="Dashboard_AllSystemsOK">所有系統正常運行</system:String>
+    <system:String x:Key="Dashboard_Performance">系統效能</system:String>
+    <system:String x:Key="Dashboard_MemoryUsage">記憶體使用</system:String>
+    <system:String x:Key="Dashboard_DiskIO">磁碟 I/O</system:String>
+    <system:String x:Key="Dashboard_NetworkTraffic">網路流量</system:String>
+
+    <!-- Settings -->
+    <system:String x:Key="Settings_Appearance">外觀</system:String>
+    <system:String x:Key="Settings_ChooseTheme">選擇主題</system:String>
+    <system:String x:Key="Settings_Theme_Dark">深色</system:String>
+    <system:String x:Key="Settings_Theme_Light">淺色</system:String>
+    <system:String x:Key="Settings_Theme_BlueTech">藍色科技</system:String>
+    <system:String x:Key="Settings_Language">語言</system:String>
+    <system:String x:Key="Settings_ChooseLanguage">選擇語言</system:String>
+    <system:String x:Key="Settings_Lang_English">English</system:String>
+    <system:String x:Key="Settings_Lang_Chinese">简体中文</system:String>
+    <system:String x:Key="Settings_Lang_TraditionalChinese">繁體中文</system:String>
+    <system:String x:Key="Settings_Lang_Korean">한국어</system:String>
+    <system:String x:Key="Settings_Lang_Japanese">日本語</system:String>
+
+    <!-- Analytics Page -->
+    <system:String x:Key="Analytics_Title">分析頁面</system:String>
+    <system:String x:Key="Analytics_Description">此處將顯示分析數據和圖表。</system:String>
+
+    <!-- Reports Page -->
+    <system:String x:Key="Reports_Title">報告頁面</system:String>
+    <system:String x:Key="Reports_Description">此處將顯示生成的報告和匯出選項。</system:String>
+
+    <!-- Status Bar -->
+    <system:String x:Key="Status_Ready">就緒</system:String>
+    <system:String x:Key="Status_CurrentPage">目前頁面：</system:String>
+    <system:String x:Key="Status_Theme">主題：</system:String>
+    <system:String x:Key="Status_Language">語言：</system:String>
+    <system:String x:Key="Status_Theme_Dark">深色</system:String>
+    <system:String x:Key="Status_Theme_Light">淺色</system:String>
+    <system:String x:Key="Status_Theme_BlueTech">藍色科技</system:String>
+    <system:String x:Key="Status_Page_Overview">概覽</system:String>
+    <system:String x:Key="Status_Page_Analytics">分析</system:String>
+    <system:String x:Key="Status_Page_Reports">報告</system:String>
+    <system:String x:Key="Status_Page_Settings">設定</system:String>
+
+</ResourceDictionary>
+

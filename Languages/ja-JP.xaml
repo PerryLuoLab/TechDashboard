@@ -22,6 +22,7 @@
     <system:String x:Key="Menu_Help_About">について</system:String>
 
     <!-- Navigation -->
+    <system:String x:Key="Nav_Dashboard">ダッシュボード</system:String>
     <system:String x:Key="Nav_Overview">概要</system:String>
     <system:String x:Key="Nav_Analytics">分析</system:String>
     <system:String x:Key="Nav_Reports">レポート</system:String>
@@ -51,6 +52,7 @@
     <system:String x:Key="Settings_ChooseLanguage">言語を選択</system:String>
     <system:String x:Key="Settings_Lang_English">English</system:String>
     <system:String x:Key="Settings_Lang_Chinese">简体中文</system:String>
+    <system:String x:Key="Settings_Lang_TraditionalChinese">繁體中文</system:String>
     <system:String x:Key="Settings_Lang_Korean">한국어</system:String>
     <system:String x:Key="Settings_Lang_Japanese">日本語</system:String>
 
@@ -67,6 +69,13 @@
     <system:String x:Key="Status_CurrentPage">現在のページ：</system:String>
     <system:String x:Key="Status_Theme">テーマ：</system:String>
     <system:String x:Key="Status_Language">言語：</system:String>
+    <system:String x:Key="Status_Theme_Dark">ダーク</system:String>
+    <system:String x:Key="Status_Theme_Light">ライト</system:String>
+    <system:String x:Key="Status_Theme_BlueTech">ブルーテック</system:String>
+    <system:String x:Key="Status_Page_Overview">概要</system:String>
+    <system:String x:Key="Status_Page_Analytics">分析</system:String>
+    <system:String x:Key="Status_Page_Reports">レポート</system:String>
+    <system:String x:Key="Status_Page_Settings">設定</system:String>
 
 </ResourceDictionary>
 

@@ -41,7 +41,10 @@ namespace TechDashboard.ViewModels
         public string CurrentTheme
         {
             get => _currentTheme;
-            set => SetProperty(ref _currentTheme, value);
+            set => SetProperty(ref _currentTheme, value, action: () =>
+            {
+                RaisePropertyChanged(nameof(CurrentThemeDisplay));
+            });
         }
 
         public string CurrentLanguage
@@ -70,10 +73,48 @@ namespace TechDashboard.ViewModels
                 {
                     "en-US" => "English",
                     "zh-CN" => "简体中文",
+                    "zh-TW" => "繁體中文",
                     "ko-KR" => "한국어",
                     "ja-JP" => "日本語",
                     _ => "English"
                 };
+            }
+        }
+
+        // 获取显示用的主题名称
+        public string CurrentThemeDisplay
+        {
+            get
+            {
+                var themeKey = CurrentTheme switch
+                {
+                    "Dark" => "Status_Theme_Dark",
+                    "Light" => "Status_Theme_Light",
+                    "BlueTech" => "Status_Theme_BlueTech",
+                    _ => "Status_Theme_Dark"
+                };
+
+                var resource = System.Windows.Application.Current?.TryFindResource(themeKey);
+                return resource?.ToString() ?? CurrentTheme;
+            }
+        }
+
+        // 获取显示用的页面名称
+        public string CurrentPageDisplay
+        {
+            get
+            {
+                var pageKey = CurrentPage switch
+                {
+                    "Overview" => "Status_Page_Overview",
+                    "Analytics" => "Status_Page_Analytics",
+                    "Reports" => "Status_Page_Reports",
+                    "Settings" => "Status_Page_Settings",
+                    _ => "Status_Page_Overview"
+                };
+
+                var resource = System.Windows.Application.Current?.TryFindResource(pageKey);
+                return resource?.ToString() ?? CurrentPage;
             }
         }
 
@@ -104,6 +145,7 @@ namespace TechDashboard.ViewModels
                 RaisePropertyChanged(nameof(IsAnalyticsPage));
                 RaisePropertyChanged(nameof(IsReportsPage));
                 RaisePropertyChanged(nameof(IsSettingsPage));
+                RaisePropertyChanged(nameof(CurrentPageDisplay));
             }
         }
 
@@ -123,6 +165,8 @@ namespace TechDashboard.ViewModels
                 CurrentLanguage = languageCode;
                 App.ApplyLanguage(languageCode);
                 RaisePropertyChanged(nameof(CurrentLanguageDisplay));
+                RaisePropertyChanged(nameof(CurrentThemeDisplay));
+                RaisePropertyChanged(nameof(CurrentPageDisplay));
             }
         }
 

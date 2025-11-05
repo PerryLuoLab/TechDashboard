@@ -22,6 +22,7 @@
     <system:String x:Key="Menu_Help_About">About</system:String>
 
     <!-- Navigation -->
+    <system:String x:Key="Nav_Dashboard">DASHBOARD</system:String>
     <system:String x:Key="Nav_Overview">Overview</system:String>
     <system:String x:Key="Nav_Analytics">Analytics</system:String>
     <system:String x:Key="Nav_Reports">Reports</system:String>
@@ -51,6 +52,7 @@
     <system:String x:Key="Settings_ChooseLanguage">Choose Language</system:String>
     <system:String x:Key="Settings_Lang_English">English</system:String>
     <system:String x:Key="Settings_Lang_Chinese">简体中文</system:String>
+    <system:String x:Key="Settings_Lang_TraditionalChinese">繁體中文</system:String>
     <system:String x:Key="Settings_Lang_Korean">한국어</system:String>
     <system:String x:Key="Settings_Lang_Japanese">日本語</system:String>
 
@@ -67,5 +69,12 @@
     <system:String x:Key="Status_CurrentPage">Current Page:</system:String>
     <system:String x:Key="Status_Theme">Theme:</system:String>
     <system:String x:Key="Status_Language">Language:</system:String>
+    <system:String x:Key="Status_Theme_Dark">Dark</system:String>
+    <system:String x:Key="Status_Theme_Light">Light</system:String>
+    <system:String x:Key="Status_Theme_BlueTech">Blue Tech</system:String>
+    <system:String x:Key="Status_Page_Overview">Overview</system:String>
+    <system:String x:Key="Status_Page_Analytics">Analytics</system:String>
+    <system:String x:Key="Status_Page_Reports">Reports</system:String>
+    <system:String x:Key="Status_Page_Settings">Settings</system:String>
 
 </ResourceDictionary>

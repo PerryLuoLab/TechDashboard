@@ -22,6 +22,7 @@
     <system:String x:Key="Menu_Help_About">关于</system:String>
 
     <!-- Navigation -->
+    <system:String x:Key="Nav_Dashboard">仪表板</system:String>
     <system:String x:Key="Nav_Overview">概览</system:String>
     <system:String x:Key="Nav_Analytics">分析</system:String>
     <system:String x:Key="Nav_Reports">报告</system:String>
@@ -51,6 +52,7 @@
     <system:String x:Key="Settings_ChooseLanguage">选择语言</system:String>
     <system:String x:Key="Settings_Lang_English">English</system:String>
     <system:String x:Key="Settings_Lang_Chinese">简体中文</system:String>
+    <system:String x:Key="Settings_Lang_TraditionalChinese">繁體中文</system:String>
     <system:String x:Key="Settings_Lang_Korean">한국어</system:String>
     <system:String x:Key="Settings_Lang_Japanese">日本語</system:String>
 
@@ -67,5 +69,12 @@
     <system:String x:Key="Status_CurrentPage">当前页面：</system:String>
     <system:String x:Key="Status_Theme">主题：</system:String>
     <system:String x:Key="Status_Language">语言：</system:String>
+    <system:String x:Key="Status_Theme_Dark">深色</system:String>
+    <system:String x:Key="Status_Theme_Light">浅色</system:String>
+    <system:String x:Key="Status_Theme_BlueTech">蓝色科技</system:String>
+    <system:String x:Key="Status_Page_Overview">概览</system:String>
+    <system:String x:Key="Status_Page_Analytics">分析</system:String>
+    <system:String x:Key="Status_Page_Reports">报告</system:String>
+    <system:String x:Key="Status_Page_Settings">设置</system:String>
 
 </ResourceDictionary>

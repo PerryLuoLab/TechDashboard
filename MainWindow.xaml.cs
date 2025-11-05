@@ -168,30 +168,60 @@ namespace TechDashboard
                 var pos = e.GetPosition(NavPanel);
                 var currentWidth = NavColumn.ActualWidth;
 
-                // Check for double-click when collapsed using ClickCount
-                if (currentWidth <= CollapsedNavWidth + 10 && DataContext is MainViewModel vm && !vm.IsNavExpanded)
+                if (DataContext is MainViewModel vm)
                 {
                     var hitElement = NavPanel.InputHitTest(pos);
                     bool isOnEmptyArea = !(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button)));
 
                     if (isOnEmptyArea)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Click detected: ClickCount={e.ClickCount}, Position=({pos.X:F2}, {pos.Y:F2}), EmptyArea={isOnEmptyArea}");
+                        System.Diagnostics.Debug.WriteLine($"Click detected: ClickCount={e.ClickCount}, Position=({pos.X:F2}, {pos.Y:F2}), EmptyArea={isOnEmptyArea}, IsExpanded={vm.IsNavExpanded}");
 
                         // Use ClickCount to detect double-click (WPF built-in feature)
                         if (e.ClickCount == 2)
                         {
-                            System.Diagnostics.Debug.WriteLine("*** Double-click detected! Expanding navigation panel. ***");
-                            vm.IsNavExpanded = true;
+                            // Toggle navigation panel state on double-click
+                            if (currentWidth <= CollapsedNavWidth + 10 && !vm.IsNavExpanded)
+                            {
+                                // Collapsed: expand on double-click
+                                System.Diagnostics.Debug.WriteLine("*** Double-click detected! Expanding navigation panel. ***");
+                                vm.IsNavExpanded = true;
+                            }
+                            else if (currentWidth > CollapsedNavWidth + 10 && vm.IsNavExpanded)
+                            {
+                                // Expanded: collapse on double-click (but not when clicking on drag zone)
+                                if (pos.X < NavPanel.ActualWidth - 5)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("*** Double-click detected! Collapsing navigation panel. ***");
+                                    vm.IsNavExpanded = false;
+                                }
+                                else
+                                {
+                                    // Clicking on drag zone - don't collapse, allow dragging
+                                    System.Diagnostics.Debug.WriteLine("Double-click on drag zone - ignoring, allow dragging");
+                                    return;
+                                }
+                            }
                             e.Handled = true;
                             return;
                         }
                         else if (e.ClickCount == 1)
                         {
-                            // Single click on empty area - don't start dragging, just mark as handled
-                            System.Diagnostics.Debug.WriteLine("Single click on empty area - waiting for possible double-click");
-                            e.Handled = true;
-                            return;
+                            // Single click on empty area
+                            if (currentWidth <= CollapsedNavWidth + 10)
+                            {
+                                // Collapsed: don't start dragging, wait for possible double-click
+                                System.Diagnostics.Debug.WriteLine("Single click on empty area (collapsed) - waiting for possible double-click");
+                                e.Handled = true;
+                                return;
+                            }
+                            else if (currentWidth > CollapsedNavWidth + 10 && pos.X < NavPanel.ActualWidth - 5)
+                            {
+                                // Expanded: don't start dragging unless on drag zone
+                                System.Diagnostics.Debug.WriteLine("Single click on empty area (expanded) - waiting for possible double-click");
+                                e.Handled = true;
+                                return;
+                            }
                         }
                     }
                 }

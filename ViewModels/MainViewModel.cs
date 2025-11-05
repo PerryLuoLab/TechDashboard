@@ -71,6 +71,7 @@ namespace TechDashboard.ViewModels
                     "en-US" => "English",
                     "zh-CN" => "简体中文",
                     "ko-KR" => "한국어",
+                    "ja-JP" => "日本語",
                     _ => "English"
                 };
             }

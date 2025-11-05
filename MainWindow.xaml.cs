@@ -96,6 +96,16 @@ namespace TechDashboard
                     FindResource("Nav_Collapse")?.ToString() ?? "Collapse"
                 };
 
+                // 根据当前语言可能需要包含展开文本（某些语言较长）
+                var expandText = FindResource("Nav_Expand")?.ToString() ?? "Expand Navigation";
+                if (!string.IsNullOrEmpty(expandText) && expandText.Length > 0)
+                {
+                    // 如果展开文本更长，也考虑它
+                    var allTexts = navTexts.ToList();
+                    allTexts.Add(expandText);
+                    navTexts = allTexts.ToArray();
+                }
+
                 // 测量每个文本的宽度
                 var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
 

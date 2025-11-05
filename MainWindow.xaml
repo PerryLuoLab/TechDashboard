@@ -428,6 +428,15 @@
                                         <SolidColorBrush Color="#0047A0"/>
                                     </ToggleButton.Tag>
                                 </ToggleButton>
+
+                                <ToggleButton Content="{DynamicResource Settings_Lang_Japanese}" 
+                                              Style="{StaticResource LanguageToggleButton}"
+                                              IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ja-JP}"
+                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="ja-JP">
+                                    <ToggleButton.Tag>
+                                        <SolidColorBrush Color="#FF6B35"/>
+                                    </ToggleButton.Tag>
+                                </ToggleButton>
                             </WrapPanel>
                         </StackPanel>
                     </ScrollViewer>

@@ -52,6 +52,7 @@
     <system:String x:Key="Settings_Lang_English">English</system:String>
     <system:String x:Key="Settings_Lang_Chinese">简体中文</system:String>
     <system:String x:Key="Settings_Lang_Korean">한국어</system:String>
+    <system:String x:Key="Settings_Lang_Japanese">日本語</system:String>
 
     <!-- Analytics Page -->
     <system:String x:Key="Analytics_Title">분석 페이지</system:String>

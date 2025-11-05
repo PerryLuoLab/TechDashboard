@@ -8,7 +8,6 @@
             <!-- Converters -->
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <converters:ThemeConverter x:Key="ThemeConverter"/>
-            <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
             <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis"/>
             <converters:LanguageConverter x:Key="LanguageConverter"/>
 

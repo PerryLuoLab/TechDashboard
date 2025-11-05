@@ -10,27 +10,24 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 
 ## 📸 Screenshots
 
-### Main Interface
-![Main Interface](images/main-interface.png)
-
 *Main dashboard interface with navigation panel*
 
 ### Theme Showcase
 <div align="center">
-  <img src="images/theme-dark.png" alt="Dark Theme" width="45%">
-  <img src="images/theme-light.png" alt="Light Theme" width="45%">
-  <img src="images/theme-bluetech.png" alt="Blue Tech Theme" width="45%">
+  <img src="Assets/theme-dark.png" alt="Dark Theme" width="45%">
+  <img src="Assets/theme-light.png" alt="Light Theme" width="45%">
+  <img src="Assets/theme-bluetech.png" alt="Blue Tech Theme" width="45%">
 </div>
 
 *Three premium themes: Dark (Gray-Black), Light, and Blue Tech*
 
 ### Language Support
-![Language Support](images/language-support.png)
+![Language Support](Assets/language-support.png)
 
 *Multi-language support with 5 languages: English, Simplified Chinese, Traditional Chinese, Korean, and Japanese*
 
 ### Navigation Panel
-![Navigation Panel](images/navigation-panel.png)
+![Navigation Panel](Assets/navigation-panel.png)
 
 *Smart navigation panel with auto-width calculation and drag-to-resize*
 

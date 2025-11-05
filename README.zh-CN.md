@@ -10,27 +10,25 @@
 
 ## 📸 界面截图
 
-### 主界面
-![主界面](images/main-interface.png)
 
 *主仪表板界面，包含导航面板*
 
 ### 主题展示
 <div align="center">
-  <img src="images/theme-dark.png" alt="深色主题" width="45%">
-  <img src="images/theme-light.png" alt="浅色主题" width="45%">
-  <img src="images/theme-bluetech.png" alt="蓝色科技主题" width="45%">
+  <img src="Assets/theme-dark.png" alt="深色主题" width="45%">
+  <img src="Assets/theme-light.png" alt="浅色主题" width="45%">
+  <img src="Assets/theme-bluetech.png" alt="蓝色科技主题" width="45%">
 </div>
 
 *三种精美主题：深色（黑灰色调）、浅色和蓝色科技*
 
 ### 语言支持
-![语言支持](images/language-support.png)
+![语言支持](Assets/language-support.png)
 
 *多语言支持，包含 5 种语言：英语、简体中文、繁体中文、韩语和日语*
 
 ### 导航面板
-![导航面板](images/navigation-panel.png)
+![导航面板](Assets/navigation-panel.png)
 
 *智能导航面板，支持自动宽度计算和拖拽调整大小*
 

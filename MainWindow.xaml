@@ -27,7 +27,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Menu Items -->
-                <Menu Grid.Column="0" Background="Transparent" VerticalAlignment="Center" Margin="8,0">
+                <Menu x:Name="MainMenu" Grid.Column="0" Background="Transparent" VerticalAlignment="Center" Margin="8,0">
                     <MenuItem Header="{DynamicResource Menu_File}">
                         <MenuItem Header="{DynamicResource Menu_File_New}"/>
                         <MenuItem Header="{DynamicResource Menu_File_Open}"/>

@@ -101,14 +101,20 @@ TechDashboard/
 ├── MainWindow.xaml             # Main window UI definition
 ├── MainWindow.xaml.cs          # Window logic & drag handling
 │
-├── Commands/
-│   └── RelayCommand.cs         # Generic command implementation
-│
 ├── Converters/
-│   └── ThemeConverter.cs       # Theme/Language toggle converters
+│   ├── ThemeConverter.cs       # Theme/Language toggle converters
+│   └── LanguageConverter.cs   # Language converter
 │
 ├── Infrastructure/
-│   └── ObservableObject.cs    # Base class for ViewModels
+│   ├── ObservableObject.cs    # Base class for ViewModels
+│   └── RelayCommand.cs         # Generic command implementation
+│
+├── Helpers/
+│   ├── NavigationConstants.cs  # Navigation constants
+│   └── ThemeManager.cs        # Theme management helper
+│
+├── Services/
+│   └── NavigationPanelService.cs # Navigation panel service
 │
 ├── ViewModels/
 │   └── MainViewModel.cs        # Main window ViewModel

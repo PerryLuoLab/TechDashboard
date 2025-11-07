@@ -69,11 +69,96 @@ namespace TechDashboard
                 // Window-level handlers
                 this.MouseMove += MainWindow_MouseMove;
                 this.MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
+                
+                // Setup menu submenu handlers
+                SetupMenuSubmenuHandlers();
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"OnLoaded error: {ex.Message}");
             }
+        }
+        
+        private void SetupMenuSubmenuHandlers()
+        {
+            // 为所有MenuItem添加SubmenuOpened事件处理
+            if (MainMenu != null)
+            {
+                foreach (MenuItem item in MainMenu.Items)
+                {
+                    item.SubmenuOpened += MenuItem_SubmenuOpened;
+                }
+            }
+        }
+        
+        private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is MenuItem menuItem)
+                {
+                    // 延迟执行，确保Popup已经创建
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        try
+                        {
+                            // 查找Popup
+                            var popup = FindVisualChild<System.Windows.Controls.Primitives.Popup>(menuItem);
+                            if (popup != null && popup.Child != null)
+                            {
+                                // Popup的Child通常是Border或Panel，设置其背景
+                                var cardBackground = Application.Current.TryFindResource("CardBackgroundBrush") as SolidColorBrush;
+                                if (cardBackground != null)
+                                {
+                                    if (popup.Child is Border border)
+                                    {
+                                        border.Background = cardBackground;
+                                    }
+                                    else if (popup.Child is Panel panel)
+                                    {
+                                        panel.Background = cardBackground;
+                                    }
+                                    else
+                                    {
+                                        // 尝试查找内部的Border
+                                        var innerBorder = FindVisualChild<Border>(popup.Child);
+                                        if (innerBorder != null)
+                                        {
+                                            innerBorder.Background = cardBackground;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex2)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"MenuItem_SubmenuOpened inner error: {ex2.Message}");
+                        }
+                    }), System.Windows.Threading.DispatcherPriority.Loaded);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"MenuItem_SubmenuOpened error: {ex.Message}");
+            }
+        }
+        
+        private T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T result)
+                {
+                    return result;
+                }
+                var childOfChild = FindVisualChild<T>(child);
+                if (childOfChild != null)
+                {
+                    return childOfChild;
+                }
+            }
+            return null;
         }
 
         #region Navigation Width Calculation

@@ -102,14 +102,20 @@ TechDashboard/
 ├── MainWindow.xaml             # 主窗口 UI 定义
 ├── MainWindow.xaml.cs          # 窗口逻辑和拖拽处理
 │
-├── Commands/
-│   └── RelayCommand.cs         # 通用命令实现
-│
 ├── Converters/
-│   └── ThemeConverter.cs        # 主题/语言切换转换器
+│   ├── ThemeConverter.cs       # 主题/语言切换转换器
+│   └── LanguageConverter.cs    # 语言转换器
 │
 ├── Infrastructure/
-│   └── ObservableObject.cs     # ViewModel 基类
+│   ├── ObservableObject.cs     # ViewModel 基类
+│   └── RelayCommand.cs         # 通用命令实现
+│
+├── Helpers/
+│   ├── NavigationConstants.cs  # 导航常量
+│   └── ThemeManager.cs         # 主题管理辅助类
+│
+├── Services/
+│   └── NavigationPanelService.cs # 导航面板服务
 │
 ├── ViewModels/
 │   └── MainViewModel.cs        # 主窗口 ViewModel

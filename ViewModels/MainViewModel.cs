@@ -17,6 +17,7 @@ namespace TechDashboard.ViewModels
             NavigateCommand = new RelayCommand(param => NavigateToPage(param?.ToString()));
             ChangeThemeCommand = new RelayCommand(param => ChangeTheme(param?.ToString()));
             ChangeLanguageCommand = new RelayCommand(param => ChangeLanguage(param?.ToString()));
+            QuickToggleThemeCommand = new RelayCommand(_ => QuickToggleTheme());
         }
 
         #region Properties
@@ -26,7 +27,6 @@ namespace TechDashboard.ViewModels
             get => _isNavExpanded;
             set => SetProperty(ref _isNavExpanded, value, action: () =>
             {
-                // 当展开/折叠状态改变时，更新导航宽度
                 NavWidth = value ? 260 : 60;
             });
         }
@@ -63,7 +63,6 @@ namespace TechDashboard.ViewModels
         public bool IsReportsPage => CurrentPage == "Reports";
         public bool IsSettingsPage => CurrentPage == "Settings";
 
-        // 获取显示用的语言名称
         public string CurrentLanguageDisplay
         {
             get
@@ -80,7 +79,6 @@ namespace TechDashboard.ViewModels
             }
         }
 
-        // 获取显示用的主题名称
         public string CurrentThemeDisplay
         {
             get
@@ -98,7 +96,6 @@ namespace TechDashboard.ViewModels
             }
         }
 
-        // 获取显示用的页面名称
         public string CurrentPageDisplay
         {
             get
@@ -125,6 +122,7 @@ namespace TechDashboard.ViewModels
         public ICommand NavigateCommand { get; }
         public ICommand ChangeThemeCommand { get; }
         public ICommand ChangeLanguageCommand { get; }
+        public ICommand QuickToggleThemeCommand { get; }
 
         #endregion
 
@@ -167,6 +165,20 @@ namespace TechDashboard.ViewModels
                 RaisePropertyChanged(nameof(CurrentThemeDisplay));
                 RaisePropertyChanged(nameof(CurrentPageDisplay));
             }
+        }
+
+        private void QuickToggleTheme()
+        {
+            // Cycle through themes: Dark -> Light -> BlueTech -> Dark
+            var nextTheme = CurrentTheme switch
+            {
+                "Dark" => "Light",
+                "Light" => "BlueTech",
+                "BlueTech" => "Dark",
+                _ => "Dark"
+            };
+
+            ChangeTheme(nextTheme);
         }
 
         #endregion

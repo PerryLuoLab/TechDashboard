@@ -4,498 +4,669 @@
         xmlns:vm="clr-namespace:TechDashboard.ViewModels"
         Title="{DynamicResource Dashboard_Title}" Height="720" Width="1100"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource WindowBackgroundBrush}">
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
 
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Border Background="{DynamicResource WindowBackgroundBrush}" 
+            BorderBrush="{DynamicResource BorderBrush}" 
+            BorderThickness="1"
+            CornerRadius="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Top Menu Bar -->
-        <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" 
-                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Height="32">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Menu Items -->
-                <Menu x:Name="MainMenu" Grid.Column="0" Background="Transparent" VerticalAlignment="Center" Margin="8,0">
-                    <MenuItem Header="{DynamicResource Menu_File}">
-                        <MenuItem Header="{DynamicResource Menu_File_New}"/>
-                        <MenuItem Header="{DynamicResource Menu_File_Open}"/>
-                        <Separator/>
-                        <MenuItem Header="{DynamicResource Menu_File_Exit}"/>
-                    </MenuItem>
-                    <MenuItem Header="{DynamicResource Menu_Edit}">
-                        <MenuItem Header="{DynamicResource Menu_Edit_Undo}"/>
-                        <MenuItem Header="{DynamicResource Menu_Edit_Redo}"/>
-                        <Separator/>
-                        <MenuItem Header="{DynamicResource Menu_Edit_Copy}"/>
-                        <MenuItem Header="{DynamicResource Menu_Edit_Paste}"/>
-                    </MenuItem>
-                    <MenuItem Header="{DynamicResource Menu_View}">
-                        <MenuItem Header="{DynamicResource Menu_View_Refresh}"/>
-                        <MenuItem Header="{DynamicResource Menu_View_Fullscreen}"/>
-                    </MenuItem>
-                    <MenuItem Header="{DynamicResource Menu_Help}">
-                        <MenuItem Header="{DynamicResource Menu_Help_About}"/>
-                    </MenuItem>
-                </Menu>
-
-                <!-- Window Title -->
-                <TextBlock Grid.Column="1" Text="{DynamicResource Dashboard_Title}" 
-                           Foreground="{DynamicResource TextBrush}" FontSize="12" 
-                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Grid>
-        </Border>
-
-        <!-- Main Content Area -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="NavColumn" Width="260" MinWidth="60"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Navigation Panel -->
-            <Border x:Name="NavPanel" Grid.Column="0" 
-                    Background="{DynamicResource NavBackgroundBrush}" 
-                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
+            <!-- Enhanced Title Bar -->
+            <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" 
+                    BorderBrush="{DynamicResource BorderBrush}" 
+                    BorderThickness="0,0,0,1" 
+                    Height="80"
+                    CornerRadius="8,8,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- App Icon -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- App Name -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Menu & Toolbar -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Spacer -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Theme Toggle -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Window Controls -->
+                    </Grid.ColumnDefinitions>
 
-                    <!-- Navigation Content -->
-                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel Margin="8">
-                            <!-- Logo Section -->
-                            <Grid Margin="0,8,0,24">
-                                <StackPanel Orientation="Horizontal" 
-                                            Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"
-                                            HorizontalAlignment="Left">
-                                    <Border Style="{StaticResource IconBoxStyle}">
-                                        <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
-                                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <TextBlock Text="{DynamicResource Nav_Dashboard}" VerticalAlignment="Center" FontSize="16" 
-                                               FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="12,0,0,0"/>
-                                </StackPanel>
+                    <!-- App Icon -->
+                    <Border Grid.Column="0" Width="64" Height="64" Margin="8,8,0,8">
+                        <Border Width="48" Height="48" Background="{DynamicResource AccentBrush}" CornerRadius="8">
+                            <TextBlock Text="D" FontSize="24" FontWeight="Bold" 
+                                       Foreground="White" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                    </Border>
 
-                                <Border Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
-                                        HorizontalAlignment="Center" Style="{StaticResource IconBoxStyle}">
-                                    <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
-                                               Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                            </Grid>
+                    <!-- App Name -->
+                    <TextBlock Grid.Column="1" 
+                               Text="{DynamicResource Dashboard_Title}" 
+                               Foreground="{DynamicResource TextBrush}" 
+                               FontSize="18" 
+                               FontWeight="Bold"
+                               VerticalAlignment="Center" 
+                               Margin="12,0,24,0"/>
 
-                            <!-- Navigation Buttons -->
-                            <StackPanel>
-                                <!-- Overview Button -->
-                                <Button Command="{Binding NavigateCommand}" CommandParameter="Overview"
-                                        Margin="0,0,0,4" Height="44">
-                                    <Button.Style>
-                                        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsOverviewPage}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                    <Grid>
-                                        <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
-                                                   ToolTip="{DynamicResource Nav_Overview}"/>
+                    <!-- Menu & Toolbar Stack -->
+                    <Grid Grid.Column="2" Margin="0,8,0,8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
-                                            <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" 
-                                                       FontSize="16" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{DynamicResource Nav_Overview}" Margin="12,0,0,0" 
-                                                       VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Button>
+                        <!-- Menu Row -->
+                        <Menu x:Name="MainMenu" 
+                              Grid.Row="0" 
+                              Background="Transparent" 
+                              VerticalAlignment="Center">
+                            <MenuItem Header="{DynamicResource Menu_File}">
+                                <MenuItem Header="{DynamicResource Menu_File_New}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{DynamicResource Menu_File_Open}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="{DynamicResource Menu_File_Exit}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="#F44336"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+                            <MenuItem Header="{DynamicResource Menu_Edit}">
+                                <MenuItem Header="{DynamicResource Menu_Edit_Undo}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE7A7;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{DynamicResource Menu_Edit_Redo}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE7A6;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Header="{DynamicResource Menu_Edit_Copy}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{DynamicResource Menu_Edit_Paste}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE77F;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+                            <MenuItem Header="{DynamicResource Menu_View}">
+                                <MenuItem Header="{DynamicResource Menu_View_Refresh}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{DynamicResource Menu_View_Fullscreen}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE740;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+                            <MenuItem Header="{DynamicResource Menu_Help}">
+                                <MenuItem Header="{DynamicResource Menu_Help_About}">
+                                    <MenuItem.Icon>
+                                        <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+                        </Menu>
 
-                                <!-- Analytics Button -->
-                                <Button Command="{Binding NavigateCommand}" CommandParameter="Analytics"
-                                        Margin="0,0,0,4" Height="44">
-                                    <Button.Style>
-                                        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsAnalyticsPage}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                    <Grid>
-                                        <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
-                                                   ToolTip="{DynamicResource Nav_Analytics}"/>
-
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
-                                            <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
-                                                       FontSize="16" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{DynamicResource Nav_Analytics}" Margin="12,0,0,0" 
-                                                       VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Button>
-
-                                <!-- Reports Button -->
-                                <Button Command="{Binding NavigateCommand}" CommandParameter="Reports"
-                                        Margin="0,0,0,4" Height="44">
-                                    <Button.Style>
-                                        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsReportsPage}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                    <Grid>
-                                        <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
-                                                   ToolTip="{DynamicResource Nav_Reports}"/>
-
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
-                                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" 
-                                                       FontSize="16" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{DynamicResource Nav_Reports}" Margin="12,0,0,0" 
-                                                       VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Button>
-
-                                <!-- Settings Button -->
-                                <Button Command="{Binding NavigateCommand}" CommandParameter="Settings"
-                                        Margin="0,0,0,4" Height="44">
-                                    <Button.Style>
-                                        <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
-                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsSettingsPage}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                    <Grid>
-                                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                   Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
-                                                   ToolTip="{DynamicResource Nav_Settings}"/>
-
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                                                    Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
-                                            <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" 
-                                                       FontSize="16" VerticalAlignment="Center"/>
-                                            <TextBlock Text="{DynamicResource Nav_Settings}" Margin="12,0,0,0" 
-                                                       VerticalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Button>
-                            </StackPanel>
+                        <!-- Toolbar Row -->
+                        <StackPanel Grid.Row="1" 
+                                    Orientation="Horizontal" 
+                                    VerticalAlignment="Center"
+                                    Margin="0,4,0,0">
+                            <Button Style="{StaticResource ToolbarButtonStyle}" 
+                                    ToolTip="New"
+                                    Margin="4,0">
+                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </Button>
+                            <Button Style="{StaticResource ToolbarButtonStyle}" 
+                                    ToolTip="Open"
+                                    Margin="4,0">
+                                <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </Button>
+                            <Button Style="{StaticResource ToolbarButtonStyle}" 
+                                    ToolTip="Save"
+                                    Margin="4,0">
+                                <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </Button>
+                            <Separator Style="{StaticResource ToolbarSeparatorStyle}"/>
+                            <Button Style="{StaticResource ToolbarButtonStyle}" 
+                                    ToolTip="Undo"
+                                    Margin="4,0">
+                                <TextBlock Text="&#xE7A7;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </Button>
+                            <Button Style="{StaticResource ToolbarButtonStyle}" 
+                                    ToolTip="Redo"
+                                    Margin="4,0">
+                                <TextBlock Text="&#xE7A6;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </Button>
+                            <Separator Style="{StaticResource ToolbarSeparatorStyle}"/>
+                            <Button Style="{StaticResource ToolbarButtonStyle}" 
+                                    ToolTip="Search"
+                                    Margin="4,0">
+                                <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </Button>
                         </StackPanel>
-                    </ScrollViewer>
+                    </Grid>
 
-                    <!-- Collapse/Expand Toggle Button -->
-                    <Button Grid.Row="1" Command="{Binding ToggleNavCommand}" 
-                            Style="{StaticResource NavButtonStyle}" Height="48" Margin="4">
-                        <Grid>
-                            <Grid Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
-                                <TextBlock x:Name="ToggleIcon" Text="&#xE76C;" 
-                                           FontFamily="Segoe MDL2 Assets" FontSize="16" 
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                                           ToolTip="{DynamicResource Nav_Expand}"/>
-                            </Grid>
-
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" 
-                                           FontSize="16" VerticalAlignment="Center"/>
-                                <TextBlock Text="{DynamicResource Nav_Collapse}" Margin="8,0,0,0" 
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Grid>
+                    <!-- Theme Toggle -->
+                    <Button Grid.Column="4" 
+                            Command="{Binding QuickToggleThemeCommand}"
+                            Style="{StaticResource ThemeToggleButtonStyle}"
+                            Width="40" Height="40"
+                            Margin="12,0"
+                            ToolTip="Toggle Theme">
+                        <TextBlock x:Name="ThemeIcon" 
+                                   Text="&#xE793;" 
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="18"/>
                     </Button>
+
+                    <!-- Window Controls -->
+                    <StackPanel Grid.Column="5" 
+                                Orientation="Horizontal" 
+                                Margin="8,0,0,0">
+                        <Button Style="{StaticResource WindowControlButtonStyle}" 
+                                Width="46" Height="32"
+                                Click="MinimizeButton_Click">
+                            <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </Button>
+                        <Button Style="{StaticResource WindowControlButtonStyle}" 
+                                Width="46" Height="32"
+                                Click="MaximizeButton_Click">
+                            <TextBlock x:Name="MaximizeIcon" Text="&#xE922;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </Button>
+                        <Button Style="{StaticResource CloseButtonStyle}" 
+                                Width="46" Height="32"
+                                Click="CloseButton_Click">
+                            <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </Border>
 
             <!-- Main Content Area -->
-            <Grid Grid.Column="1">
-                <!-- Overview Page -->
-                <Grid Visibility="{Binding IsOverviewPage, Converter={StaticResource BoolToVis}}" Margin="24">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Stats Cards -->
-                    <WrapPanel Orientation="Horizontal" Margin="0,0,0,20">
-                        <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
-                            <StackPanel>
-                                <TextBlock Text="{DynamicResource Dashboard_ActiveUsers}" FontWeight="SemiBold" 
-                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                <TextBlock Text="1,243" FontSize="32" FontWeight="Bold" 
-                                           Margin="0,8,0,4" Foreground="{DynamicResource AccentBrush}"/>
-                                <TextBlock Text="{DynamicResource Dashboard_VsLastMonth}" FontSize="11" 
-                                           Foreground="#00C853"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
-                            <StackPanel>
-                                <TextBlock Text="{DynamicResource Dashboard_CPULoad}" FontWeight="SemiBold" 
-                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                <TextBlock Text="68%" FontSize="32" FontWeight="Bold" 
-                                           Margin="0,8,0,8" Foreground="{DynamicResource AccentBrush}"/>
-                                <ProgressBar Value="68" Maximum="100" Height="6" 
-                                             Background="{DynamicResource ProgressBarBackgroundBrush}"
-                                             Foreground="{DynamicResource ProgressGradientBrush}"
-                                             BorderThickness="0"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,0,16">
-                            <StackPanel>
-                                <TextBlock Text="{DynamicResource Dashboard_Errors24h}" FontWeight="SemiBold" 
-                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
-                                <TextBlock Text="3" FontSize="32" FontWeight="Bold" 
-                                           Margin="0,8,0,4" Foreground="{DynamicResource AccentBrush}"/>
-                                <TextBlock Text="{DynamicResource Dashboard_AllSystemsOK}" FontSize="11" 
-                                           Foreground="#00C853"/>
-                            </StackPanel>
-                        </Border>
-                    </WrapPanel>
-
-                    <!-- Performance Chart -->
-                    <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Text="{DynamicResource Dashboard_Performance}" FontSize="18" 
-                                       FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
-
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                <StackPanel>
-                                    <StackPanel Margin="0,0,0,16">
-                                        <TextBlock Text="{DynamicResource Dashboard_MemoryUsage}" FontSize="12" 
-                                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
-                                        <ProgressBar Value="75" Maximum="100" Height="8" 
-                                                     Background="{DynamicResource ProgressBarBackgroundBrush}"
-                                                     Foreground="{DynamicResource ProgressGradientBrush}"
-                                                     BorderThickness="0"/>
-                                    </StackPanel>
-
-                                    <StackPanel Margin="0,0,0,16">
-                                        <TextBlock Text="{DynamicResource Dashboard_DiskIO}" FontSize="12" 
-                                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
-                                        <ProgressBar Value="45" Maximum="100" Height="8" 
-                                                     Background="{DynamicResource ProgressBarBackgroundBrush}"
-                                                     Foreground="{DynamicResource ProgressGradientBrush}"
-                                                     BorderThickness="0"/>
-                                    </StackPanel>
-
-                                    <StackPanel>
-                                        <TextBlock Text="{DynamicResource Dashboard_NetworkTraffic}" FontSize="12" 
-                                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
-                                        <ProgressBar Value="92" Maximum="100" Height="8" 
-                                                     Background="{DynamicResource ProgressBarBackgroundBrush}"
-                                                     Foreground="{DynamicResource ProgressGradientBrush}"
-                                                     BorderThickness="0"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </ScrollViewer>
-                        </Grid>
-                    </Border>
-                </Grid>
-
-                <!-- Settings Page -->
-                <Grid Visibility="{Binding IsSettingsPage, Converter={StaticResource BoolToVis}}" 
-                      Margin="24" Background="{DynamicResource NavBackgroundBrush}">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
-                            <!-- Appearance Section -->
-                            <TextBlock Text="{DynamicResource Settings_Appearance}" FontSize="24" 
-                                       FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
-
-                            <TextBlock Text="{DynamicResource Settings_ChooseTheme}" FontSize="14" 
-                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
-
-                            <!-- Theme Selector -->
-                            <WrapPanel Margin="0,0,0,32">
-                                <ToggleButton Content="{DynamicResource Settings_Theme_Dark}" 
-                                              Style="{StaticResource ThemeToggleButton}"
-                                              IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Dark}"
-                                              Command="{Binding ChangeThemeCommand}" CommandParameter="Dark">
-                                    <ToggleButton.Tag>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="#121212" Offset="0"/>
-                                            <GradientStop Color="#1A1A1A" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </ToggleButton.Tag>
-                                </ToggleButton>
-
-                                <ToggleButton Content="{DynamicResource Settings_Theme_Light}" 
-                                              Style="{StaticResource ThemeToggleButton}"
-                                              IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Light}"
-                                              Command="{Binding ChangeThemeCommand}" CommandParameter="Light">
-                                    <ToggleButton.Tag>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="#F6F8FA" Offset="0"/>
-                                            <GradientStop Color="#EDF2F7" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </ToggleButton.Tag>
-                                </ToggleButton>
-
-                                <ToggleButton Content="{DynamicResource Settings_Theme_BlueTech}" 
-                                              Style="{StaticResource ThemeToggleButton}"
-                                              IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=BlueTech}"
-                                              Command="{Binding ChangeThemeCommand}" CommandParameter="BlueTech">
-                                    <ToggleButton.Tag>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
-                                            <GradientStop Color="#0F1419" Offset="0"/>
-                                            <GradientStop Color="#0A2540" Offset="0.5"/>
-                                            <GradientStop Color="#0F1419" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </ToggleButton.Tag>
-                                </ToggleButton>
-                            </WrapPanel>
-
-                            <!-- Language Section -->
-                            <TextBlock Text="{DynamicResource Settings_Language}" FontSize="24" 
-                                       FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,16,0,16"/>
-
-                            <TextBlock Text="{DynamicResource Settings_ChooseLanguage}" FontSize="14" 
-                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
-
-                            <!-- Language Selector -->
-                            <WrapPanel>
-                                <ToggleButton Content="{DynamicResource Settings_Lang_English}" 
-                                              Style="{StaticResource LanguageToggleButton}"
-                                              IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=en-US}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
-
-                                <ToggleButton Content="{DynamicResource Settings_Lang_Chinese}" 
-                                              Style="{StaticResource LanguageToggleButton}"
-                                              IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=zh-CN}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="zh-CN"/>
-
-                                <ToggleButton Content="{DynamicResource Settings_Lang_Korean}" 
-                                              Style="{StaticResource LanguageToggleButton}"
-                                              IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ko-KR}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="ko-KR"/>
-
-                                <ToggleButton Content="{DynamicResource Settings_Lang_Japanese}" 
-                                              Style="{StaticResource LanguageToggleButton}"
-                                              IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ja-JP}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="ja-JP"/>
-
-                                <ToggleButton Content="{DynamicResource Settings_Lang_TraditionalChinese}" 
-                                              Style="{StaticResource LanguageToggleButton}"
-                                              IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=zh-TW}"
-                                              Command="{Binding ChangeLanguageCommand}" CommandParameter="zh-TW"/>
-                            </WrapPanel>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
-
-                <!-- Analytics Page -->
-                <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVis}}" Margin="24">
-                    <Border Style="{StaticResource DashboardCard}" Padding="20">
-                        <StackPanel>
-                            <TextBlock Text="{DynamicResource Analytics_Title}" FontSize="24" 
-                                       Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
-                            <TextBlock Text="{DynamicResource Analytics_Description}" FontSize="14" 
-                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Reports Page -->
-                <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVis}}" Margin="24">
-                    <Border Style="{StaticResource DashboardCard}" Padding="20">
-                        <StackPanel>
-                            <TextBlock Text="{DynamicResource Reports_Title}" FontSize="24" 
-                                       Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
-                            <TextBlock Text="{DynamicResource Reports_Description}" FontSize="14" 
-                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-            </Grid>
-        </Grid>
-
-        <!-- Bottom Status Bar -->
-        <Border Grid.Row="2" Background="{DynamicResource HeaderBackgroundBrush}" 
-                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Height="24">
-            <Grid>
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="NavColumn" Width="260" MinWidth="60"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center">
-                    <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" 
-                               Foreground="#00C853" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                    <TextBlock Text="{DynamicResource Status_Ready}" FontSize="11" 
-                               Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
-                </StackPanel>
+                <!-- Navigation Panel -->
+                <Border x:Name="NavPanel" Grid.Column="0" 
+                        Background="{DynamicResource NavBackgroundBrush}" 
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,8,0">
-                    <TextBlock Text="{DynamicResource Status_CurrentPage}" FontSize="11" 
-                               Foreground="{DynamicResource TextSecondaryBrush}" 
-                               VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Text="{Binding CurrentPageDisplay}" FontSize="11" 
-                               Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
-                               VerticalAlignment="Center" Margin="0,0,16,0"/>
+                        <!-- Navigation Content -->
+                        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Margin="8">
+                                <!-- Logo Section -->
+                                <Grid Margin="0,8,0,24">
+                                    <StackPanel Orientation="Horizontal" 
+                                                Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}"
+                                                HorizontalAlignment="Left">
+                                        <Border Style="{StaticResource IconBoxStyle}">
+                                            <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
+                                                       Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <TextBlock Text="{DynamicResource Nav_Dashboard}" VerticalAlignment="Center" FontSize="16" 
+                                                   FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="12,0,0,0"/>
+                                    </StackPanel>
 
-                    <TextBlock Text="{DynamicResource Status_Theme}" FontSize="11" 
-                               Foreground="{DynamicResource TextSecondaryBrush}" 
-                               VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Text="{Binding CurrentThemeDisplay}" FontSize="11" 
-                               Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
-                               VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                    <Border Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                            HorizontalAlignment="Center" Style="{StaticResource IconBoxStyle}">
+                                        <TextBlock Text="D" FontSize="20" FontWeight="Bold" 
+                                                   Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
 
-                    <TextBlock Text="{DynamicResource Status_Language}" FontSize="11" 
-                               Foreground="{DynamicResource TextSecondaryBrush}" 
-                               VerticalAlignment="Center" Margin="0,0,4,0"/>
-                    <TextBlock Text="{Binding CurrentLanguageDisplay}" FontSize="11" 
-                               Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
-                               VerticalAlignment="Center"/>
-                </StackPanel>
+                                <!-- Navigation Buttons -->
+                                <StackPanel>
+                                    <!-- Overview Button -->
+                                    <Button Command="{Binding NavigateCommand}" CommandParameter="Overview"
+                                            Margin="0,0,0,4" Height="44">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsOverviewPage}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                       ToolTip="{DynamicResource Nav_Overview}"/>
+
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" 
+                                                           FontSize="16" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{DynamicResource Nav_Overview}" Margin="12,0,0,0" 
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Button>
+
+                                    <!-- Analytics Button -->
+                                    <Button Command="{Binding NavigateCommand}" CommandParameter="Analytics"
+                                            Margin="0,0,0,4" Height="44">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsAnalyticsPage}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                       ToolTip="{DynamicResource Nav_Analytics}"/>
+
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
+                                                           FontSize="16" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{DynamicResource Nav_Analytics}" Margin="12,0,0,0" 
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Button>
+
+                                    <!-- Reports Button -->
+                                    <Button Command="{Binding NavigateCommand}" CommandParameter="Reports"
+                                            Margin="0,0,0,4" Height="44">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsReportsPage}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                       ToolTip="{DynamicResource Nav_Reports}"/>
+
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" 
+                                                           FontSize="16" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{DynamicResource Nav_Reports}" Margin="12,0,0,0" 
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Button>
+
+                                    <!-- Settings Button -->
+                                    <Button Command="{Binding NavigateCommand}" CommandParameter="Settings"
+                                            Margin="0,0,0,4" Height="44">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource NavButtonStyle}">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsSettingsPage}" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                                                        <Setter Property="Foreground" Value="{DynamicResource SelectedBrush}"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Grid>
+                                            <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                       ToolTip="{DynamicResource Nav_Settings}"/>
+
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" 
+                                                           FontSize="16" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{DynamicResource Nav_Settings}" Margin="12,0,0,0" 
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- Collapse/Expand Toggle Button -->
+                        <Button Grid.Row="1" Command="{Binding ToggleNavCommand}" 
+                                Style="{StaticResource NavButtonStyle}" Height="48" Margin="4">
+                            <Grid>
+                                <Grid Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
+                                    <TextBlock x:Name="ToggleIcon" Text="&#xE76C;" 
+                                               FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               ToolTip="{DynamicResource Nav_Expand}"/>
+                                </Grid>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                            Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                    <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" 
+                                               FontSize="16" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{DynamicResource Nav_Collapse}" Margin="8,0,0,0" 
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!-- Main Content Area -->
+                <Grid Grid.Column="1">
+                    <!-- Overview Page -->
+                    <Grid Visibility="{Binding IsOverviewPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Stats Cards -->
+                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,20">
+                            <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
+                                <StackPanel>
+                                    <TextBlock Text="{DynamicResource Dashboard_ActiveUsers}" FontWeight="SemiBold" 
+                                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    <TextBlock Text="1,243" FontSize="32" FontWeight="Bold" 
+                                               Margin="0,8,0,4" Foreground="{DynamicResource AccentBrush}"/>
+                                    <TextBlock Text="{DynamicResource Dashboard_VsLastMonth}" FontSize="11" 
+                                               Foreground="#00C853"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
+                                <StackPanel>
+                                    <TextBlock Text="{DynamicResource Dashboard_CPULoad}" FontWeight="SemiBold" 
+                                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    <TextBlock Text="68%" FontSize="32" FontWeight="Bold" 
+                                               Margin="0,8,0,8" Foreground="{DynamicResource AccentBrush}"/>
+                                    <ProgressBar Value="68" Maximum="100" Height="6" 
+                                                 Background="{DynamicResource ProgressBarBackgroundBrush}"
+                                                 Foreground="{DynamicResource ProgressGradientBrush}"
+                                                 BorderThickness="0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,0,16">
+                                <StackPanel>
+                                    <TextBlock Text="{DynamicResource Dashboard_Errors24h}" FontWeight="SemiBold" 
+                                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                    <TextBlock Text="3" FontSize="32" FontWeight="Bold" 
+                                               Margin="0,8,0,4" Foreground="{DynamicResource AccentBrush}"/>
+                                    <TextBlock Text="{DynamicResource Dashboard_AllSystemsOK}" FontSize="11" 
+                                               Foreground="#00C853"/>
+                                </StackPanel>
+                            </Border>
+                        </WrapPanel>
+
+                        <!-- Performance Chart -->
+                        <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{DynamicResource Dashboard_Performance}" FontSize="18" 
+                                           FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
+
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel>
+                                        <StackPanel Margin="0,0,0,16">
+                                            <TextBlock Text="{DynamicResource Dashboard_MemoryUsage}" FontSize="12" 
+                                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                            <ProgressBar Value="75" Maximum="100" Height="8" 
+                                                         Background="{DynamicResource ProgressBarBackgroundBrush}"
+                                                         Foreground="{DynamicResource ProgressGradientBrush}"
+                                                         BorderThickness="0"/>
+                                        </StackPanel>
+
+                                        <StackPanel Margin="0,0,0,16">
+                                            <TextBlock Text="{DynamicResource Dashboard_DiskIO}" FontSize="12" 
+                                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                            <ProgressBar Value="45" Maximum="100" Height="8" 
+                                                         Background="{DynamicResource ProgressBarBackgroundBrush}"
+                                                         Foreground="{DynamicResource ProgressGradientBrush}"
+                                                         BorderThickness="0"/>
+                                        </StackPanel>
+
+                                        <StackPanel>
+                                            <TextBlock Text="{DynamicResource Dashboard_NetworkTraffic}" FontSize="12" 
+                                                       Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
+                                            <ProgressBar Value="92" Maximum="100" Height="8" 
+                                                         Background="{DynamicResource ProgressBarBackgroundBrush}"
+                                                         Foreground="{DynamicResource ProgressGradientBrush}"
+                                                         BorderThickness="0"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- Settings Page -->
+                    <Grid Visibility="{Binding IsSettingsPage, Converter={StaticResource BoolToVis}}" 
+                          Margin="24" Background="{DynamicResource NavBackgroundBrush}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <!-- Appearance Section -->
+                                <TextBlock Text="{DynamicResource Settings_Appearance}" FontSize="24" 
+                                           FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
+
+                                <TextBlock Text="{DynamicResource Settings_ChooseTheme}" FontSize="14" 
+                                           Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
+
+                                <!-- Theme Selector -->
+                                <WrapPanel Margin="0,0,0,32">
+                                    <ToggleButton Content="{DynamicResource Settings_Theme_Dark}" 
+                                                  Style="{StaticResource ThemeToggleButton}"
+                                                  IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Dark}"
+                                                  Command="{Binding ChangeThemeCommand}" CommandParameter="Dark">
+                                        <ToggleButton.Tag>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#121212" Offset="0"/>
+                                                <GradientStop Color="#1A1A1A" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </ToggleButton.Tag>
+                                    </ToggleButton>
+
+                                    <ToggleButton Content="{DynamicResource Settings_Theme_Light}" 
+                                                  Style="{StaticResource ThemeToggleButton}"
+                                                  IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Light}"
+                                                  Command="{Binding ChangeThemeCommand}" CommandParameter="Light">
+                                        <ToggleButton.Tag>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F6F8FA" Offset="0"/>
+                                                <GradientStop Color="#EDF2F7" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </ToggleButton.Tag>
+                                    </ToggleButton>
+
+                                    <ToggleButton Content="{DynamicResource Settings_Theme_BlueTech}" 
+                                                  Style="{StaticResource ThemeToggleButton}"
+                                                  IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=BlueTech}"
+                                                  Command="{Binding ChangeThemeCommand}" CommandParameter="BlueTech">
+                                        <ToggleButton.Tag>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
+                                                <GradientStop Color="#0F1419" Offset="0"/>
+                                                <GradientStop Color="#0A2540" Offset="0.5"/>
+                                                <GradientStop Color="#0F1419" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </ToggleButton.Tag>
+                                    </ToggleButton>
+                                </WrapPanel>
+
+                                <!-- Language Section -->
+                                <TextBlock Text="{DynamicResource Settings_Language}" FontSize="24" 
+                                           FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,16,0,16"/>
+
+                                <TextBlock Text="{DynamicResource Settings_ChooseLanguage}" FontSize="14" 
+                                           Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
+
+                                <!-- Language Selector -->
+                                <WrapPanel>
+                                    <ToggleButton Content="{DynamicResource Settings_Lang_English}" 
+                                                  Style="{StaticResource LanguageToggleButton}"
+                                                  IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=en-US}"
+                                                  Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
+
+                                    <ToggleButton Content="{DynamicResource Settings_Lang_Chinese}" 
+                                                  Style="{StaticResource LanguageToggleButton}"
+                                                  IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=zh-CN}"
+                                                  Command="{Binding ChangeLanguageCommand}" CommandParameter="zh-CN"/>
+
+                                    <ToggleButton Content="{DynamicResource Settings_Lang_Korean}" 
+                                                  Style="{StaticResource LanguageToggleButton}"
+                                                  IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ko-KR}"
+                                                  Command="{Binding ChangeLanguageCommand}" CommandParameter="ko-KR"/>
+
+                                    <ToggleButton Content="{DynamicResource Settings_Lang_Japanese}" 
+                                                  Style="{StaticResource LanguageToggleButton}"
+                                                  IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ja-JP}"
+                                                  Command="{Binding ChangeLanguageCommand}" CommandParameter="ja-JP"/>
+
+                                    <ToggleButton Content="{DynamicResource Settings_Lang_TraditionalChinese}" 
+                                                  Style="{StaticResource LanguageToggleButton}"
+                                                  IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=zh-TW}"
+                                                  Command="{Binding ChangeLanguageCommand}" CommandParameter="zh-TW"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+
+                    <!-- Analytics Page -->
+                    <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                        <Border Style="{StaticResource DashboardCard}" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Analytics_Title}" FontSize="24" 
+                                           Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
+                                <TextBlock Text="{DynamicResource Analytics_Description}" FontSize="14" 
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Reports Page -->
+                    <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                        <Border Style="{StaticResource DashboardCard}" Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="{DynamicResource Reports_Title}" FontSize="24" 
+                                           Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
+                                <TextBlock Text="{DynamicResource Reports_Description}" FontSize="14" 
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
             </Grid>
-        </Border>
-    </Grid>
+
+            <!-- Bottom Status Bar -->
+            <Border Grid.Row="2" Background="{DynamicResource HeaderBackgroundBrush}" 
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" 
+                    Height="24"
+                    CornerRadius="0,0,8,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" 
+                                   Foreground="#00C853" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="{DynamicResource Status_Ready}" FontSize="11" 
+                                   Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,8,0">
+                        <TextBlock Text="{DynamicResource Status_CurrentPage}" FontSize="11" 
+                                   Foreground="{DynamicResource TextSecondaryBrush}" 
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding CurrentPageDisplay}" FontSize="11" 
+                                   Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
+                                   VerticalAlignment="Center" Margin="0,0,16,0"/>
+
+                        <TextBlock Text="{DynamicResource Status_Theme}" FontSize="11" 
+                                   Foreground="{DynamicResource TextSecondaryBrush}" 
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding CurrentThemeDisplay}" FontSize="11" 
+                                   Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
+                                   VerticalAlignment="Center" Margin="0,0,16,0"/>
+
+                        <TextBlock Text="{DynamicResource Status_Language}" FontSize="11" 
+                                   Foreground="{DynamicResource TextSecondaryBrush}" 
+                                   VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding CurrentLanguageDisplay}" FontSize="11" 
+                                   Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
 </Window>

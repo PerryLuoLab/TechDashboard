@@ -15,7 +15,7 @@ namespace TechDashboard
         // Navigation panel width constants
         private const double CollapsedNavWidth = 60;
         private const double SnapThreshold = 100;
-        private double _expandedNavWidth = 260; // 动态计算的展开宽度
+        private double _expandedNavWidth = 260;
 
         // Drag state
         private bool _isDragging = false;
@@ -41,36 +41,26 @@ namespace TechDashboard
             {
                 if (DataContext is MainViewModel vm)
                 {
-                    // 计算最佳导航栏宽度
                     CalculateOptimalNavWidth();
 
-                    // Subscribe to property changes
                     vm.PropertyChanged += Vm_PropertyChanged;
 
-                    // Set initial width without animation
                     double initialWidth = vm.IsNavExpanded ? _expandedNavWidth : CollapsedNavWidth;
                     NavColumn.Width = new GridLength(initialWidth);
                     vm.NavWidth = initialWidth;
 
-                    // Update toggle icon
                     UpdateToggleIcon(vm.IsNavExpanded);
                 }
 
-                // Setup drag handlers
                 NavPanel.PreviewMouseLeftButtonDown += NavPanel_PreviewMouseLeftButtonDown;
                 NavPanel.MouseLeftButtonDown += NavPanel_MouseLeftButtonDown;
                 NavPanel.MouseMove += NavPanel_MouseMove;
                 NavPanel.MouseLeftButtonUp += NavPanel_MouseLeftButtonUp;
                 NavPanel.MouseLeave += NavPanel_MouseLeave;
 
-                // Double-click detection is handled in NavPanel_MouseLeftButtonDown
-                
-
-                // Window-level handlers
                 this.MouseMove += MainWindow_MouseMove;
                 this.MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
-                
-                // Setup menu submenu handlers
+
                 SetupMenuSubmenuHandlers();
             }
             catch (Exception ex)
@@ -78,10 +68,60 @@ namespace TechDashboard
                 System.Diagnostics.Debug.WriteLine($"OnLoaded error: {ex.Message}");
             }
         }
-        
+
+        #region Window Controls
+
+        private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                MaximizeRestore();
+            }
+            else
+            {
+                try
+                {
+                    DragMove();
+                }
+                catch { }
+            }
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            MaximizeRestore();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void MaximizeRestore()
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+                MaximizeIcon.Text = "\uE922"; // Maximize icon
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
+                MaximizeIcon.Text = "\uE923"; // Restore icon
+            }
+        }
+
+        #endregion
+
+        #region Menu Handlers
+
         private void SetupMenuSubmenuHandlers()
         {
-            // 为所有MenuItem添加SubmenuOpened事件处理
             if (MainMenu != null)
             {
                 foreach (MenuItem item in MainMenu.Items)
@@ -90,23 +130,20 @@ namespace TechDashboard
                 }
             }
         }
-        
+
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender is MenuItem menuItem)
                 {
-                    // 延迟执行，确保Popup已经创建
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         try
                         {
-                            // 查找Popup
                             var popup = FindVisualChild<System.Windows.Controls.Primitives.Popup>(menuItem);
                             if (popup != null && popup.Child != null)
                             {
-                                // Popup的Child通常是Border或Panel，设置其背景
                                 var cardBackground = Application.Current.TryFindResource("CardBackgroundBrush") as SolidColorBrush;
                                 if (cardBackground != null)
                                 {
@@ -120,7 +157,6 @@ namespace TechDashboard
                                     }
                                     else
                                     {
-                                        // 尝试查找内部的Border
                                         var innerBorder = FindVisualChild<Border>(popup.Child);
                                         if (innerBorder != null)
                                         {
@@ -142,7 +178,7 @@ namespace TechDashboard
                 System.Diagnostics.Debug.WriteLine($"MenuItem_SubmenuOpened error: {ex.Message}");
             }
         }
-        
+
         private T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
@@ -161,6 +197,8 @@ namespace TechDashboard
             return null;
         }
 
+        #endregion
+
         #region Navigation Width Calculation
 
         private void CalculateOptimalNavWidth()
@@ -168,67 +206,56 @@ namespace TechDashboard
             try
             {
                 double maxContentWidth = 0;
-                const double iconWidth = 16; // 导航按钮图标宽度（FontSize 16）
-                const double iconTextSpacing = 12; // 图标和文本之间的间距（Margin="12,0,0,0"）
-                const double buttonPadding = 12; // 按钮左右padding（来自NavButtonStyle）
-                const double stackPanelMargin = 8; // StackPanel的Margin（左右各8）
-                
-                // DASHBOARD Logo部分的尺寸
-                const double dashboardIconWidth = 40; // DASHBOARD图标框宽度（IconBoxStyle）
-                const double dashboardIconTextSpacing = 12; // DASHBOARD图标和文本间距（Margin="12,0,0,0"）
+                const double iconWidth = 16;
+                const double iconTextSpacing = 12;
+                const double buttonPadding = 12;
+                const double stackPanelMargin = 8;
+
+                const double dashboardIconWidth = 40;
+                const double dashboardIconTextSpacing = 12;
 
                 var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
                 var typefaceBold = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
                 var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
 
-                // 强制刷新资源，确保获取到最新的语言资源
-                // 使用TryFindResource确保能获取到资源，如果失败则使用默认值
                 string GetResourceString(string key, string defaultValue)
                 {
-                    // 尝试从Application资源中获取
                     var resource = Application.Current?.TryFindResource(key);
                     if (resource != null)
                     {
                         var str = resource.ToString();
                         if (!string.IsNullOrEmpty(str))
                         {
-                            System.Diagnostics.Debug.WriteLine($"Found resource {key}: {str}");
                             return str;
                         }
                     }
-                    
-                    // 尝试从当前窗口资源中获取
+
                     resource = this.TryFindResource(key);
                     if (resource != null)
                     {
                         var str = resource.ToString();
                         if (!string.IsNullOrEmpty(str))
                         {
-                            System.Diagnostics.Debug.WriteLine($"Found resource in window {key}: {str}");
                             return str;
                         }
                     }
-                    
-                    System.Diagnostics.Debug.WriteLine($"Resource {key} not found, using default: {defaultValue}");
+
                     return defaultValue ?? string.Empty;
                 }
 
-                // 1. 计算DASHBOARD Logo部分的宽度
                 var dashboardText = GetResourceString("Nav_Dashboard", "DASHBOARD");
                 var dashboardTextWidth = new FormattedText(
                     dashboardText,
                     System.Globalization.CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     typefaceBold,
-                    16, // FontSize 16, Bold
+                    16,
                     Brushes.White,
                     dpi).Width;
-                
+
                 var dashboardWidth = dashboardIconWidth + dashboardIconTextSpacing + dashboardTextWidth;
                 maxContentWidth = Math.Max(maxContentWidth, dashboardWidth);
-                System.Diagnostics.Debug.WriteLine($"Dashboard text: '{dashboardText}', width: {dashboardTextWidth}, total: {dashboardWidth}");
 
-                // 2. 计算所有导航按钮的宽度
                 var navTexts = new[]
                 {
                     GetResourceString("Nav_Overview", "Overview"),
@@ -238,7 +265,6 @@ namespace TechDashboard
                     GetResourceString("Nav_Collapse", "Collapse")
                 };
 
-                // 根据当前语言可能需要包含展开文本（某些语言较长）
                 var expandText = GetResourceString("Nav_Expand", "Expand Navigation");
                 if (!string.IsNullOrEmpty(expandText) && expandText.Length > 0)
                 {
@@ -247,7 +273,6 @@ namespace TechDashboard
                     navTexts = allTexts.ToArray();
                 }
 
-                // 测量每个导航按钮文本的宽度
                 foreach (var text in navTexts)
                 {
                     var textWidth = new FormattedText(
@@ -255,69 +280,30 @@ namespace TechDashboard
                         System.Globalization.CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         typeface,
-                        14, // Font size
+                        14,
                         Brushes.White,
                         dpi).Width;
 
-                    // 导航按钮宽度 = 图标宽度 + 图标文本间距 + 文本宽度
                     var buttonContentWidth = iconWidth + iconTextSpacing + textWidth;
                     maxContentWidth = Math.Max(maxContentWidth, buttonContentWidth);
-                    System.Diagnostics.Debug.WriteLine($"Nav text: '{text}', width: {textWidth}, button content: {buttonContentWidth}");
                 }
 
-                // 3. 计算总宽度
-                // DASHBOARD部分：StackPanel左边距 + DASHBOARD内容宽度 + StackPanel右边距（不需要按钮padding）
-                // 导航按钮部分：StackPanel左边距 + 按钮左边距 + 按钮内容宽度 + 按钮右边距 + StackPanel右边距
-                // 为了统一处理，我们取两者中较大的值
-                // 但考虑到DASHBOARD也可能需要一些右边距，我们统一使用按钮padding作为安全边距
-                _expandedNavWidth = stackPanelMargin + // StackPanel左边距
-                                   buttonPadding + // 左边距（确保按钮padding足够，也作为DASHBOARD的右边距）
-                                   maxContentWidth + // 最长内容宽度（已包含DASHBOARD或按钮的完整宽度）
-                                   buttonPadding + // 右边距（确保按钮padding足够）
-                                   stackPanelMargin; // StackPanel右边距
+                _expandedNavWidth = stackPanelMargin +
+                                   buttonPadding +
+                                   maxContentWidth +
+                                   buttonPadding +
+                                   stackPanelMargin;
 
-                // 设置最小宽度（确保折叠状态可用）
                 _expandedNavWidth = Math.Max(CollapsedNavWidth, _expandedNavWidth);
-                // 设置最大宽度限制（防止过长）
                 _expandedNavWidth = Math.Min(_expandedNavWidth, 350);
 
                 NavColumn.MaxWidth = _expandedNavWidth;
-
-                System.Diagnostics.Debug.WriteLine($"=== Calculated optimal nav width: {_expandedNavWidth} (max content width: {maxContentWidth}, dashboard width: {dashboardWidth}) ===");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"CalculateOptimalNavWidth error: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-                _expandedNavWidth = 260; // Fallback
+                _expandedNavWidth = 260;
             }
-        }
-
-        #endregion
-
-        #region Double-Click Expand
-
-        // Double-click detection is now handled directly in NavPanel_MouseLeftButtonDown using e.ClickCount
-        // This method is kept for backward compatibility but not used
-        private bool IsDoubleClick(DateTime currentTime, Point currentPosition)
-        {
-            // If never clicked before, this is not a double-click
-            if (_lastClickTime == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            var timeSinceLastClick = (currentTime - _lastClickTime).TotalMilliseconds;
-            var distance = Math.Sqrt(
-                Math.Pow(currentPosition.X - _lastClickPosition.X, 2) +
-                Math.Pow(currentPosition.Y - _lastClickPosition.Y, 2));
-
-            bool isDoubleClick = timeSinceLastClick < DoubleClickTimeThresholdMs &&
-                                distance < DoubleClickDistanceThreshold;
-
-            System.Diagnostics.Debug.WriteLine($"Double-click check: time={timeSinceLastClick}ms, distance={distance:F2}px, result={isDoubleClick}");
-
-            return isDoubleClick;
         }
 
         #endregion
@@ -340,30 +326,20 @@ namespace TechDashboard
 
                     if (isOnEmptyArea)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Click detected: ClickCount={e.ClickCount}, Position=({pos.X:F2}, {pos.Y:F2}), EmptyArea={isOnEmptyArea}, IsExpanded={vm.IsNavExpanded}");
-
-                        // Use ClickCount to detect double-click (WPF built-in feature)
                         if (e.ClickCount == 2)
                         {
-                            // Toggle navigation panel state on double-click
                             if (currentWidth <= CollapsedNavWidth + 10 && !vm.IsNavExpanded)
                             {
-                                // Collapsed: expand on double-click
-                                System.Diagnostics.Debug.WriteLine("*** Double-click detected! Expanding navigation panel. ***");
                                 vm.IsNavExpanded = true;
                             }
                             else if (currentWidth > CollapsedNavWidth + 10 && vm.IsNavExpanded)
                             {
-                                // Expanded: collapse on double-click (but not when clicking on drag zone)
                                 if (pos.X < NavPanel.ActualWidth - 5)
                                 {
-                                    System.Diagnostics.Debug.WriteLine("*** Double-click detected! Collapsing navigation panel. ***");
                                     vm.IsNavExpanded = false;
                                 }
                                 else
                                 {
-                                    // Clicking on drag zone - don't collapse, allow dragging
-                                    System.Diagnostics.Debug.WriteLine("Double-click on drag zone - ignoring, allow dragging");
                                     return;
                                 }
                             }
@@ -372,18 +348,13 @@ namespace TechDashboard
                         }
                         else if (e.ClickCount == 1)
                         {
-                            // Single click on empty area
                             if (currentWidth <= CollapsedNavWidth + 10)
                             {
-                                // Collapsed: don't start dragging, wait for possible double-click
-                                System.Diagnostics.Debug.WriteLine("Single click on empty area (collapsed) - waiting for possible double-click");
                                 e.Handled = true;
                                 return;
                             }
                             else if (currentWidth > CollapsedNavWidth + 10 && pos.X < NavPanel.ActualWidth - 5)
                             {
-                                // Expanded: don't start dragging unless on drag zone
-                                System.Diagnostics.Debug.WriteLine("Single click on empty area (expanded) - waiting for possible double-click");
                                 e.Handled = true;
                                 return;
                             }
@@ -406,8 +377,6 @@ namespace TechDashboard
                 var pos = e.GetPosition(NavPanel);
                 var currentWidth = NavColumn.ActualWidth;
 
-                // Don't handle double-click here, it's handled in PreviewMouseLeftButtonDown
-                // Just prevent dragging when collapsed
                 if (currentWidth <= CollapsedNavWidth + 10)
                 {
                     var hitElement = NavPanel.InputHitTest(pos);
@@ -415,18 +384,15 @@ namespace TechDashboard
 
                     if (isOnEmptyArea)
                     {
-                        // Don't start dragging in collapsed state
                         e.Handled = true;
                         return;
                     }
                 }
 
-                // Only allow dragging when expanded
                 bool isInDragZone = false;
 
                 if (currentWidth > CollapsedNavWidth + 10)
                 {
-                    // Expanded state: drag zone is at the right edge
                     isInDragZone = pos.X >= NavPanel.ActualWidth - 5;
                 }
 
@@ -622,34 +588,25 @@ namespace TechDashboard
                 }
                 else if (e.PropertyName == nameof(MainViewModel.CurrentLanguage))
                 {
-                    // 语言切换后重新计算导航栏宽度
-                    // 使用Dispatcher延迟执行，确保资源字典已完全更新
-                    // 使用ApplicationIdle优先级，确保资源字典更新完成后再计算
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         try
                         {
-                            // 强制刷新布局和资源
                             this.UpdateLayout();
                             this.InvalidateVisual();
-                            
-                            // 等待一个渲染周期，确保资源字典完全加载
+
                             Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 try
                                 {
-                                    // 重新计算导航栏宽度
                                     CalculateOptimalNavWidth();
-                                    
+
                                     if (sender is MainViewModel viewModel)
                                     {
-                                        // 如果导航栏是展开状态，使用新的宽度
                                         if (viewModel.IsNavExpanded)
                                         {
-                                            // 直接设置新宽度，无需动画（因为语言切换应该立即更新）
                                             NavColumn.Width = new GridLength(_expandedNavWidth);
                                             viewModel.NavWidth = _expandedNavWidth;
-                                            System.Diagnostics.Debug.WriteLine($"Language changed to {viewModel.CurrentLanguage}, updated nav width to: {_expandedNavWidth}");
                                         }
                                     }
                                 }

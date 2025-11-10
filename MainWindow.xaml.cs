@@ -218,6 +218,9 @@ namespace TechDashboard
                 var typefaceBold = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
                 var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
 
+                // Get the text brush from resources
+                var textBrush = Application.Current.TryFindResource("TextBrush") as SolidColorBrush ?? Brushes.White;
+
                 string GetResourceString(string key, string defaultValue)
                 {
                     var resource = Application.Current?.TryFindResource(key);
@@ -250,7 +253,7 @@ namespace TechDashboard
                     FlowDirection.LeftToRight,
                     typefaceBold,
                     16,
-                    Brushes.White,
+                    textBrush,
                     dpi).Width;
 
                 var dashboardWidth = dashboardIconWidth + dashboardIconTextSpacing + dashboardTextWidth;
@@ -281,7 +284,7 @@ namespace TechDashboard
                         FlowDirection.LeftToRight,
                         typeface,
                         14,
-                        Brushes.White,
+                        textBrush,
                         dpi).Width;
 
                     var buttonContentWidth = iconWidth + iconTextSpacing + textWidth;
@@ -289,10 +292,10 @@ namespace TechDashboard
                 }
 
                 _expandedNavWidth = stackPanelMargin +
-                                   buttonPadding +
-                                   maxContentWidth +
-                                   buttonPadding +
-                                   stackPanelMargin;
+                                    buttonPadding +
+                                    maxContentWidth +
+                                    buttonPadding +
+                                    stackPanelMargin;
 
                 _expandedNavWidth = Math.Max(CollapsedNavWidth, _expandedNavWidth);
                 _expandedNavWidth = Math.Min(_expandedNavWidth, 350);

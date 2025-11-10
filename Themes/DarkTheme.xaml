@@ -2,27 +2,17 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Dark Theme Colors - 黑灰色调 -->
-    <Color x:Key="WindowBgColor">#121212</Color>
-    <Color x:Key="NavBgColor">#1E1E1E</Color>
-    <Color x:Key="CardBgColor">#252525</Color>
-    <Color x:Key="HeaderBgColor">#1A1A1A</Color>
-    <Color x:Key="TextColor">#E0E0E0</Color>
-    <Color x:Key="TextSecondaryColor">#9E9E9E</Color>
-    <Color x:Key="AccentColor">#FF6B35</Color>
-    <Color x:Key="HoverColor">#2C2C2C</Color>
-    <Color x:Key="SelectedColor">#FF8555</Color>
-    <Color x:Key="BorderColor">#3A3A3A</Color>
 
     <!-- Solid Brushes -->
-    <SolidColorBrush x:Key="NavBackgroundBrush" Color="{StaticResource NavBgColor}"/>
-    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource CardBgColor}"/>
-    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="{StaticResource HeaderBgColor}"/>
-    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}"/>
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}"/>
-    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
-    <SolidColorBrush x:Key="HoverBrush" Color="{StaticResource HoverColor}"/>
-    <SolidColorBrush x:Key="SelectedBrush" Color="{StaticResource SelectedColor}"/>
-    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
+    <SolidColorBrush x:Key="NavBackgroundBrush" Color="#1E1E1E"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#252525"/>
+    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="TextBrush" Color="#E0E0E0"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#9E9E9E"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#FF6B35"/>
+    <SolidColorBrush x:Key="HoverBrush" Color="#2C2C2C"/>
+    <SolidColorBrush x:Key="SelectedBrush" Color="#FF8555"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#3A3A3A"/>
 
     <!-- Window Background Gradient - 黑灰渐变 -->
     <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
@@ -182,7 +172,7 @@
                             <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{DynamicResource BorderColor}"/>
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource BorderBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

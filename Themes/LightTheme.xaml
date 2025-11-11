@@ -44,28 +44,104 @@
     <!-- Menu Style -->
     <Style TargetType="MenuItem">
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-        <Setter Property="Background" Value="{DynamicResource HeaderBackgroundBrush}"/>
-        <Setter Property="ItemContainerStyle">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="Template">
             <Setter.Value>
-                <Style TargetType="MenuItem">
-                    <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-                    <Style.Triggers>
+                <ControlTemplate TargetType="MenuItem">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="0"
+                            SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                                <ColumnDefinition Width="14"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <ContentPresenter x:Name="Icon"
+                                            Grid.Column="0"
+                                            Content="{TemplateBinding Icon}"
+                                            ContentSource="Icon"
+                                            Margin="4,0,6,0"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                            VerticalAlignment="Center"/>
+                            
+                            <ContentPresenter x:Name="HeaderHost"
+                                            Grid.Column="1"
+                                            ContentSource="Header"
+                                            Margin="{TemplateBinding Padding}"
+                                            RecognizesAccessKey="True"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                            VerticalAlignment="Center"/>
+                            
+                            <TextBlock x:Name="InputGestureText"
+                                     Grid.Column="2"
+                                     Text="{TemplateBinding InputGestureText}"
+                                     Margin="16,0,0,0"
+                                     VerticalAlignment="Center"/>
+                            
+                            <Path x:Name="ArrowPanel"
+                                Grid.Column="3"
+                                Data="M 0,0 L 4,3.5 L 0,7 Z"
+                                Fill="{TemplateBinding Foreground}"
+                                Margin="4,0,6,0"
+                                VerticalAlignment="Center"
+                                Visibility="Collapsed"/>
+                            
+                            <Popup x:Name="PART_Popup"
+                                   AllowsTransparency="True"
+                                   Placement="Right"
+                                   VerticalOffset="-3"
+                                   HorizontalOffset="-2"
+                                   IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Focusable="False"
+                                   PopupAnimation="Fade">
+                                <Border Background="{DynamicResource CardBackgroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        Padding="2"
+                                        CornerRadius="4">
+                                    <ScrollViewer Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type FrameworkElement}, ResourceId=MenuScrollViewer}}">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Cycle"
+                                                      Grid.IsSharedSizeScope="True"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Icon" Value="{x:Null}">
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="TopLevelHeader">
+                            <Setter Property="Padding" Value="7,2"/>
+                            <Setter TargetName="PART_Popup" Property="Placement" Value="Bottom"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="TopLevelItem">
+                            <Setter Property="Padding" Value="7,2"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="SubmenuHeader">
+                            <Setter TargetName="ArrowPanel" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="SubmenuItem">
+                            <Setter Property="Padding" Value="2,6"/>
+                        </Trigger>
                         <Trigger Property="IsHighlighted" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
                         </Trigger>
-                    </Style.Triggers>
-                </Style>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsHighlighted" Value="True">
-                <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <!-- Button Styles -->
@@ -123,14 +199,18 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Width" Value="32"/>
-        <Setter Property="Height" Value="32"/>
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Padding" Value="0"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" Background="{TemplateBinding Background}" 
-                            CornerRadius="4" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                            CornerRadius="5" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            Padding="1" SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -140,6 +220,9 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Opacity" Value="0.45"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

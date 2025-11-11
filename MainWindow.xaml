@@ -6,7 +6,9 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent">
+        Background="Transparent"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
 
     <Window.DataContext>
         <vm:MainViewModel/>
@@ -29,8 +31,9 @@
                     BorderThickness="0,0,0,1" 
                     Height="80"
                     CornerRadius="8,8,0,0"
+                    ClipToBounds="False"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
-                <Grid>
+                <Grid ClipToBounds="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <!-- App Icon -->
@@ -42,6 +45,8 @@
                         <!-- Spacer -->
                         <ColumnDefinition Width="Auto"/>
                         <!-- Theme Toggle -->
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- Language Toggle -->
                         <ColumnDefinition Width="Auto"/>
                         <!-- Window Controls -->
                     </Grid.ColumnDefinitions>
@@ -66,18 +71,20 @@
                                Margin="12,0,24,0"/>
 
                     <!-- Menu & Toolbar Stack -->
-                    <Grid Grid.Column="2" Margin="0,8,0,8">
+                    <Grid Grid.Column="2" Margin="0,4,0,4" ClipToBounds="False">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <!-- Menu Row -->
                         <Menu x:Name="MainMenu" 
                               Grid.Row="0" 
                               Background="Transparent" 
-                              VerticalAlignment="Center">
-                            <MenuItem Header="{DynamicResource Menu_File}">
+                              VerticalAlignment="Center"
+                              Margin="0,0,0,0">
+                            <MenuItem Header="{DynamicResource Menu_File}" Padding="6,4">
                                 <MenuItem Header="{DynamicResource Menu_File_New}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
@@ -90,7 +97,6 @@
                                                    Foreground="{DynamicResource AccentBrush}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <Separator/>
                                 <MenuItem Header="{DynamicResource Menu_File_Exit}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
@@ -98,7 +104,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </MenuItem>
-                            <MenuItem Header="{DynamicResource Menu_Edit}">
+                            <MenuItem Header="{DynamicResource Menu_Edit}" Padding="6,4">
                                 <MenuItem Header="{DynamicResource Menu_Edit_Undo}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE7A7;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
@@ -111,7 +117,6 @@
                                                    Foreground="{DynamicResource AccentBrush}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <Separator/>
                                 <MenuItem Header="{DynamicResource Menu_Edit_Copy}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
@@ -125,7 +130,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </MenuItem>
-                            <MenuItem Header="{DynamicResource Menu_View}">
+                            <MenuItem Header="{DynamicResource Menu_View}" Padding="6,4">
                                 <MenuItem Header="{DynamicResource Menu_View_Refresh}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
@@ -139,7 +144,7 @@
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </MenuItem>
-                            <MenuItem Header="{DynamicResource Menu_Help}">
+                            <MenuItem Header="{DynamicResource Menu_Help}" Padding="6,4">
                                 <MenuItem Header="{DynamicResource Menu_Help_About}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
@@ -149,41 +154,47 @@
                             </MenuItem>
                         </Menu>
 
+                        <!-- Horizontal Separator Line -->
+                        <Border Grid.Row="1" 
+                                Height="2" 
+                                Background="{DynamicResource BorderBrush}" 
+                                Margin="0,2"/>
+
                         <!-- Toolbar Row -->
-                        <StackPanel Grid.Row="1" 
+                        <StackPanel Grid.Row="2" 
                                     Orientation="Horizontal" 
                                     VerticalAlignment="Center"
-                                    Margin="0,4,0,0">
+                                    Margin="0,2,0,2"
+                                    MinHeight="32"
+                                    ClipToBounds="False">
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
                                     ToolTip="New"
-                                    Margin="4,0">
+                                    Margin="0,0,5,0">
                                 <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
                                     ToolTip="Open"
-                                    Margin="4,0">
+                                    Margin="0,0,5,0">
                                 <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
                                     ToolTip="Save"
-                                    Margin="4,0">
+                                    Margin="0,0,5,0">
                                 <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
-                            <Separator Style="{StaticResource ToolbarSeparatorStyle}"/>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
                                     ToolTip="Undo"
-                                    Margin="4,0">
+                                    Margin="0,0,5,0">
                                 <TextBlock Text="&#xE7A7;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
                                     ToolTip="Redo"
-                                    Margin="4,0">
+                                    Margin="0,0,5,0">
                                 <TextBlock Text="&#xE7A6;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
-                            <Separator Style="{StaticResource ToolbarSeparatorStyle}"/>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
                                     ToolTip="Search"
-                                    Margin="4,0">
+                                    Margin="0">
                                 <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                         </StackPanel>
@@ -194,7 +205,7 @@
                             Command="{Binding QuickToggleThemeCommand}"
                             Style="{StaticResource ThemeToggleButtonStyle}"
                             Width="40" Height="40"
-                            Margin="12,0"
+                            Margin="12,0,3,0"
                             ToolTip="Toggle Theme">
                         <TextBlock x:Name="ThemeIcon" 
                                    Text="&#xE793;" 
@@ -202,8 +213,20 @@
                                    FontSize="18"/>
                     </Button>
 
+                    <!-- Language Toggle -->
+                    <Button Grid.Column="5" 
+                            Command="{Binding QuickToggleLanguageCommand}"
+                            Style="{StaticResource ThemeToggleButtonStyle}"
+                            Width="40" Height="40"
+                            Margin="0,0,12,0"
+                            ToolTip="Toggle Language">
+                        <TextBlock Text="&#xF2B7;" 
+                                   FontFamily="Segoe MDL2 Assets" 
+                                   FontSize="18"/>
+                    </Button>
+
                     <!-- Window Controls -->
-                    <StackPanel Grid.Column="5" 
+                    <StackPanel Grid.Column="6" 
                                 Orientation="Horizontal" 
                                 Margin="8,0,0,0">
                         <Button Style="{StaticResource WindowControlButtonStyle}" 

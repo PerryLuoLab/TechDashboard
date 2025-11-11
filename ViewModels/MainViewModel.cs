@@ -18,6 +18,7 @@ namespace TechDashboard.ViewModels
             ChangeThemeCommand = new RelayCommand(param => ChangeTheme(param?.ToString()));
             ChangeLanguageCommand = new RelayCommand(param => ChangeLanguage(param?.ToString()));
             QuickToggleThemeCommand = new RelayCommand(_ => QuickToggleTheme());
+            QuickToggleLanguageCommand = new RelayCommand(_ => QuickToggleLanguage());
         }
 
         #region Properties
@@ -123,6 +124,7 @@ namespace TechDashboard.ViewModels
         public ICommand ChangeThemeCommand { get; }
         public ICommand ChangeLanguageCommand { get; }
         public ICommand QuickToggleThemeCommand { get; }
+        public ICommand QuickToggleLanguageCommand { get; }
 
         #endregion
 
@@ -179,6 +181,22 @@ namespace TechDashboard.ViewModels
             };
 
             ChangeTheme(nextTheme);
+        }
+
+        private void QuickToggleLanguage()
+        {
+            // Cycle through languages: en-US -> zh-CN -> zh-TW -> ko-KR -> ja-JP -> en-US
+            var nextLanguage = CurrentLanguage switch
+            {
+                "en-US" => "zh-CN",
+                "zh-CN" => "zh-TW",
+                "zh-TW" => "ko-KR",
+                "ko-KR" => "ja-JP",
+                "ja-JP" => "en-US",
+                _ => "en-US"
+            };
+
+            ChangeLanguage(nextLanguage);
         }
 
         #endregion

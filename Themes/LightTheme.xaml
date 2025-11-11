@@ -241,8 +241,7 @@
     </Style>
 
     <!-- Theme/Language Toggle Button Style -->
-    <Color x:Key="ThemeSelectedColor">#00C853</Color>
-    <SolidColorBrush x:Key="ThemeSelectedBrush" Color="{StaticResource ThemeSelectedColor}"/>
+    <SolidColorBrush x:Key="ThemeSelectedBrush" Color="#00C853"/>
 
     <Style x:Key="ThemeToggleButton" TargetType="ToggleButton">
         <Setter Property="Width" Value="120"/>

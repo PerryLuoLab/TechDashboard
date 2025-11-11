@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Menu_File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Menu_File_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Menu_File_Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Menu_File_Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Menu_Edit_Undo" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="Menu_Edit_Redo" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="Menu_Edit_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Menu_Edit_Paste" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Menu_View_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Menu_View_Fullscreen" xml:space="preserve">
+    <value>Fullscreen</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Menu_Help_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Nav_Dashboard" xml:space="preserve">
+    <value>DASHBOARD</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="Nav_Analytics" xml:space="preserve">
+    <value>Analytics</value>
+  </data>
+  <data name="Nav_Reports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Nav_Collapse" xml:space="preserve">
+    <value>Collapse</value>
+  </data>
+  <data name="Nav_Expand" xml:space="preserve">
+    <value>Expand Navigation</value>
+  </data>
+  <data name="Dashboard_Title" xml:space="preserve">
+    <value>TechDashboard</value>
+  </data>
+  <data name="Dashboard_ActiveUsers" xml:space="preserve">
+    <value>Active Users</value>
+  </data>
+  <data name="Dashboard_CPULoad" xml:space="preserve">
+    <value>CPU Load</value>
+  </data>
+  <data name="Dashboard_Errors24h" xml:space="preserve">
+    <value>Errors (24h)</value>
+  </data>
+  <data name="Dashboard_VsLastMonth" xml:space="preserve">
+    <value>↑ 12.5% vs last month</value>
+  </data>
+  <data name="Dashboard_AllSystemsOK" xml:space="preserve">
+    <value>All systems operational</value>
+  </data>
+  <data name="Dashboard_Performance" xml:space="preserve">
+    <value>System Performance</value>
+  </data>
+  <data name="Dashboard_MemoryUsage" xml:space="preserve">
+    <value>Memory Usage</value>
+  </data>
+  <data name="Dashboard_DiskIO" xml:space="preserve">
+    <value>Disk I/O</value>
+  </data>
+  <data name="Dashboard_NetworkTraffic" xml:space="preserve">
+    <value>Network Traffic</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="Settings_ChooseTheme" xml:space="preserve">
+    <value>Choose Theme</value>
+  </data>
+  <data name="Settings_Theme_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Settings_Theme_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Settings_Theme_BlueTech" xml:space="preserve">
+    <value>Blue Tech</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings_ChooseLanguage" xml:space="preserve">
+    <value>Choose Language</value>
+  </data>
+  <data name="Settings_Lang_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Settings_Lang_Chinese" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="Settings_Lang_TraditionalChinese" xml:space="preserve">
+    <value>繁體中文</value>
+  </data>
+  <data name="Settings_Lang_Korean" xml:space="preserve">
+    <value>한국어</value>
+  </data>
+  <data name="Settings_Lang_Japanese" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="Analytics_Title" xml:space="preserve">
+    <value>Analytics Page</value>
+  </data>
+  <data name="Analytics_Description" xml:space="preserve">
+    <value>Analytics data and charts will be displayed here.</value>
+  </data>
+  <data name="Reports_Title" xml:space="preserve">
+    <value>Reports Page</value>
+  </data>
+  <data name="Reports_Description" xml:space="preserve">
+    <value>Generated reports and export options will be displayed here.</value>
+  </data>
+  <data name="Status_Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="Status_CurrentPage" xml:space="preserve">
+    <value>Current Page:</value>
+  </data>
+  <data name="Status_Theme" xml:space="preserve">
+    <value>Theme:</value>
+  </data>
+  <data name="Status_Language" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="Status_Theme_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Status_Theme_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Status_Theme_BlueTech" xml:space="preserve">
+    <value>Blue Tech</value>
+  </data>
+  <data name="Status_Page_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="Status_Page_Analytics" xml:space="preserve">
+    <value>Analytics</value>
+  </data>
+  <data name="Status_Page_Reports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="Status_Page_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+</root>

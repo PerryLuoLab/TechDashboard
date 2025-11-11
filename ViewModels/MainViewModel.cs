@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using TechDashboard.Infrastructure;
+using TechDashboard.Helpers;
 
 namespace TechDashboard.ViewModels
 {
@@ -50,13 +51,25 @@ namespace TechDashboard.ViewModels
         public string CurrentLanguage
         {
             get => _currentLanguage;
-            set => SetProperty(ref _currentLanguage, value);
+            set => SetProperty(ref _currentLanguage, value, action: () =>
+            {
+                RaisePropertyChanged(nameof(CurrentLanguageDisplay));
+                RaisePropertyChanged(nameof(CurrentThemeDisplay));
+                RaisePropertyChanged(nameof(CurrentPageDisplay));
+            });
         }
 
         public string CurrentPage
         {
             get => _currentPage;
-            set => SetProperty(ref _currentPage, value);
+            set => SetProperty(ref _currentPage, value, action: () =>
+            {
+                RaisePropertyChanged(nameof(IsOverviewPage));
+                RaisePropertyChanged(nameof(IsAnalyticsPage));
+                RaisePropertyChanged(nameof(IsReportsPage));
+                RaisePropertyChanged(nameof(IsSettingsPage));
+                RaisePropertyChanged(nameof(CurrentPageDisplay));
+            });
         }
 
         public bool IsOverviewPage => CurrentPage == "Overview";
@@ -64,21 +77,7 @@ namespace TechDashboard.ViewModels
         public bool IsReportsPage => CurrentPage == "Reports";
         public bool IsSettingsPage => CurrentPage == "Settings";
 
-        public string CurrentLanguageDisplay
-        {
-            get
-            {
-                return CurrentLanguage switch
-                {
-                    "en-US" => "English",
-                    "zh-CN" => "简体中文",
-                    "zh-TW" => "繁體中文",
-                    "ko-KR" => "한국어",
-                    "ja-JP" => "日本語",
-                    _ => "English"
-                };
-            }
-        }
+        public string CurrentLanguageDisplay => LocalizationHelper.GetLanguageDisplayName(CurrentLanguage);
 
         public string CurrentThemeDisplay
         {
@@ -92,8 +91,7 @@ namespace TechDashboard.ViewModels
                     _ => "Status_Theme_Dark"
                 };
 
-                var resource = System.Windows.Application.Current?.TryFindResource(themeKey);
-                return resource?.ToString() ?? CurrentTheme;
+                return LocalizationHelper.GetString(themeKey);
             }
         }
 
@@ -110,8 +108,7 @@ namespace TechDashboard.ViewModels
                     _ => "Status_Page_Overview"
                 };
 
-                var resource = System.Windows.Application.Current?.TryFindResource(pageKey);
-                return resource?.ToString() ?? CurrentPage;
+                return LocalizationHelper.GetString(pageKey);
             }
         }
 
@@ -140,11 +137,6 @@ namespace TechDashboard.ViewModels
             if (!string.IsNullOrEmpty(pageName))
             {
                 CurrentPage = pageName;
-                RaisePropertyChanged(nameof(IsOverviewPage));
-                RaisePropertyChanged(nameof(IsAnalyticsPage));
-                RaisePropertyChanged(nameof(IsReportsPage));
-                RaisePropertyChanged(nameof(IsSettingsPage));
-                RaisePropertyChanged(nameof(CurrentPageDisplay));
             }
         }
 
@@ -162,10 +154,12 @@ namespace TechDashboard.ViewModels
             if (!string.IsNullOrEmpty(languageCode))
             {
                 CurrentLanguage = languageCode;
+                
+                // Use WPFLocalizeExtension to change language
+                LocalizationHelper.ChangeLanguage(languageCode);
+                
+                // Also call App.ApplyLanguage which now uses LocalizeDictionary internally
                 App.ApplyLanguage(languageCode);
-                RaisePropertyChanged(nameof(CurrentLanguageDisplay));
-                RaisePropertyChanged(nameof(CurrentThemeDisplay));
-                RaisePropertyChanged(nameof(CurrentPageDisplay));
             }
         }
 

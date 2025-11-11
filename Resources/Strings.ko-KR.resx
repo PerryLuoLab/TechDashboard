@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Menu_File" xml:space="preserve">
+    <value>파일</value>
+  </data>
+  <data name="Menu_File_New" xml:space="preserve">
+    <value>새로 만들기</value>
+  </data>
+  <data name="Menu_File_Open" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="Menu_File_Exit" xml:space="preserve">
+    <value>종료</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>편집</value>
+  </data>
+  <data name="Menu_Edit_Undo" xml:space="preserve">
+    <value>실행 취소</value>
+  </data>
+  <data name="Menu_Edit_Redo" xml:space="preserve">
+    <value>다시 실행</value>
+  </data>
+  <data name="Menu_Edit_Copy" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="Menu_Edit_Paste" xml:space="preserve">
+    <value>붙여넣기</value>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>보기</value>
+  </data>
+  <data name="Menu_View_Refresh" xml:space="preserve">
+    <value>새로 고침</value>
+  </data>
+  <data name="Menu_View_Fullscreen" xml:space="preserve">
+    <value>전체 화면</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>도움말</value>
+  </data>
+  <data name="Menu_Help_About" xml:space="preserve">
+    <value>정보</value>
+  </data>
+  <data name="Nav_Dashboard" xml:space="preserve">
+    <value>대시보드</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>개요</value>
+  </data>
+  <data name="Nav_Analytics" xml:space="preserve">
+    <value>분석</value>
+  </data>
+  <data name="Nav_Reports" xml:space="preserve">
+    <value>보고서</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="Nav_Collapse" xml:space="preserve">
+    <value>접기</value>
+  </data>
+  <data name="Nav_Expand" xml:space="preserve">
+    <value>탐색 확장</value>
+  </data>
+  <data name="Dashboard_Title" xml:space="preserve">
+    <value>기술 대시보드</value>
+  </data>
+  <data name="Dashboard_ActiveUsers" xml:space="preserve">
+    <value>활성 사용자</value>
+  </data>
+  <data name="Dashboard_CPULoad" xml:space="preserve">
+    <value>CPU 로드</value>
+  </data>
+  <data name="Dashboard_Errors24h" xml:space="preserve">
+    <value>오류 (24시간)</value>
+  </data>
+  <data name="Dashboard_VsLastMonth" xml:space="preserve">
+    <value>↑ 지난달 대비 12.5%</value>
+  </data>
+  <data name="Dashboard_AllSystemsOK" xml:space="preserve">
+    <value>모든 시스템 정상</value>
+  </data>
+  <data name="Dashboard_Performance" xml:space="preserve">
+    <value>시스템 성능</value>
+  </data>
+  <data name="Dashboard_MemoryUsage" xml:space="preserve">
+    <value>메모리 사용량</value>
+  </data>
+  <data name="Dashboard_DiskIO" xml:space="preserve">
+    <value>디스크 I/O</value>
+  </data>
+  <data name="Dashboard_NetworkTraffic" xml:space="preserve">
+    <value>네트워크 트래픽</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>외관</value>
+  </data>
+  <data name="Settings_ChooseTheme" xml:space="preserve">
+    <value>테마 선택</value>
+  </data>
+  <data name="Settings_Theme_Dark" xml:space="preserve">
+    <value>다크</value>
+  </data>
+  <data name="Settings_Theme_Light" xml:space="preserve">
+    <value>라이트</value>
+  </data>
+  <data name="Settings_Theme_BlueTech" xml:space="preserve">
+    <value>블루 테크</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>언어</value>
+  </data>
+  <data name="Settings_ChooseLanguage" xml:space="preserve">
+    <value>언어 선택</value>
+  </data>
+  <data name="Settings_Lang_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Settings_Lang_Chinese" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="Settings_Lang_TraditionalChinese" xml:space="preserve">
+    <value>繁體中文</value>
+  </data>
+  <data name="Settings_Lang_Korean" xml:space="preserve">
+    <value>한국어</value>
+  </data>
+  <data name="Settings_Lang_Japanese" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="Analytics_Title" xml:space="preserve">
+    <value>분석 페이지</value>
+  </data>
+  <data name="Analytics_Description" xml:space="preserve">
+    <value>분석 데이터 및 차트가 여기에 표시됩니다.</value>
+  </data>
+  <data name="Reports_Title" xml:space="preserve">
+    <value>보고서 페이지</value>
+  </data>
+  <data name="Reports_Description" xml:space="preserve">
+    <value>생성된 보고서 및 내보내기 옵션이 여기에 표시됩니다.</value>
+  </data>
+  <data name="Status_Ready" xml:space="preserve">
+    <value>준비</value>
+  </data>
+  <data name="Status_CurrentPage" xml:space="preserve">
+    <value>현재 페이지:</value>
+  </data>
+  <data name="Status_Theme" xml:space="preserve">
+    <value>테마:</value>
+  </data>
+  <data name="Status_Language" xml:space="preserve">
+    <value>언어:</value>
+  </data>
+  <data name="Status_Theme_Dark" xml:space="preserve">
+    <value>다크</value>
+  </data>
+  <data name="Status_Theme_Light" xml:space="preserve">
+    <value>라이트</value>
+  </data>
+  <data name="Status_Theme_BlueTech" xml:space="preserve">
+    <value>블루 테크</value>
+  </data>
+  <data name="Status_Page_Overview" xml:space="preserve">
+    <value>개요</value>
+  </data>
+  <data name="Status_Page_Analytics" xml:space="preserve">
+    <value>분석</value>
+  </data>
+  <data name="Status_Page_Reports" xml:space="preserve">
+    <value>보고서</value>
+  </data>
+  <data name="Status_Page_Settings" xml:space="preserve">
+    <value>설정</value>
+  </data>
+</root>

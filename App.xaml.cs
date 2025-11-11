@@ -1,16 +1,37 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
+using WPFLocalizeExtension.Engine;
 
 namespace TechDashboard
 {
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            
+            // Initialize WPFLocalizeExtension
+            LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
+            LocalizeDictionary.Instance.Culture = new CultureInfo("en-US");
+            
+            // Debug output
+            System.Diagnostics.Debug.WriteLine($"? LocalizeDictionary initialized");
+            System.Diagnostics.Debug.WriteLine($"  Culture: {LocalizeDictionary.Instance.Culture.Name}");
+            System.Diagnostics.Debug.WriteLine($"  Assembly: TechDashboard");
+            System.Diagnostics.Debug.WriteLine($"  Dictionary: Strings");
+            
+            // Test localization
+            var testKey = LocalizeDictionary.Instance.GetLocalizedObject("TechDashboard", "Strings", "Menu_File", LocalizeDictionary.Instance.Culture);
+            System.Diagnostics.Debug.WriteLine($"  Test key 'Menu_File' = '{testKey}'");
+        }
+
         public static void ApplyTheme(string themeName)
         {
             if (Application.Current == null) return;
 
-            // 处理主题名称
+            // Normalize theme name
             string themeFileName = themeName;
             if (!themeFileName.EndsWith("Theme", StringComparison.OrdinalIgnoreCase))
             {
@@ -19,7 +40,7 @@ namespace TechDashboard
 
             var themePath = $"Themes/{themeFileName}.xaml";
 
-            // 移除所有现有主题
+            // Remove old theme dictionaries
             var toRemove = Application.Current.Resources.MergedDictionaries
                 .Where(d => d.Source != null && d.Source.OriginalString.Contains("Themes/")).ToList();
 
@@ -28,15 +49,17 @@ namespace TechDashboard
                 Application.Current.Resources.MergedDictionaries.Remove(d);
             }
 
-            // 添加新主题
+            // Add new theme
             try
             {
                 var dict = new ResourceDictionary() { Source = new Uri(themePath, UriKind.Relative) };
                 Application.Current.Resources.MergedDictionaries.Add(dict);
+                System.Diagnostics.Debug.WriteLine($"? Theme changed to: {themeName}");
             }
-            catch
+            catch (Exception ex)
             {
-                // 如果主题文件不存在，回退到默认主题
+                System.Diagnostics.Debug.WriteLine($"? Theme change failed: {ex.Message}");
+                // If theme file doesn't exist, fallback to default theme
                 var defaultDict = new ResourceDictionary() { Source = new Uri("Themes/DarkTheme.xaml", UriKind.Relative) };
                 Application.Current.Resources.MergedDictionaries.Add(defaultDict);
             }
@@ -46,28 +69,35 @@ namespace TechDashboard
         {
             if (Application.Current == null) return;
 
-            var languagePath = $"Languages/{languageCode}.xaml";
-
-            // 移除所有现有语言包
-            var toRemove = Application.Current.Resources.MergedDictionaries
-                .Where(d => d.Source != null && d.Source.OriginalString.Contains("Languages/")).ToList();
-
-            foreach (var d in toRemove)
-            {
-                Application.Current.Resources.MergedDictionaries.Remove(d);
-            }
-
-            // 添加新语言包
             try
             {
-                var dict = new ResourceDictionary() { Source = new Uri(languagePath, UriKind.Relative) };
-                Application.Current.Resources.MergedDictionaries.Add(dict);
+                var oldCulture = LocalizeDictionary.Instance.Culture.Name;
+                System.Diagnostics.Debug.WriteLine($"→ Changing language from {oldCulture} to {languageCode}");
+                
+                // Use WPFLocalizeExtension to change culture
+                var newCulture = new CultureInfo(languageCode);
+                LocalizeDictionary.Instance.Culture = newCulture;
+                
+                System.Diagnostics.Debug.WriteLine($"? Language changed successfully");
+                System.Diagnostics.Debug.WriteLine($"  New culture: {LocalizeDictionary.Instance.Culture.Name}");
+                
+                // Force UI update
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    // Trigger property changed on all bindings
+                    foreach (Window window in Application.Current.Windows)
+                    {
+                        window.Language = System.Windows.Markup.XmlLanguage.GetLanguage(newCulture.IetfLanguageTag);
+                    }
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                // 如果语言文件不存在，回退到英语
-                var defaultDict = new ResourceDictionary() { Source = new Uri("Languages/en-US.xaml", UriKind.Relative) };
-                Application.Current.Resources.MergedDictionaries.Add(defaultDict);
+                System.Diagnostics.Debug.WriteLine($"? Error changing language: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"  Stack: {ex.StackTrace}");
+                
+                // If language code is invalid, fallback to English
+                LocalizeDictionary.Instance.Culture = new CultureInfo("en-US");
             }
         }
     }

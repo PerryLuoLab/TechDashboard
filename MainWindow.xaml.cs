@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using TechDashboard.ViewModels;
+using TechDashboard.Helpers;
 
 namespace TechDashboard
 {
@@ -221,32 +222,10 @@ namespace TechDashboard
                 // Get the text brush from resources
                 var textBrush = Application.Current.TryFindResource("TextBrush") as SolidColorBrush ?? Brushes.White;
 
-                string GetResourceString(string key, string defaultValue)
-                {
-                    var resource = Application.Current?.TryFindResource(key);
-                    if (resource != null)
-                    {
-                        var str = resource.ToString();
-                        if (!string.IsNullOrEmpty(str))
-                        {
-                            return str;
-                        }
-                    }
-
-                    resource = this.TryFindResource(key);
-                    if (resource != null)
-                    {
-                        var str = resource.ToString();
-                        if (!string.IsNullOrEmpty(str))
-                        {
-                            return str;
-                        }
-                    }
-
-                    return defaultValue ?? string.Empty;
-                }
-
-                var dashboardText = GetResourceString("Nav_Dashboard", "DASHBOARD");
+                // Use LocalizationHelper to get localized strings
+                var dashboardText = LocalizationHelper.GetString("Nav_Dashboard");
+                if (string.IsNullOrEmpty(dashboardText)) dashboardText = "DASHBOARD";
+                
                 var dashboardTextWidth = new FormattedText(
                     dashboardText,
                     System.Globalization.CultureInfo.CurrentCulture,
@@ -261,14 +240,14 @@ namespace TechDashboard
 
                 var navTexts = new[]
                 {
-                    GetResourceString("Nav_Overview", "Overview"),
-                    GetResourceString("Nav_Analytics", "Analytics"),
-                    GetResourceString("Nav_Reports", "Reports"),
-                    GetResourceString("Nav_Settings", "Settings"),
-                    GetResourceString("Nav_Collapse", "Collapse")
+                    LocalizationHelper.GetString("Nav_Overview"),
+                    LocalizationHelper.GetString("Nav_Analytics"),
+                    LocalizationHelper.GetString("Nav_Reports"),
+                    LocalizationHelper.GetString("Nav_Settings"),
+                    LocalizationHelper.GetString("Nav_Collapse")
                 };
 
-                var expandText = GetResourceString("Nav_Expand", "Expand Navigation");
+                var expandText = LocalizationHelper.GetString("Nav_Expand");
                 if (!string.IsNullOrEmpty(expandText) && expandText.Length > 0)
                 {
                     var allTexts = navTexts.ToList();
@@ -278,6 +257,8 @@ namespace TechDashboard
 
                 foreach (var text in navTexts)
                 {
+                    if (string.IsNullOrEmpty(text)) continue;
+                    
                     var textWidth = new FormattedText(
                         text,
                         System.Globalization.CultureInfo.CurrentCulture,

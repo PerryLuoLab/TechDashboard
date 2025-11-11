@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Menu_File" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="Menu_File_New" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="Menu_File_Open" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="Menu_File_Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Menu_Edit_Undo" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="Menu_Edit_Redo" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="Menu_Edit_Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="Menu_Edit_Paste" xml:space="preserve">
+    <value>粘贴</value>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="Menu_View_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Menu_View_Fullscreen" xml:space="preserve">
+    <value>全屏</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="Menu_Help_About" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Nav_Dashboard" xml:space="preserve">
+    <value>仪表板</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>概览</value>
+  </data>
+  <data name="Nav_Analytics" xml:space="preserve">
+    <value>分析</value>
+  </data>
+  <data name="Nav_Reports" xml:space="preserve">
+    <value>报告</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Nav_Collapse" xml:space="preserve">
+    <value>收起</value>
+  </data>
+  <data name="Nav_Expand" xml:space="preserve">
+    <value>展开导航</value>
+  </data>
+  <data name="Dashboard_Title" xml:space="preserve">
+    <value>技术仪表板</value>
+  </data>
+  <data name="Dashboard_ActiveUsers" xml:space="preserve">
+    <value>活跃用户</value>
+  </data>
+  <data name="Dashboard_CPULoad" xml:space="preserve">
+    <value>CPU 负载</value>
+  </data>
+  <data name="Dashboard_Errors24h" xml:space="preserve">
+    <value>错误数（24小时）</value>
+  </data>
+  <data name="Dashboard_VsLastMonth" xml:space="preserve">
+    <value>↑ 较上月增长 12.5%</value>
+  </data>
+  <data name="Dashboard_AllSystemsOK" xml:space="preserve">
+    <value>所有系统正常运行</value>
+  </data>
+  <data name="Dashboard_Performance" xml:space="preserve">
+    <value>系统性能</value>
+  </data>
+  <data name="Dashboard_MemoryUsage" xml:space="preserve">
+    <value>内存使用</value>
+  </data>
+  <data name="Dashboard_DiskIO" xml:space="preserve">
+    <value>磁盘 I/O</value>
+  </data>
+  <data name="Dashboard_NetworkTraffic" xml:space="preserve">
+    <value>网络流量</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>外观</value>
+  </data>
+  <data name="Settings_ChooseTheme" xml:space="preserve">
+    <value>选择主题</value>
+  </data>
+  <data name="Settings_Theme_Dark" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="Settings_Theme_Light" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="Settings_Theme_BlueTech" xml:space="preserve">
+    <value>蓝色科技</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Settings_ChooseLanguage" xml:space="preserve">
+    <value>选择语言</value>
+  </data>
+  <data name="Settings_Lang_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Settings_Lang_Chinese" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="Settings_Lang_TraditionalChinese" xml:space="preserve">
+    <value>繁體中文</value>
+  </data>
+  <data name="Settings_Lang_Korean" xml:space="preserve">
+    <value>한국어</value>
+  </data>
+  <data name="Settings_Lang_Japanese" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="Analytics_Title" xml:space="preserve">
+    <value>分析页面</value>
+  </data>
+  <data name="Analytics_Description" xml:space="preserve">
+    <value>此处将显示分析数据和图表。</value>
+  </data>
+  <data name="Reports_Title" xml:space="preserve">
+    <value>报告页面</value>
+  </data>
+  <data name="Reports_Description" xml:space="preserve">
+    <value>此处将显示生成的报告和导出选项。</value>
+  </data>
+  <data name="Status_Ready" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="Status_CurrentPage" xml:space="preserve">
+    <value>当前页面：</value>
+  </data>
+  <data name="Status_Theme" xml:space="preserve">
+    <value>主题：</value>
+  </data>
+  <data name="Status_Language" xml:space="preserve">
+    <value>语言：</value>
+  </data>
+  <data name="Status_Theme_Dark" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="Status_Theme_Light" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="Status_Theme_BlueTech" xml:space="preserve">
+    <value>蓝色科技</value>
+  </data>
+  <data name="Status_Page_Overview" xml:space="preserve">
+    <value>概览</value>
+  </data>
+  <data name="Status_Page_Analytics" xml:space="preserve">
+    <value>分析</value>
+  </data>
+  <data name="Status_Page_Reports" xml:space="preserve">
+    <value>报告</value>
+  </data>
+  <data name="Status_Page_Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+</root>

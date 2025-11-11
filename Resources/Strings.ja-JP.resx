@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" msdata:Ordinal="5" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Menu_File" xml:space="preserve">
+    <value>ファイル</value>
+  </data>
+  <data name="Menu_File_New" xml:space="preserve">
+    <value>新規</value>
+  </data>
+  <data name="Menu_File_Open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="Menu_File_Exit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="Menu_Edit_Undo" xml:space="preserve">
+    <value>元に戻す</value>
+  </data>
+  <data name="Menu_Edit_Redo" xml:space="preserve">
+    <value>やり直す</value>
+  </data>
+  <data name="Menu_Edit_Copy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="Menu_Edit_Paste" xml:space="preserve">
+    <value>貼り付け</value>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>表示</value>
+  </data>
+  <data name="Menu_View_Refresh" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="Menu_View_Fullscreen" xml:space="preserve">
+    <value>全画面</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>ヘルプ</value>
+  </data>
+  <data name="Menu_Help_About" xml:space="preserve">
+    <value>について</value>
+  </data>
+  <data name="Nav_Dashboard" xml:space="preserve">
+    <value>ダッシュボード</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>概要</value>
+  </data>
+  <data name="Nav_Analytics" xml:space="preserve">
+    <value>分析</value>
+  </data>
+  <data name="Nav_Reports" xml:space="preserve">
+    <value>レポート</value>
+  </data>
+  <data name="Nav_Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="Nav_Collapse" xml:space="preserve">
+    <value>折りたたむ</value>
+  </data>
+  <data name="Nav_Expand" xml:space="preserve">
+    <value>ナビゲーションを展開</value>
+  </data>
+  <data name="Dashboard_Title" xml:space="preserve">
+    <value>TechDashboard</value>
+  </data>
+  <data name="Dashboard_ActiveUsers" xml:space="preserve">
+    <value>アクティブユーザー</value>
+  </data>
+  <data name="Dashboard_CPULoad" xml:space="preserve">
+    <value>CPU負荷</value>
+  </data>
+  <data name="Dashboard_Errors24h" xml:space="preserve">
+    <value>エラー（24時間）</value>
+  </data>
+  <data name="Dashboard_VsLastMonth" xml:space="preserve">
+    <value>↑ 先月比12.5%増</value>
+  </data>
+  <data name="Dashboard_AllSystemsOK" xml:space="preserve">
+    <value>すべてのシステムが正常に動作しています</value>
+  </data>
+  <data name="Dashboard_Performance" xml:space="preserve">
+    <value>システムパフォーマンス</value>
+  </data>
+  <data name="Dashboard_MemoryUsage" xml:space="preserve">
+    <value>メモリ使用量</value>
+  </data>
+  <data name="Dashboard_DiskIO" xml:space="preserve">
+    <value>ディスクI/O</value>
+  </data>
+  <data name="Dashboard_NetworkTraffic" xml:space="preserve">
+    <value>ネットワークトラフィック</value>
+  </data>
+  <data name="Settings_Appearance" xml:space="preserve">
+    <value>外観</value>
+  </data>
+  <data name="Settings_ChooseTheme" xml:space="preserve">
+    <value>テーマを選択</value>
+  </data>
+  <data name="Settings_Theme_Dark" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+  <data name="Settings_Theme_Light" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="Settings_Theme_BlueTech" xml:space="preserve">
+    <value>ブルーテック</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>言語</value>
+  </data>
+  <data name="Settings_ChooseLanguage" xml:space="preserve">
+    <value>言語を選択</value>
+  </data>
+  <data name="Settings_Lang_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Settings_Lang_Chinese" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="Settings_Lang_TraditionalChinese" xml:space="preserve">
+    <value>繁體中文</value>
+  </data>
+  <data name="Settings_Lang_Korean" xml:space="preserve">
+    <value>한국어</value>
+  </data>
+  <data name="Settings_Lang_Japanese" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="Analytics_Title" xml:space="preserve">
+    <value>分析ページ</value>
+  </data>
+  <data name="Analytics_Description" xml:space="preserve">
+    <value>分析データとグラフがここに表示されます。</value>
+  </data>
+  <data name="Reports_Title" xml:space="preserve">
+    <value>レポートページ</value>
+  </data>
+  <data name="Reports_Description" xml:space="preserve">
+    <value>生成されたレポートとエクスポートオプションがここに表示されます。</value>
+  </data>
+  <data name="Status_Ready" xml:space="preserve">
+    <value>準備完了</value>
+  </data>
+  <data name="Status_CurrentPage" xml:space="preserve">
+    <value>現在のページ：</value>
+  </data>
+  <data name="Status_Theme" xml:space="preserve">
+    <value>テーマ：</value>
+  </data>
+  <data name="Status_Language" xml:space="preserve">
+    <value>言語：</value>
+  </data>
+  <data name="Status_Theme_Dark" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+  <data name="Status_Theme_Light" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="Status_Theme_BlueTech" xml:space="preserve">
+    <value>ブルーテック</value>
+  </data>
+  <data name="Status_Page_Overview" xml:space="preserve">
+    <value>概要</value>
+  </data>
+  <data name="Status_Page_Analytics" xml:space="preserve">
+    <value>分析</value>
+  </data>
+  <data name="Status_Page_Reports" xml:space="preserve">
+    <value>レポート</value>
+  </data>
+  <data name="Status_Page_Settings" xml:space="preserve">
+    <value>設定</value>
+  </data>
+</root>

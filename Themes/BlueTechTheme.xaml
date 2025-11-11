@@ -5,7 +5,10 @@
 
     <!-- Solid Brushes -->
     <SolidColorBrush x:Key="NavBackgroundBrush" Color="#1A1F2E"/>
-    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#1E2433"/>
+    <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.95">
+        <GradientStop Color="#1E2433" Offset="0"/>
+        <GradientStop Color="#1A1F2E" Offset="1"/>
+    </LinearGradientBrush>
     <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#141922"/>
     <SolidColorBrush x:Key="TextBrush" Color="#E3E8F0"/>
     <SolidColorBrush x:Key="TextSecondaryBrush" Color="#8B95A8"/>

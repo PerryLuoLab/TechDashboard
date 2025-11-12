@@ -6,8 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Microsoft.Extensions.DependencyInjection;
 using TechDashboard.ViewModels;
-using TechDashboard.Helpers;
+using TechDashboard.Services.Interfaces;
 
 namespace TechDashboard
 {
@@ -24,15 +25,19 @@ namespace TechDashboard
         private double _dragStartWidth;
         private bool _isAnimating = false;
 
-        // Double-click detection
-        private DateTime _lastClickTime = DateTime.MinValue;
-        private Point _lastClickPosition = new Point(0, 0);
-        private const int DoubleClickTimeThresholdMs = 400;
-        private const double DoubleClickDistanceThreshold = 10.0;
+        // Services (injected via IoC container)
+        private readonly ILocalizationService _localizationService;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            // Get services from IoC container
+            _localizationService = App.Services.GetRequiredService<ILocalizationService>();
+            
+            // Set DataContext using DI
+            DataContext = App.Services.GetRequiredService<MainViewModel>();
+
             Loaded += OnLoaded;
         }
 
@@ -222,8 +227,8 @@ namespace TechDashboard
                 // Get the text brush from resources
                 var textBrush = Application.Current.TryFindResource("TextBrush") as SolidColorBrush ?? Brushes.White;
 
-                // Use LocalizationHelper to get localized strings
-                var dashboardText = LocalizationHelper.GetString("Nav_Dashboard");
+                // Use ILocalizationService instead of static LocalizationHelper
+                var dashboardText = _localizationService.GetString("Nav_Dashboard");
                 if (string.IsNullOrEmpty(dashboardText)) dashboardText = "DASHBOARD";
                 
                 var dashboardTextWidth = new FormattedText(
@@ -240,14 +245,14 @@ namespace TechDashboard
 
                 var navTexts = new[]
                 {
-                    LocalizationHelper.GetString("Nav_Overview"),
-                    LocalizationHelper.GetString("Nav_Analytics"),
-                    LocalizationHelper.GetString("Nav_Reports"),
-                    LocalizationHelper.GetString("Nav_Settings"),
-                    LocalizationHelper.GetString("Nav_Collapse")
+                    _localizationService.GetString("Nav_Overview"),
+                    _localizationService.GetString("Nav_Analytics"),
+                    _localizationService.GetString("Nav_Reports"),
+                    _localizationService.GetString("Nav_Settings"),
+                    _localizationService.GetString("Nav_Collapse")
                 };
 
-                var expandText = LocalizationHelper.GetString("Nav_Expand");
+                var expandText = _localizationService.GetString("Nav_Expand");
                 if (!string.IsNullOrEmpty(expandText) && expandText.Length > 0)
                 {
                     var allTexts = navTexts.ToList();

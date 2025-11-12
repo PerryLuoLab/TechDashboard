@@ -1,19 +1,29 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using TechDashboard.Infrastructure;
-using TechDashboard.Helpers;
+using TechDashboard.Services.Interfaces;
 
 namespace TechDashboard.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
+        private readonly ILocalizationService _localizationService;
+        private readonly IThemeService _themeService;
+
         private bool _isNavExpanded = true;
-        private string _currentTheme = "Dark";
+        private string _currentTheme = "Light";
         private string _currentLanguage = "en-US";
         private string _currentPage = "Overview";
         private double _navWidth = 260;
 
-        public MainViewModel()
+        public MainViewModel(ILocalizationService localizationService, IThemeService themeService)
         {
+            _localizationService = localizationService ?? throw new System.ArgumentNullException(nameof(localizationService));
+            _themeService = themeService ?? throw new System.ArgumentNullException(nameof(themeService));
+
+            // Initialize with current culture
+            _currentLanguage = _localizationService.CurrentCulture.Name;
+            _currentTheme = _themeService.CurrentTheme;
+
             ToggleNavCommand = new RelayCommand(_ => ToggleNavigation());
             NavigateCommand = new RelayCommand(param => NavigateToPage(param?.ToString()));
             ChangeThemeCommand = new RelayCommand(param => ChangeTheme(param?.ToString()));
@@ -77,23 +87,9 @@ namespace TechDashboard.ViewModels
         public bool IsReportsPage => CurrentPage == "Reports";
         public bool IsSettingsPage => CurrentPage == "Settings";
 
-        public string CurrentLanguageDisplay => LocalizationHelper.GetLanguageDisplayName(CurrentLanguage);
+        public string CurrentLanguageDisplay => _localizationService.GetLanguageDisplayName(CurrentLanguage);
 
-        public string CurrentThemeDisplay
-        {
-            get
-            {
-                var themeKey = CurrentTheme switch
-                {
-                    "Dark" => "Status_Theme_Dark",
-                    "Light" => "Status_Theme_Light",
-                    "BlueTech" => "Status_Theme_BlueTech",
-                    _ => "Status_Theme_Dark"
-                };
-
-                return LocalizationHelper.GetString(themeKey);
-            }
-        }
+        public string CurrentThemeDisplay => _themeService.GetThemeDisplayName(CurrentTheme);
 
         public string CurrentPageDisplay
         {
@@ -108,7 +104,7 @@ namespace TechDashboard.ViewModels
                     _ => "Status_Page_Overview"
                 };
 
-                return LocalizationHelper.GetString(pageKey);
+                return _localizationService.GetString(pageKey);
             }
         }
 
@@ -145,7 +141,7 @@ namespace TechDashboard.ViewModels
             if (!string.IsNullOrEmpty(themeName))
             {
                 CurrentTheme = themeName;
-                App.ApplyTheme(themeName);
+                _themeService.ApplyTheme(themeName);
             }
         }
 
@@ -154,12 +150,16 @@ namespace TechDashboard.ViewModels
             if (!string.IsNullOrEmpty(languageCode))
             {
                 CurrentLanguage = languageCode;
-                
-                // Use WPFLocalizeExtension to change language
-                LocalizationHelper.ChangeLanguage(languageCode);
-                
-                // Also call App.ApplyLanguage which now uses LocalizeDictionary internally
-                App.ApplyLanguage(languageCode);
+                _localizationService.ChangeLanguage(languageCode);
+
+                // Force UI update
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+                    {
+                        window.Language = System.Windows.Markup.XmlLanguage.GetLanguage(languageCode);
+                    }
+                });
             }
         }
 

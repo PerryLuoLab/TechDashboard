@@ -14,9 +14,7 @@
         UseLayoutRounding="True"
         SnapsToDevicePixels="True">
 
-    <Window.DataContext>
-        <vm:MainViewModel/>
-    </Window.DataContext>
+    <!-- DataContext will be set in code-behind using DI -->
 
     <Border Background="{DynamicResource WindowBackgroundBrush}" 
             BorderBrush="{DynamicResource BorderBrush}" 

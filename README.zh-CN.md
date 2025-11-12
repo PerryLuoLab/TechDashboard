@@ -98,39 +98,47 @@
 ```
 TechDashboard/
 ├── App.xaml                    # 应用程序入口点和资源
-├── App.xaml.cs                 # 主题和语言管理逻辑
+├── App.xaml.cs                 # IoC容器配置和服务初始化
 ├── MainWindow.xaml             # 主窗口 UI 定义
-├── MainWindow.xaml.cs          # 窗口逻辑和拖拽处理
+├── MainWindow.xaml.cs          # 窗口逻辑和导航处理
+├── ServiceCollectionExtensions.cs  # 依赖注入服务注册
+│
+├── Options/
+│   └── LocalizationOptions.cs  # 本地化配置选项
+│
+├── Services/
+│   ├── Interfaces/
+│   │   ├── ILocalizationService.cs  # 本地化服务接口
+│   │   └── IThemeService.cs         # 主题服务接口
+│   ├── LocalizationService.cs       # 本地化服务实现
+│   └── ThemeService.cs              # 主题服务实现
 │
 ├── Converters/
-│   ├── ThemeConverter.cs       # 主题/语言切换转换器
-│   └── LanguageConverter.cs    # 语言转换器
+│   ├── ThemeConverter.cs       # 主题转换器
+│   ├── LanguageConverter.cs    # 语言转换器
+│   └── BoolToVisibilityConverter.cs  # 可见性转换器
 │
 ├── Infrastructure/
 │   ├── ObservableObject.cs     # ViewModel 基类
 │   └── RelayCommand.cs         # 通用命令实现
 │
 ├── Helpers/
-│   ├── NavigationConstants.cs  # 导航常量
-│   └── ThemeManager.cs         # 主题管理辅助类
-│
-├── Services/
-│   └── NavigationPanelService.cs # 导航面板服务
+│   └── NavigationConstants.cs  # 导航常量配置
 │
 ├── ViewModels/
-│   └── MainViewModel.cs        # 主窗口 ViewModel
+│   └── MainViewModel.cs        # 主窗口 ViewModel（使用依赖注入）
 │
 ├── Themes/
 │   ├── DarkTheme.xaml          # 深色主题（黑灰色调）
 │   ├── LightTheme.xaml         # 浅色主题
 │   └── BlueTechTheme.xaml      # 蓝色科技主题
 │
-└── Languages/
-    ├── en-US.xaml              # 英语资源
-    ├── zh-CN.xaml              # 简体中文资源
-    ├── zh-TW.xaml              # 繁体中文资源
-    ├── ko-KR.xaml              # 韩语资源
-    └── ja-JP.xaml              # 日语资源
+└── Resources/
+    ├── Strings.resx            # 英语资源（中性文化）
+    ├── Strings.zh-CN.resx      # 简体中文资源
+    ├── Strings.zh-TW.resx      # 繁体中文资源
+    ├── Strings.ko-KR.resx      # 韩语资源
+    └── Strings.ja-JP.resx      # 日语资源
 ```
 
 ## 🎨 主题定制

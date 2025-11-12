@@ -97,39 +97,47 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 ```
 TechDashboard/
 ├── App.xaml                    # Application entry point & resources
-├── App.xaml.cs                 # Theme & language management logic
+├── App.xaml.cs                 # IoC container configuration & service initialization
 ├── MainWindow.xaml             # Main window UI definition
-├── MainWindow.xaml.cs          # Window logic & drag handling
+├── MainWindow.xaml.cs          # Window logic & navigation handling
+├── ServiceCollectionExtensions.cs  # Dependency injection service registration
+│
+├── Options/
+│   └── LocalizationOptions.cs  # Localization configuration options
+│
+├── Services/
+│   ├── Interfaces/
+│   │   ├── ILocalizationService.cs  # Localization service interface
+│   │   └── IThemeService.cs         # Theme service interface
+│   ├── LocalizationService.cs       # Localization service implementation
+│   └── ThemeService.cs              # Theme service implementation
 │
 ├── Converters/
-│   ├── ThemeConverter.cs       # Theme/Language toggle converters
-│   └── LanguageConverter.cs   # Language converter
+│   ├── ThemeConverter.cs       # Theme converter
+│   ├── LanguageConverter.cs    # Language converter
+│   └── BoolToVisibilityConverter.cs  # Visibility converter
 │
 ├── Infrastructure/
 │   ├── ObservableObject.cs    # Base class for ViewModels
 │   └── RelayCommand.cs         # Generic command implementation
 │
 ├── Helpers/
-│   ├── NavigationConstants.cs  # Navigation constants
-│   └── ThemeManager.cs        # Theme management helper
-│
-├── Services/
-│   └── NavigationPanelService.cs # Navigation panel service
+│   └── NavigationConstants.cs  # Navigation constants configuration
 │
 ├── ViewModels/
-│   └── MainViewModel.cs        # Main window ViewModel
+│   └── MainViewModel.cs        # Main window ViewModel (with dependency injection)
 │
 ├── Themes/
 │   ├── DarkTheme.xaml          # Dark theme (Gray-Black tones)
 │   ├── LightTheme.xaml         # Light theme
 │   └── BlueTechTheme.xaml      # Blue tech theme
 │
-└── Languages/
-    ├── en-US.xaml              # English resources
-    ├── zh-CN.xaml              # Simplified Chinese resources
-    ├── zh-TW.xaml              # Traditional Chinese resources
-    ├── ko-KR.xaml              # Korean resources
-    └── ja-JP.xaml              # Japanese resources
+└── Resources/
+    ├── Strings.resx            # English resources (neutral culture)
+    ├── Strings.zh-CN.resx      # Simplified Chinese resources
+    ├── Strings.zh-TW.resx      # Traditional Chinese resources
+    ├── Strings.ko-KR.resx      # Korean resources
+    └── Strings.ja-JP.resx      # Japanese resources
 ```
 
 ## 🎨 Theme Customization

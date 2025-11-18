@@ -17,6 +17,12 @@
     <SolidColorBrush x:Key="SelectedBrush" Color="#00D4FF"/>
     <SolidColorBrush x:Key="BorderBrush" Color="#2D3548"/>
 
+    <!-- Status Color Brushes - Optimized for Blue Tech Theme -->
+    <SolidColorBrush x:Key="SuccessBrush" Color="#00E676"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#FF5252"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="#FFAB40"/>
+    <SolidColorBrush x:Key="InfoBrush" Color="#40C4FF"/>
+
     <!-- Window Background Gradient with Transparency -->
     <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
         <GradientStop Color="#0F1419" Offset="0"/>

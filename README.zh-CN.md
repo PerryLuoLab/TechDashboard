@@ -5,11 +5,11 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![WPF](https://img.shields.io/badge/WPF-Windows-blue.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.1-blue.svg)](V1.1_UPDATE_NOTES.zh-CN.md)
 
 基于 .NET 8 WPF 构建的现代、功能丰富的仪表板应用程序，展示了先进的 UI/UX 模式和 MVVM 架构。
 
 ## 📸 界面截图
-
 
 *主仪表板界面，包含导航面板*
 
@@ -35,22 +35,23 @@
 ## ✨ 功能特性
 
 ### 🎨 现代 UI/UX
-- **三种精美主题**：深色（黑灰色调）、浅色和蓝色科技
+- **三种精美主题**：深色（黑灰色调）、浅色和蓝色科技，每个主题都经过精心优化
+- **语义化颜色系统** ✨ v1.1：为每个主题定制的状态颜色（成功、错误、警告、信息），确保最佳对比度和可读性
 - **流畅动画**：所有 UI 过渡都使用缓动函数进行动画处理
 - **响应式布局**：适配各种屏幕尺寸的自适应设计
 - **渐变效果**：整个应用使用精美的渐变和阴影效果
 
 ### 🌐 国际化 (i18n)
-- **多语言支持**：英语、简体中文（简体中文）、繁体中文（繁體中文）、韩语（한국어）、日语（日本語）
+- **多语言支持**：英语、简体中文、繁体中文、韩语、日语
 - **动态切换**：无需重启即可即时更改语言
 - **基于资源**：通过创建新的资源字典轻松添加更多语言
 
 ### 🔄 智能导航
 - **可折叠侧边栏**：200ms 流畅展开/折叠动画
-- **自动宽度计算**：导航宽度根据最长文本自动调整（包括 DASHBOARD Logo 和所有导航项）
+- **自动宽度计算**：导航宽度根据最长文本自动调整
 - **语言感知调整**：语言更改时自动重新计算并更新宽度
 - **拖拽调整大小**：拖拽导航面板边缘自定义宽度
-- **双击展开/折叠**：双击空白区域展开（折叠时）或折叠（展开时）
+- **双击展开/折叠**：双击空白区域展开或折叠
 - **视觉反馈**：悬停效果和选中状态指示器
 
 ### 🎯 技术亮点
@@ -59,6 +60,8 @@
 - **命令模式**：可复用的 `RelayCommand` 实现
 - **主题管理**：使用合并字典进行动态主题切换
 - **类型安全资源**：对本地化字符串进行强类型访问
+- **常量管理** ✨ v1.1：集中的常量类消除魔法字符串
+- **完整文档** ✨ v1.1：所有公共API都有XML文档注释
 
 ## 📋 环境要求
 
@@ -114,27 +117,30 @@ TechDashboard/
 │   └── ThemeService.cs              # 主题服务实现
 │
 ├── Converters/
-│   ├── ThemeConverter.cs       # 主题转换器
-│   ├── LanguageConverter.cs    # 语言转换器
-│   └── BoolToVisibilityConverter.cs  # 可见性转换器
+│   ├── ThemeConverter.cs            # 主题转换器
+│   ├── LanguageConverter.cs         # 语言转换器
+│   └── BoolToVisibilityConverter.cs # 可见性转换器 ✨ v1.1
 │
 ├── Infrastructure/
 │   ├── ObservableObject.cs     # ViewModel 基类
-│   └── RelayCommand.cs         # 通用命令实现
+│   ├── RelayCommand.cs         # 通用命令实现
+│   └── GridLengthAnimation.cs  # 网格长度动画
 │
 ├── Helpers/
-│   └── NavigationConstants.cs  # 导航常量配置
+│   ├── NavigationConstants.cs  # 导航常量配置
+│   ├── ThemeConstants.cs       # 主题常量 ✨ v1.1
+│   └── LanguageConstants.cs    # 语言常量 ✨ v1.1
 │
 ├── ViewModels/
-│   └── MainViewModel.cs        # 主窗口 ViewModel（使用依赖注入）
+│   └── MainViewModel.cs        # 主窗口 ViewModel
 │
 ├── Themes/
-│   ├── DarkTheme.xaml          # 深色主题（黑灰色调）
-│   ├── LightTheme.xaml         # 浅色主题
-│   └── BlueTechTheme.xaml      # 蓝色科技主题
+│   ├── DarkTheme.xaml          # 深色主题（优化的状态颜色）✨ v1.1
+│   ├── LightTheme.xaml         # 浅色主题（优化的状态颜色）✨ v1.1
+│   └── BlueTechTheme.xaml      # 蓝色科技主题（优化的状态颜色）✨ v1.1
 │
 └── Resources/
-    ├── Strings.resx            # 英语资源（中性文化）
+    ├── Strings.resx            # 英语资源
     ├── Strings.zh-CN.resx      # 简体中文资源
     ├── Strings.zh-TW.resx      # 繁体中文资源
     ├── Strings.ko-KR.resx      # 韩语资源
@@ -143,26 +149,23 @@ TechDashboard/
 
 ## 🎨 主题定制
 
-### 添加新主题
+### 语义化颜色系统 ✨ v1.1
 
-1. 在 `Themes/` 文件夹中创建新的 XAML 文件（例如，`GreenTheme.xaml`）
-2. 定义与现有主题模式匹配的颜色资源：
+每个主题现在包含完整的语义化状态颜色，确保最佳可读性：
 
+| 主题 | 成功 | 错误 | 警告 | 信息 |
+|------|------|------|------|------|
+| **Dark** | #4CAF50 | #F44336 | #FF9800 | #2196F3 |
+| **BlueTech** | #00E676 | #FF5252 | #FFAB40 | #40C4FF |
+| **Light** | #1A7F37 | #CF222E | #BF8700 | #0969DA |
+
+**使用示例**：
 ```xml
-<ResourceDictionary>
-    <!-- 定义您的颜色 -->
-    <Color x:Key="WindowBgColor">#YourColor</Color>
-    <Color x:Key="NavBgColor">#YourColor</Color>
-    <!-- ... 更多颜色 ... -->
-    
-    <!-- 创建画笔 -->
-    <SolidColorBrush x:Key="NavBackgroundBrush" Color="{StaticResource NavBgColor}"/>
-    <!-- ... 更多画笔 ... -->
-</ResourceDictionary>
+<TextBlock Text="成功!" Foreground="{DynamicResource SuccessBrush}"/>
+<TextBlock Text="错误" Foreground="{DynamicResource ErrorBrush}"/>
+<TextBlock Text="警告" Foreground="{DynamicResource WarningBrush}"/>
+<TextBlock Text="信息" Foreground="{DynamicResource InfoBrush}"/>
 ```
-
-3. 在 `MainWindow.xaml` 设置页面添加切换按钮
-4. 选择后主题会自动应用
 
 ### 关键主题资源
 
@@ -175,56 +178,33 @@ TechDashboard/
 | `TextSecondaryBrush` | 次要文本颜色 |
 | `AccentBrush` | 强调/高亮颜色 |
 | `BorderBrush` | 边框颜色 |
+| `SuccessBrush` ✨ | 成功状态颜色 |
+| `ErrorBrush` ✨ | 错误状态颜色 |
+| `WarningBrush` ✨ | 警告状态颜色 |
+| `InfoBrush` ✨ | 信息状态颜色 |
+
+### 添加新主题
+
+1. 在 `Themes/` 文件夹中创建新的 XAML 文件
+2. 定义颜色资源（包括状态颜色）
+3. 在 `ThemeConstants.cs` 中注册主题
+4. 在 `MainWindow.xaml` 设置页面添加切换按钮
 
 ## 🌍 添加新语言
 
 ### 分步指南
 
 1. **创建语言资源文件**
-   - 从 `Languages/` 文件夹复制现有语言文件
-   - 重命名为匹配语言代码（例如，日语使用 `ja-JP.xaml`）
+   - 从 `Resources/` 文件夹复制 `Strings.resx`
+   - 重命名为对应语言代码（如 `Strings.fr-FR.resx`）
 
-2. **翻译所有字符串资源**
-   ```xml
-   <ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib">
-       <system:String x:Key="Menu_File">ファイル</system:String>
-       <system:String x:Key="Menu_Edit">編集</system:String>
-       <!-- ... 更多翻译 ... -->
-   </ResourceDictionary>
-   ```
+2. **翻译字符串资源**
+   - 在 Visual Studio 中打开 `.resx` 文件
+   - 翻译所有字符串值
 
-3. 在 `MainWindow.xaml` 中添加语言选择器按钮：
-   ```xml
-   <ToggleButton Content="日本語" 
-                 Style="{StaticResource LanguageToggleButton}"
-                 IsChecked="{Binding CurrentLanguage, 
-                            Converter={StaticResource LanguageConverter}, 
-                            ConverterParameter=ja-JP}"
-                 Command="{Binding ChangeLanguageCommand}" 
-                 CommandParameter="ja-JP">
-       <ToggleButton.Tag>
-           <SolidColorBrush Color="#BC002D"/>
-       </ToggleButton.Tag>
-   </ToggleButton>
-   ```
-
-4. 在 `MainViewModel.cs` 中更新 ViewModel 显示名称映射：
-   ```csharp
-   public string CurrentLanguageDisplay
-   {
-       get
-       {
-           return CurrentLanguage switch
-           {
-               "en-US" => "English",
-               "zh-CN" => "简体中文",
-               "ko-KR" => "한국어",
-               "ja-JP" => "日本語",  // 添加此行
-               _ => "English"
-           };
-       }
-   }
-   ```
+3. **在代码中注册**
+   - 更新 `LanguageConstants.cs` 添加新语言代码
+   - 在 `MainWindow.xaml` 添加语言选择按钮
 
 ## 🔧 高级功能
 
@@ -234,112 +214,68 @@ TechDashboard/
 |--------|----------|
 | 点击切换按钮 | 流畅的展开/折叠动画 |
 | 拖拽面板边缘 | 调整到自定义宽度 |
-| 双击（折叠时） | 快速展开 |
+| 双击空白区域 | 快速展开/折叠 |
 | 鼠标悬停边缘 | 显示调整大小光标 |
 
-### 宽度计算
+### 使用常量类 ✨ v1.1
 
-导航宽度根据以下因素自动调整：
-- 最长导航项文本长度
-- 当前字体大小和字体族
-- 图标宽度和内边距
-- 配置的边距
-
-公式：`Width = IconWidth + Margin + MaxTextWidth`
-
-### 主题切换逻辑
-
-```
-用户点击主题按钮
-    ↓
-ViewModel.ChangeTheme(themeName)
-    ↓
-App.ApplyTheme(themeName)
-    ↓
-移除旧主题 ResourceDictionary
-    ↓
-加载新主题 ResourceDictionary
-    ↓
-通过 DynamicResource 绑定自动更新 UI
-```
-
-## 🎯 关键实现细节
-
-### 1. 智能宽度计算
 ```csharp
-private void CalculateOptimalNavWidth()
-{
-    // 使用 FormattedText 测量实际文本宽度
-    // 添加图标、内边距和边距
-    // 限制在最小值（60）和最大值（350）之间
-}
-```
+using TechDashboard.Helpers;
 
-### 2. 流畅拖拽处理
-```csharp
-// 拖拽阈值：100px 中点
-// 对齐到折叠（60px）或展开（计算的宽度）
-```
- 动画持续时间：200ms，使用 EaseInOut
-```csharp
-// 资源管理
-- 主题使用 `DynamicResource` 进行热交换
-- 语言使用 `system:String` 进行本地化
-- 所有资源都适当作用域和类型化
+// 主题常量
+string theme = ThemeConstants.ThemeNames.Dark;
+string key = ThemeConstants.ResourceKeys.SuccessBrush;
+
+// 语言常量
+string lang = LanguageConstants.CultureCodes.SimplifiedChinese;
+string display = LanguageConstants.GetDisplayName(lang);
 ```
 
 ## 🐛 故障排除
 
 ### XAML 设计器问题（仅设计时）
-如果您在 Visual Studio XAML 设计器中看到类似错误：
-```
-Could not load file or assembly 'WPFLocalizeExtension'...
-```
+如果在 Visual Studio XAML 设计器中看到 WPFLocalizeExtension 错误：
 
-**不要担心！** 这是 WPFLocalizeExtension 的已知设计时限制：
-- ✅ **构建成功**：`dotnet build` 正常工作
-- ✅ **运行时正常**：应用程序完美运行
-- ✅ **本地化有效**：所有翻译正确显示
-- ❌ **仅设计器**：Visual Studio 设计器无法加载扩展
+**不要担心！** 这是已知的设计时限制：
+- ✅ 构建成功：`dotnet build` 正常工作
+- ✅ 运行时正常：应用程序完美运行
+- ✅ 本地化有效：所有翻译正确显示
+- ❌ 仅设计器：Visual Studio 设计器无法加载扩展
 
-**解决方案：**
-1. **忽略设计器错误**（推荐）- 它们不影响功能
-2. **使用 XAML 代码视图** 而不是设计器视图
-3. **使用热重载** - 运行应用程序 (F5) 并实时预览更改
-
-📖 查看 [XAML_DESIGNER_SOLUTION.zh-CN.md](XAML_DESIGNER_SOLUTION.zh-CN.md) 了解详细说明
+**解决方案**：忽略设计器错误或使用 XAML 代码视图
 
 ### 主题未应用
 - 确保主题文件存在于 `Themes/` 文件夹中
-- 检查主题和使用之间的资源键是否匹配
 - 验证使用了 `DynamicResource`（而非 `StaticResource`）
 
 ### 语言未更改
-- 确认语言文件存在于 `Languages/` 文件夹中
-- 检查是否定义了所有必需的字符串键
-- 如果更改未立即显示，请重启应用
-
-### 导航面板问题
-- 如果拖拽不工作：检查是否有元素阻止鼠标输入
-- 如果宽度不正确：验证计算中的字体大小是否与 UI 匹配
-- 如果动画不流畅：确保没有其他动画同时运行
+- 确认语言文件存在于 `Resources/` 文件夹中
+- 检查 `LanguageConstants.cs` 中是否注册了该语言
 
 ## 📈 性能提示
 
 1. **资源字典**：合并字典加载一次并缓存
-2. **动画**：使用 `BeginAnimation` 进行硬件加速变换
-3. **绑定**：只读属性使用 OneWay 绑定减少开销
-4. **布局**：尽可能设置固定高度以避免不必要的布局传递
+2. **动画**：使用 `GridLengthAnimation` 进行硬件加速
+3. **绑定**：只读属性使用 OneWay 绑定
+4. **常量使用**：使用常量类避免字符串分配
+
+## 📝 更新日志
+
+### v1.1 (最新) - 2024
+- ✅ 为所有主题添加优化的状态颜色画刷
+- ✅ 创建 `ThemeConstants.cs` 和 `LanguageConstants.cs`
+- ✅ 分离 `BoolToVisibilityConverter` 到独立文件
+- ✅ 添加完整的 XML 文档注释
+- ✅ 消除魔法字符串，提高类型安全性
+
+详情：[V1.1_UPDATE_NOTES.zh-CN.md](V1.1_UPDATE_NOTES.zh-CN.md)
+
+### v1.0 - 2024
+- 初始版本发布
 
 ## 🤝 贡献
 
-欢迎贡献！请按照以下步骤：
-
-1. Fork 仓库
-2. 创建功能分支（`git checkout -b feature/AmazingFeature`）
-3. 提交更改（`git commit -m 'Add some AmazingFeature'`）
-4. 推送到分支（`git push origin feature/AmazingFeature`）
-5. 打开 Pull Request
+欢迎贡献！请 Fork 仓库并提交 Pull Request。
 
 ## 📝 许可证
 
@@ -347,14 +283,13 @@ Could not load file or assembly 'WPFLocalizeExtension'...
 
 ## 🙏 致谢
 
-- Microsoft 的 WPF 团队提供优秀的框架
-- Material Design 图标（Segoe MDL2 Assets）
-- 社区贡献者的反馈和建议
+- Microsoft WPF 团队
+- Material Design 和 GitHub Design System
+- 社区贡献者
 
 ## 📞 支持
 
 - **Issues**：[GitHub Issues](https://github.com/PerryLuoLab/TechDashboard/issues)
-- **Discussions**：[GitHub Discussions](https://github.com/PerryLuoLab/TechDashboard/discussions)
 - **Email**：perryluox@yeah.net
 
 ---

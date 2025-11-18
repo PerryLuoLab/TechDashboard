@@ -5,6 +5,7 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![WPF](https://img.shields.io/badge/WPF-Windows-blue.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.1-blue.svg)](V1.1_UPDATE_NOTES.md)
 
 A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing advanced UI/UX patterns and MVVM architecture.
 
@@ -34,22 +35,23 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 ## ✨ Features
 
 ### 🎨 Modern UI/UX
-- **Three Premium Themes**: Dark (Gray-Black), Light, and Blue Tech
-- **Smooth Animations**: All UI transitions are animated with easing functions
-- **Responsive Layout**: Adaptive design that works on various screen sizes
-- **Gradient Effects**: Beautiful gradients and shadow effects throughout
+- **Three Premium Themes**: Dark (Gray-Black), Light, and Blue Tech - all carefully optimized
+- **Semantic Color System** ✨ v1.1: Customized status colors (Success, Error, Warning, Info) for each theme, ensuring optimal contrast and readability
+- **Smooth Animations**: All UI transitions animated with easing functions
+- **Responsive Layout**: Adaptive design for various screen sizes
+- **Gradient Effects**: Beautiful gradients and shadows throughout
 
 ### 🌐 Internationalization (i18n)
-- **Multi-Language Support**: English, Simplified Chinese (简体中文), Traditional Chinese (繁體中文), Korean (한국어), Japanese (日本語)
+- **Multi-Language Support**: English, Simplified Chinese, Traditional Chinese, Korean, Japanese
 - **Dynamic Switching**: Change language on-the-fly without restart
-- **Resource-Based**: Easy to add more languages by creating new resource dictionaries
+- **Resource-Based**: Easy to add more languages
 
 ### 🔄 Smart Navigation
 - **Collapsible Sidebar**: Smooth expand/collapse with 200ms animation
-- **Auto-Width Calculation**: Navigation width automatically adjusts to longest text (including DASHBOARD logo and all navigation items)
-- **Language-Aware Resize**: Automatically recalculates and updates width when language changes
+- **Auto-Width Calculation**: Navigation width automatically adjusts to longest text
+- **Language-Aware Resize**: Automatically recalculates width when language changes
 - **Drag-to-Resize**: Drag the navigation panel edge to custom resize
-- **Double-Click Expand/Collapse**: Double-click empty area to expand (when collapsed) or collapse (when expanded)
+- **Double-Click Expand/Collapse**: Double-click empty area to toggle
 - **Visual Feedback**: Hover effects and selected state indicators
 
 ### 🎯 Technical Highlights
@@ -58,6 +60,8 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 - **Command Pattern**: Reusable `RelayCommand` implementation
 - **Theme Management**: Dynamic theme switching with merged dictionaries
 - **Type-Safe Resources**: Strongly-typed access to localized strings
+- **Constants Management** ✨ v1.1: Centralized constant classes eliminate magic strings
+- **Complete Documentation** ✨ v1.1: All public APIs have XML documentation comments
 
 ## 📋 Requirements
 
@@ -97,71 +101,71 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 ```
 TechDashboard/
 ├── App.xaml                    # Application entry point & resources
-├── App.xaml.cs                 # IoC container configuration & service initialization
+├── App.xaml.cs                 # IoC container configuration
 ├── MainWindow.xaml             # Main window UI definition
 ├── MainWindow.xaml.cs          # Window logic & navigation handling
-├── ServiceCollectionExtensions.cs  # Dependency injection service registration
+├── ServiceCollectionExtensions.cs  # Dependency injection
 │
 ├── Options/
-│   └── LocalizationOptions.cs  # Localization configuration options
+│   └── LocalizationOptions.cs  # Localization configuration
 │
 ├── Services/
 │   ├── Interfaces/
 │   │   ├── ILocalizationService.cs  # Localization service interface
 │   │   └── IThemeService.cs         # Theme service interface
-│   ├── LocalizationService.cs       # Localization service implementation
-│   └── ThemeService.cs              # Theme service implementation
+│   ├── LocalizationService.cs       # Localization service
+│   └── ThemeService.cs              # Theme service
 │
 ├── Converters/
-│   ├── ThemeConverter.cs       # Theme converter
-│   ├── LanguageConverter.cs    # Language converter
-│   └── BoolToVisibilityConverter.cs  # Visibility converter
+│   ├── ThemeConverter.cs            # Theme converter
+│   ├── LanguageConverter.cs         # Language converter
+│   └── BoolToVisibilityConverter.cs # Visibility converter ✨ v1.1
 │
 ├── Infrastructure/
-│   ├── ObservableObject.cs    # Base class for ViewModels
-│   └── RelayCommand.cs         # Generic command implementation
+│   ├── ObservableObject.cs     # ViewModel base class
+│   ├── RelayCommand.cs         # Generic command implementation
+│   └── GridLengthAnimation.cs  # Grid length animation
 │
 ├── Helpers/
-│   └── NavigationConstants.cs  # Navigation constants configuration
+│   ├── NavigationConstants.cs  # Navigation constants
+│   ├── ThemeConstants.cs       # Theme constants ✨ v1.1
+│   └── LanguageConstants.cs    # Language constants ✨ v1.1
 │
 ├── ViewModels/
-│   └── MainViewModel.cs        # Main window ViewModel (with dependency injection)
+│   └── MainViewModel.cs        # Main window ViewModel
 │
 ├── Themes/
-│   ├── DarkTheme.xaml          # Dark theme (Gray-Black tones)
-│   ├── LightTheme.xaml         # Light theme
-│   └── BlueTechTheme.xaml      # Blue tech theme
+│   ├── DarkTheme.xaml          # Dark theme (optimized colors) ✨ v1.1
+│   ├── LightTheme.xaml         # Light theme (optimized colors) ✨ v1.1
+│   └── BlueTechTheme.xaml      # Blue tech theme (optimized colors) ✨ v1.1
 │
 └── Resources/
-    ├── Strings.resx            # English resources (neutral culture)
-    ├── Strings.zh-CN.resx      # Simplified Chinese resources
-    ├── Strings.zh-TW.resx      # Traditional Chinese resources
-    ├── Strings.ko-KR.resx      # Korean resources
-    └── Strings.ja-JP.resx      # Japanese resources
+    ├── Strings.resx            # English resources
+    ├── Strings.zh-CN.resx      # Simplified Chinese
+    ├── Strings.zh-TW.resx      # Traditional Chinese
+    ├── Strings.ko-KR.resx      # Korean
+    └── Strings.ja-JP.resx      # Japanese
 ```
 
 ## 🎨 Theme Customization
 
-### Adding a New Theme
+### Semantic Color System ✨ v1.1
 
-1. Create a new XAML file in `Themes/` folder (e.g., `GreenTheme.xaml`)
-2. Define color resources matching the pattern in existing themes:
+Each theme now includes complete semantic status color brushes for optimal readability:
 
+| Theme | Success | Error | Warning | Info |
+|-------|---------|-------|---------|------|
+| **Dark** | #4CAF50 | #F44336 | #FF9800 | #2196F3 |
+| **BlueTech** | #00E676 | #FF5252 | #FFAB40 | #40C4FF |
+| **Light** | #1A7F37 | #CF222E | #BF8700 | #0969DA |
+
+**Usage Example**:
 ```xml
-<ResourceDictionary>
-    <!-- Define your colors -->
-    <Color x:Key="WindowBgColor">#YourColor</Color>
-    <Color x:Key="NavBgColor">#YourColor</Color>
-    <!-- ... more colors ... -->
-    
-    <!-- Create brushes -->
-    <SolidColorBrush x:Key="NavBackgroundBrush" Color="{StaticResource NavBgColor}"/>
-    <!-- ... more brushes ... -->
-</ResourceDictionary>
+<TextBlock Text="Success!" Foreground="{DynamicResource SuccessBrush}"/>
+<TextBlock Text="Error" Foreground="{DynamicResource ErrorBrush}"/>
+<TextBlock Text="Warning" Foreground="{DynamicResource WarningBrush}"/>
+<TextBlock Text="Info" Foreground="{DynamicResource InfoBrush}"/>
 ```
-
-3. Add toggle button in `MainWindow.xaml` Settings page
-4. Theme automatically applies when selected
 
 ### Key Theme Resources
 
@@ -174,56 +178,33 @@ TechDashboard/
 | `TextSecondaryBrush` | Secondary text color |
 | `AccentBrush` | Accent/highlight color |
 | `BorderBrush` | Border colors |
+| `SuccessBrush` ✨ | Success status color |
+| `ErrorBrush` ✨ | Error status color |
+| `WarningBrush` ✨ | Warning status color |
+| `InfoBrush` ✨ | Info status color |
+
+### Adding a New Theme
+
+1. Create a new XAML file in `Themes/` folder
+2. Define color resources (including status colors)
+3. Register theme in `ThemeConstants.cs`
+4. Add toggle button in `MainWindow.xaml` Settings page
 
 ## 🌍 Adding New Languages
 
 ### Step-by-Step Guide
 
 1. **Create language resource file**
-   - Copy an existing language file from `Languages/` folder
-   - Rename to match language code (e.g., `ja-JP.xaml` for Japanese)
+   - Copy `Strings.resx` from `Resources/` folder
+   - Rename to match language code (e.g., `Strings.fr-FR.resx`)
 
-2. **Translate all string resources**
-   ```xml
-   <ResourceDictionary xmlns:system="clr-namespace:System;assembly=mscorlib">
-       <system:String x:Key="Menu_File">ファイル</system:String>
-       <system:String x:Key="Menu_Edit">編集</system:String>
-       <!-- ... more translations ... -->
-   </ResourceDictionary>
-   ```
+2. **Translate string resources**
+   - Open `.resx` file in Visual Studio
+   - Translate all string values
 
-3. **Add language selector button** in `MainWindow.xaml`:
-   ```xml
-   <ToggleButton Content="日本語" 
-                 Style="{StaticResource LanguageToggleButton}"
-                 IsChecked="{Binding CurrentLanguage, 
-                            Converter={StaticResource LanguageConverter}, 
-                            ConverterParameter=ja-JP}"
-                 Command="{Binding ChangeLanguageCommand}" 
-                 CommandParameter="ja-JP">
-       <ToggleButton.Tag>
-           <SolidColorBrush Color="#BC002D"/>
-       </ToggleButton.Tag>
-   </ToggleButton>
-   ```
-
-4. **Update ViewModel** display name mapping in `MainViewModel.cs`:
-   ```csharp
-   public string CurrentLanguageDisplay
-   {
-       get
-       {
-           return CurrentLanguage switch
-           {
-               "en-US" => "English",
-               "zh-CN" => "简体中文",
-               "ko-KR" => "한국어",
-               "ja-JP" => "日本語",  // Add this line
-               _ => "English"
-           };
-       }
-   }
-   ```
+3. **Register in code**
+   - Update `LanguageConstants.cs` to add new language code
+   - Add language selector button in `MainWindow.xaml`
 
 ## 🔧 Advanced Features
 
@@ -233,111 +214,68 @@ TechDashboard/
 |--------|----------|
 | Click toggle button | Smooth expand/collapse animation |
 | Drag panel edge | Resize to custom width |
-| Double-click (collapsed) | Quick expand |
+| Double-click empty area | Quick expand/collapse |
 | Mouse hover edge | Show resize cursor |
 
-### Width Calculation
+### Using Constants Classes ✨ v1.1
 
-The navigation width automatically adjusts based on:
-- Longest navigation item text length
-- Current font size and family
-- Icon width and padding
-- Configured margins
-
-Formula: `Width = IconWidth + Margin + MaxTextWidth`
-
-### Theme Switching Logic
-
-```
-User clicks theme button
-    ↓
-ViewModel.ChangeTheme(themeName)
-    ↓
-App.ApplyTheme(themeName)
-    ↓
-Remove old theme ResourceDictionary
-    ↓
-Load new theme ResourceDictionary
-    ↓
-UI automatically updates via DynamicResource bindings
-```
-
-## 🎯 Key Implementation Details
-
-### 1. Smart Width Calculation
 ```csharp
-private void CalculateOptimalNavWidth()
-{
-    // Measures actual text width using FormattedText
-    // Adds icon, padding, and margins
-    // Clamps between min (60) and max (350) values
-}
-```
+using TechDashboard.Helpers;
 
-### 2. Smooth Drag Handling
-```csharp
-// Drag threshold: 100px midpoint
-// Snap to collapsed (60px) or expanded (calculated)
-// Animation duration: 200ms with EaseInOut
-```
+// Theme constants
+string theme = ThemeConstants.ThemeNames.Dark;
+string key = ThemeConstants.ResourceKeys.SuccessBrush;
 
-### 3. Resource Management
-- Themes use `DynamicResource` for hot-swapping
-- Languages use `system:String` for localization
-- All resources properly scoped and typed
+// Language constants
+string lang = LanguageConstants.CultureCodes.SimplifiedChinese;
+string display = LanguageConstants.GetDisplayName(lang);
+```
 
 ## 🐛 Troubleshooting
 
 ### XAML Designer Issues (Design-Time Only)
-If you see errors in Visual Studio XAML designer like:
-```
-Could not load file or assembly 'WPFLocalizeExtension'...
-```
+If you see WPFLocalizeExtension errors in Visual Studio XAML designer:
 
-**Don't worry!** This is a known design-time limitation of WPFLocalizeExtension:
-- ✅ **Build succeeds**: `dotnet build` works fine
-- ✅ **Runtime works**: Application runs perfectly
-- ✅ **Localization works**: All translations display correctly
-- ❌ **Designer only**: Visual Studio designer can't load the extension
+**Don't worry!** This is a known design-time limitation:
+- ✅ Build succeeds: `dotnet build` works fine
+- ✅ Runtime works: Application runs perfectly
+- ✅ Localization works: All translations display correctly
+- ❌ Designer only: Visual Studio designer can't load the extension
 
-**Solutions:**
-1. **Ignore the designer errors** (Recommended) - They don't affect functionality
-2. **Use XAML code view** instead of designer view
-3. **Use Hot Reload** - Run the app (F5) and preview changes in real-time
-
-📖 See [XAML_DESIGNER_SOLUTION.zh-CN.md](XAML_DESIGNER_SOLUTION.zh-CN.md) for detailed explanation (中文说明)
+**Solutions**: Ignore the designer errors or use XAML code view
 
 ### Theme Not Applying
 - Ensure theme file exists in `Themes/` folder
-- Check resource keys match between theme and usage
 - Verify `DynamicResource` is used (not `StaticResource`)
 
 ### Language Not Changing
-- Confirm language file exists in `Languages/` folder
-- Check all required string keys are defined
-- Restart app if changes don't appear immediately
-
-### Navigation Panel Issues
-- If drag doesn't work: Check for element blocking mouse input
-- If width incorrect: Verify font size in calculation matches UI
-- If animation jerky: Ensure no other animations running simultaneously
+- Confirm language file exists in `Resources/` folder
+- Check if language is registered in `LanguageConstants.cs`
 
 ## 📈 Performance Tips
 
-1. **Resource Dictionaries**: Merged dictionaries are loaded once and cached
-2. **Animations**: Use `BeginAnimation` for hardware-accelerated transforms
-3. **Bindings**: OneWay bindings for read-only properties reduce overhead
-4. **Layout**: Avoid unnecessary layout passes by setting fixed heights where possible
+1. **Resource Dictionaries**: Merged dictionaries loaded once and cached
+2. **Animations**: Use `GridLengthAnimation` for hardware acceleration
+3. **Bindings**: OneWay bindings for read-only properties
+4. **Constants**: Use constant classes to avoid string allocations
+
+## 📝 Changelog
+
+### v1.1 (Latest) - 2024
+- ✅ Added optimized status color brushes for all themes
+- ✅ Created `ThemeConstants.cs` and `LanguageConstants.cs`
+- ✅ Separated `BoolToVisibilityConverter` into independent file
+- ✅ Added complete XML documentation comments
+- ✅ Eliminated magic strings, improved type safety
+
+Details: [V1.1_UPDATE_NOTES.md](V1.1_UPDATE_NOTES.md)
+
+### v1.0 - 2024
+- Initial release
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Contributions are welcome! Please fork the repository and submit a Pull Request.
 
 ## 📝 License
 
@@ -345,14 +283,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- WPF Team at Microsoft for the excellent framework
-- Material Design Icons (Segoe MDL2 Assets)
-- Community contributors for feedback and suggestions
+- Microsoft WPF Team
+- Material Design and GitHub Design System
+- Community contributors
 
 ## 📞 Support
 
 - **Issues**: [GitHub Issues](https://github.com/PerryLuoLab/TechDashboard/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/PerryLuoLab/TechDashboard/discussions)
 - **Email**: perryluox@yeah.net
 
 ---

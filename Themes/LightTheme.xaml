@@ -14,6 +14,12 @@
     <SolidColorBrush x:Key="SelectedBrush" Color="#0969DA"/>
     <SolidColorBrush x:Key="BorderBrush" Color="#D0D7DE"/>
 
+    <!-- Status Color Brushes - Optimized for Light Theme -->
+    <SolidColorBrush x:Key="SuccessBrush" Color="#1A7F37"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#CF222E"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="#BF8700"/>
+    <SolidColorBrush x:Key="InfoBrush" Color="#0969DA"/>
+
     <!-- Window Background Gradient -->
     <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#F6F8FA" Offset="0"/>

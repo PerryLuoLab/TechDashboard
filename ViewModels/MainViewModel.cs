@@ -1,5 +1,5 @@
 using System.Windows.Input;
-using TechDashboard.Infrastructure;
+using TechDashboard.Core.Infrastructure;  // ? 更新引用
 using TechDashboard.Services.Interfaces;
 
 namespace TechDashboard.ViewModels

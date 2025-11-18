@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace TechDashboard.Converters
+namespace TechDashboard.Core.Converters
 {
     /// <summary>
     /// Converts a boolean value to Visibility enumeration.
@@ -14,11 +14,11 @@ namespace TechDashboard.Converters
         /// <summary>
         /// Converts a boolean value to Visibility.
         /// </summary>
-        /// <param name="value">The boolean value to convert</param>
-        /// <param name="targetType">The target type (Visibility)</param>
-        /// <param name="parameter">Optional parameter (not used)</param>
-        /// <param name="culture">The culture to use in the converter</param>
-        /// <returns>Visibility.Visible if true, Visibility.Collapsed if false</returns>
+        /// <param name="value">The boolean value to convert.</param>
+        /// <param name="targetType">The target type (Visibility).</param>
+        /// <param name="parameter">Optional parameter (not used).</param>
+        /// <param name="culture">The culture to use in the converter.</param>
+        /// <returns>Visibility.Visible if true, Visibility.Collapsed if false.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is bool boolValue)
@@ -32,11 +32,11 @@ namespace TechDashboard.Converters
         /// <summary>
         /// Converts a Visibility value back to boolean.
         /// </summary>
-        /// <param name="value">The Visibility value to convert</param>
-        /// <param name="targetType">The target type (bool)</param>
-        /// <param name="parameter">Optional parameter (not used)</param>
-        /// <param name="culture">The culture to use in the converter</param>
-        /// <returns>True if Visible, False otherwise</returns>
+        /// <param name="value">The Visibility value to convert.</param>
+        /// <param name="targetType">The target type (bool).</param>
+        /// <param name="parameter">Optional parameter (not used).</param>
+        /// <param name="culture">The culture to use in the converter.</param>
+        /// <returns>True if Visible, False otherwise.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Visibility visibility)
@@ -57,11 +57,11 @@ namespace TechDashboard.Converters
         /// <summary>
         /// Converts a boolean value to Visibility with inverse logic.
         /// </summary>
-        /// <param name="value">The boolean value to convert</param>
-        /// <param name="targetType">The target type (Visibility)</param>
-        /// <param name="parameter">Optional parameter (not used)</param>
-        /// <param name="culture">The culture to use in the converter</param>
-        /// <returns>Visibility.Collapsed if true, Visibility.Visible if false</returns>
+        /// <param name="value">The boolean value to convert.</param>
+        /// <param name="targetType">The target type (Visibility).</param>
+        /// <param name="parameter">Optional parameter (not used).</param>
+        /// <param name="culture">The culture to use in the converter.</param>
+        /// <returns>Visibility.Collapsed if true, Visibility.Visible if false.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is bool boolValue)
@@ -75,11 +75,11 @@ namespace TechDashboard.Converters
         /// <summary>
         /// Converts a Visibility value back to boolean with inverse logic.
         /// </summary>
-        /// <param name="value">The Visibility value to convert</param>
-        /// <param name="targetType">The target type (bool)</param>
-        /// <param name="parameter">Optional parameter (not used)</param>
-        /// <param name="culture">The culture to use in the converter</param>
-        /// <returns>True if Collapsed, False if Visible</returns>
+        /// <param name="value">The Visibility value to convert.</param>
+        /// <param name="targetType">The target type (bool).</param>
+        /// <param name="parameter">Optional parameter (not used).</param>
+        /// <param name="culture">The culture to use in the converter.</param>
+        /// <returns>True if Collapsed, False if Visible.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Visibility visibility)

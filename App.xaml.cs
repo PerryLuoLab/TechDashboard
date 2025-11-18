@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using TechDashboard.Core.Extensions;  // ? 更新引用
 using TechDashboard.Services.Interfaces;
 
 namespace TechDashboard

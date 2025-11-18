@@ -1,4 +1,4 @@
-namespace TechDashboard.Helpers
+namespace TechDashboard.Core.Constants
 {
     /// <summary>
     /// Theme-related constants and configuration values.

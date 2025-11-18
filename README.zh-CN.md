@@ -5,7 +5,7 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![WPF](https://img.shields.io/badge/WPF-Windows-blue.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1-blue.svg)](V1.1_UPDATE_NOTES.zh-CN.md)
+[![Version](https://img.shields.io/badge/version-1.2-blue.svg)](V1.2_UPDATE_NOTES.zh-CN.md)
 
 基于 .NET 8 WPF 构建的现代、功能丰富的仪表板应用程序，展示了先进的 UI/UX 模式和 MVVM 架构。
 
@@ -56,6 +56,7 @@
 
 ### 🎯 技术亮点
 - **清晰的 MVVM 架构**：适当的关注点分离
+- **模块化结构** ✨ v1.2：Core 层组织，清晰的代码分层
 - **观察者模式**：使用 `INotifyPropertyChanged` 进行响应式属性更新
 - **命令模式**：可复用的 `RelayCommand` 实现
 - **主题管理**：使用合并字典进行动态主题切换
@@ -104,7 +105,25 @@ TechDashboard/
 ├── App.xaml.cs                 # IoC容器配置和服务初始化
 ├── MainWindow.xaml             # 主窗口 UI 定义
 ├── MainWindow.xaml.cs          # 窗口逻辑和导航处理
-├── ServiceCollectionExtensions.cs  # 依赖注入服务注册
+│
+├── Core/                                    # ✨ v1.2 核心层
+│   ├── Infrastructure/                      # 基础设施
+│   │   ├── ObservableObject.cs             # ViewModel 基类
+│   │   ├── RelayCommand.cs                 # 通用命令实现
+│   │   └── GridLengthAnimation.cs          # 网格长度动画
+│   │
+│   ├── Constants/                           # 常量定义
+│   │   ├── NavigationConstants.cs          # 导航常量配置
+│   │   ├── ThemeConstants.cs               # 主题常量 ✨ v1.1
+│   │   └── LanguageConstants.cs            # 语言常量 ✨ v1.1
+│   │
+│   ├── Converters/                          # 值转换器
+│   │   ├── ThemeConverter.cs               # 主题转换器
+│   │   ├── LanguageConverter.cs            # 语言转换器
+│   │   └── BoolToVisibilityConverter.cs    # 可见性转换器 ✨ v1.1
+│   │
+│   └── Extensions/                          # 扩展方法
+│       └── ServiceCollectionExtensions.cs  # DI 服务注册 ✨ v1.2
 │
 ├── Options/
 │   └── LocalizationOptions.cs  # 本地化配置选项
@@ -115,21 +134,6 @@ TechDashboard/
 │   │   └── IThemeService.cs         # 主题服务接口
 │   ├── LocalizationService.cs       # 本地化服务实现
 │   └── ThemeService.cs              # 主题服务实现
-│
-├── Converters/
-│   ├── ThemeConverter.cs            # 主题转换器
-│   ├── LanguageConverter.cs         # 语言转换器
-│   └── BoolToVisibilityConverter.cs # 可见性转换器 ✨ v1.1
-│
-├── Infrastructure/
-│   ├── ObservableObject.cs     # ViewModel 基类
-│   ├── RelayCommand.cs         # 通用命令实现
-│   └── GridLengthAnimation.cs  # 网格长度动画
-│
-├── Helpers/
-│   ├── NavigationConstants.cs  # 导航常量配置
-│   ├── ThemeConstants.cs       # 主题常量 ✨ v1.1
-│   └── LanguageConstants.cs    # 语言常量 ✨ v1.1
 │
 ├── ViewModels/
 │   └── MainViewModel.cs        # 主窗口 ViewModel
@@ -187,7 +191,7 @@ TechDashboard/
 
 1. 在 `Themes/` 文件夹中创建新的 XAML 文件
 2. 定义颜色资源（包括状态颜色）
-3. 在 `ThemeConstants.cs` 中注册主题
+3. 在 `Core/Constants/ThemeConstants.cs` 中注册主题
 4. 在 `MainWindow.xaml` 设置页面添加切换按钮
 
 ## 🌍 添加新语言
@@ -203,7 +207,7 @@ TechDashboard/
    - 翻译所有字符串值
 
 3. **在代码中注册**
-   - 更新 `LanguageConstants.cs` 添加新语言代码
+   - 更新 `Core/Constants/LanguageConstants.cs` 添加新语言代码
    - 在 `MainWindow.xaml` 添加语言选择按钮
 
 ## 🔧 高级功能
@@ -220,7 +224,7 @@ TechDashboard/
 ### 使用常量类 ✨ v1.1
 
 ```csharp
-using TechDashboard.Helpers;
+using TechDashboard.Core.Constants;  // ✨ v1.2 更新命名空间
 
 // 主题常量
 string theme = ThemeConstants.ThemeNames.Dark;
@@ -229,6 +233,10 @@ string key = ThemeConstants.ResourceKeys.SuccessBrush;
 // 语言常量
 string lang = LanguageConstants.CultureCodes.SimplifiedChinese;
 string display = LanguageConstants.GetDisplayName(lang);
+
+// 导航常量
+double width = NavigationConstants.CollapsedWidth;
+int duration = NavigationConstants.AnimationDurationMs;
 ```
 
 ## 🐛 故障排除
@@ -250,7 +258,7 @@ string display = LanguageConstants.GetDisplayName(lang);
 
 ### 语言未更改
 - 确认语言文件存在于 `Resources/` 文件夹中
-- 检查 `LanguageConstants.cs` 中是否注册了该语言
+- 检查 `Core/Constants/LanguageConstants.cs` 中是否注册了该语言
 
 ## 📈 性能提示
 
@@ -261,7 +269,18 @@ string display = LanguageConstants.GetDisplayName(lang);
 
 ## 📝 更新日志
 
-### v1.1 (最新) - 2024
+### v1.2 (最新) - 2024 ✨
+- ✅ **结构重组**：创建 Core 层，整合基础设施代码
+- ✅ 移动 Infrastructure → Core/Infrastructure/
+- ✅ 移动 Converters → Core/Converters/
+- ✅ 移动 Helpers → Core/Constants/（语义化命名）
+- ✅ 移动 ServiceCollectionExtensions → Core/Extensions/
+- ✅ 更新所有命名空间引用
+- ✅ 改进代码组织和可维护性
+
+详情：[STRUCTURE_OPTIMIZATION_SUMMARY.md](STRUCTURE_OPTIMIZATION_SUMMARY.md)
+
+### v1.1 - 2024
 - ✅ 为所有主题添加优化的状态颜色画刷
 - ✅ 创建 `ThemeConstants.cs` 和 `LanguageConstants.cs`
 - ✅ 分离 `BoolToVisibilityConverter` 到独立文件

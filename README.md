@@ -5,7 +5,7 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![WPF](https://img.shields.io/badge/WPF-Windows-blue.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1-blue.svg)](V1.1_UPDATE_NOTES.md)
+[![Version](https://img.shields.io/badge/version-1.2-blue.svg)](V1.2_UPDATE_NOTES.md)
 
 A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing advanced UI/UX patterns and MVVM architecture.
 
@@ -56,6 +56,7 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 
 ### 🎯 Technical Highlights
 - **Clean MVVM Architecture**: Proper separation of concerns
+- **Modular Structure** ✨ v1.2: Core layer organization, clear code layering
 - **Observable Pattern**: Reactive property updates with `INotifyPropertyChanged`
 - **Command Pattern**: Reusable `RelayCommand` implementation
 - **Theme Management**: Dynamic theme switching with merged dictionaries
@@ -104,7 +105,25 @@ TechDashboard/
 ├── App.xaml.cs                 # IoC container configuration
 ├── MainWindow.xaml             # Main window UI definition
 ├── MainWindow.xaml.cs          # Window logic & navigation handling
-├── ServiceCollectionExtensions.cs  # Dependency injection
+│
+├── Core/                                    # ✨ v1.2 Core Layer
+│   ├── Infrastructure/                      # Infrastructure components
+│   │   ├── ObservableObject.cs             # ViewModel base class
+│   │   ├── RelayCommand.cs                 # Generic command implementation
+│   │   └── GridLengthAnimation.cs          # Grid length animation
+│   │
+│   ├── Constants/                           # Constant definitions
+│   │   ├── NavigationConstants.cs          # Navigation constants
+│   │   ├── ThemeConstants.cs               # Theme constants ✨ v1.1
+│   │   └── LanguageConstants.cs            # Language constants ✨ v1.1
+│   │
+│   ├── Converters/                          # Value converters
+│   │   ├── ThemeConverter.cs               # Theme converter
+│   │   ├── LanguageConverter.cs            # Language converter
+│   │   └── BoolToVisibilityConverter.cs    # Visibility converter ✨ v1.1
+│   │
+│   └── Extensions/                          # Extension methods
+│       └── ServiceCollectionExtensions.cs  # DI service registration ✨ v1.2
 │
 ├── Options/
 │   └── LocalizationOptions.cs  # Localization configuration
@@ -115,21 +134,6 @@ TechDashboard/
 │   │   └── IThemeService.cs         # Theme service interface
 │   ├── LocalizationService.cs       # Localization service
 │   └── ThemeService.cs              # Theme service
-│
-├── Converters/
-│   ├── ThemeConverter.cs            # Theme converter
-│   ├── LanguageConverter.cs         # Language converter
-│   └── BoolToVisibilityConverter.cs # Visibility converter ✨ v1.1
-│
-├── Infrastructure/
-│   ├── ObservableObject.cs     # ViewModel base class
-│   ├── RelayCommand.cs         # Generic command implementation
-│   └── GridLengthAnimation.cs  # Grid length animation
-│
-├── Helpers/
-│   ├── NavigationConstants.cs  # Navigation constants
-│   ├── ThemeConstants.cs       # Theme constants ✨ v1.1
-│   └── LanguageConstants.cs    # Language constants ✨ v1.1
 │
 ├── ViewModels/
 │   └── MainViewModel.cs        # Main window ViewModel
@@ -187,7 +191,7 @@ Each theme now includes complete semantic status color brushes for optimal reada
 
 1. Create a new XAML file in `Themes/` folder
 2. Define color resources (including status colors)
-3. Register theme in `ThemeConstants.cs`
+3. Register theme in `Core/Constants/ThemeConstants.cs`
 4. Add toggle button in `MainWindow.xaml` Settings page
 
 ## 🌍 Adding New Languages
@@ -203,7 +207,7 @@ Each theme now includes complete semantic status color brushes for optimal reada
    - Translate all string values
 
 3. **Register in code**
-   - Update `LanguageConstants.cs` to add new language code
+   - Update `Core/Constants/LanguageConstants.cs` to add new language code
    - Add language selector button in `MainWindow.xaml`
 
 ## 🔧 Advanced Features
@@ -220,7 +224,7 @@ Each theme now includes complete semantic status color brushes for optimal reada
 ### Using Constants Classes ✨ v1.1
 
 ```csharp
-using TechDashboard.Helpers;
+using TechDashboard.Core.Constants;  // ✨ v1.2 Updated namespace
 
 // Theme constants
 string theme = ThemeConstants.ThemeNames.Dark;
@@ -229,6 +233,10 @@ string key = ThemeConstants.ResourceKeys.SuccessBrush;
 // Language constants
 string lang = LanguageConstants.CultureCodes.SimplifiedChinese;
 string display = LanguageConstants.GetDisplayName(lang);
+
+// Navigation constants
+double width = NavigationConstants.CollapsedWidth;
+int duration = NavigationConstants.AnimationDurationMs;
 ```
 
 ## 🐛 Troubleshooting
@@ -250,7 +258,7 @@ If you see WPFLocalizeExtension errors in Visual Studio XAML designer:
 
 ### Language Not Changing
 - Confirm language file exists in `Resources/` folder
-- Check if language is registered in `LanguageConstants.cs`
+- Check if language is registered in `Core/Constants/LanguageConstants.cs`
 
 ## 📈 Performance Tips
 
@@ -261,7 +269,18 @@ If you see WPFLocalizeExtension errors in Visual Studio XAML designer:
 
 ## 📝 Changelog
 
-### v1.1 (Latest) - 2024
+### v1.2 (Latest) - 2024 ✨
+- ✅ **Structure Reorganization**: Created Core layer, consolidated infrastructure code
+- ✅ Moved Infrastructure → Core/Infrastructure/
+- ✅ Moved Converters → Core/Converters/
+- ✅ Moved Helpers → Core/Constants/ (semantic naming)
+- ✅ Moved ServiceCollectionExtensions → Core/Extensions/
+- ✅ Updated all namespace references
+- ✅ Improved code organization and maintainability
+
+Details: [STRUCTURE_OPTIMIZATION_SUMMARY.md](STRUCTURE_OPTIMIZATION_SUMMARY.md)
+
+### v1.1 - 2024
 - ✅ Added optimized status color brushes for all themes
 - ✅ Created `ThemeConstants.cs` and `LanguageConstants.cs`
 - ✅ Separated `BoolToVisibilityConverter` into independent file

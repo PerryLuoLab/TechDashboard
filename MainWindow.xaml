@@ -271,11 +271,11 @@
                                         <Grid>
                                             <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                                        ToolTip="{lex:Loc Nav_Overview}"/>
 
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" 
                                                            FontSize="16" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{lex:Loc Nav_Overview}" Margin="12,0,0,0" 
@@ -301,11 +301,11 @@
                                         <Grid>
                                             <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                                        ToolTip="{lex:Loc Nav_Analytics}"/>
 
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" 
                                                            FontSize="16" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{lex:Loc Nav_Analytics}" Margin="12,0,0,0" 
@@ -331,11 +331,11 @@
                                         <Grid>
                                             <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                                        ToolTip="{lex:Loc Nav_Reports}"/>
 
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" 
                                                            FontSize="16" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{lex:Loc Nav_Reports}" Margin="12,0,0,0" 
@@ -361,11 +361,11 @@
                                         <Grid>
                                             <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}"
+                                                       Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                                        ToolTip="{lex:Loc Nav_Settings}"/>
 
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
-                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" 
                                                            FontSize="16" VerticalAlignment="Center"/>
                                                 <TextBlock Text="{lex:Loc Nav_Settings}" Margin="12,0,0,0" 
@@ -380,14 +380,14 @@
                         <Button Grid.Row="1" Command="{Binding ToggleNavCommand}" 
                                 Style="{StaticResource NavButtonStyle}" Height="48" Margin="4">
                             <Grid>
-                                <Grid Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
+                                <Grid Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}">
                                     <TextBlock x:Name="ToggleIcon" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
                                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                                ToolTip="{lex:Loc Nav_Expand}"/>
                                 </Grid>
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                            Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVis}}">
+                                            Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" 
                                                FontSize="16" VerticalAlignment="Center"/>
                                     <TextBlock Text="{lex:Loc Nav_Collapse}" Margin="8,0,0,0" 
@@ -399,7 +399,7 @@
                 </Border>
 
                 <Grid Grid.Column="1">
-                    <Grid Visibility="{Binding IsOverviewPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                    <Grid Visibility="{Binding IsOverviewPage, Converter={StaticResource BoolToVisibilityConverter}}" Margin="24">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
@@ -486,7 +486,7 @@
                         </Border>
                     </Grid>
 
-                    <Grid Visibility="{Binding IsSettingsPage, Converter={StaticResource BoolToVis}}" 
+                    <Grid Visibility="{Binding IsSettingsPage, Converter={StaticResource BoolToVisibilityConverter}}" 
                           Margin="24" Background="{DynamicResource NavBackgroundBrush}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
@@ -571,7 +571,7 @@
                         </ScrollViewer>
                     </Grid>
 
-                    <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                    <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVisibilityConverter}}" Margin="24">
                         <Border Style="{StaticResource DashboardCard}" Padding="20">
                             <StackPanel>
                                 <TextBlock Text="{lex:Loc Analytics_Title}" FontSize="24" 
@@ -582,7 +582,7 @@
                         </Border>
                     </Grid>
 
-                    <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVis}}" Margin="24">
+                    <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVisibilityConverter}}" Margin="24">
                         <Border Style="{StaticResource DashboardCard}" Padding="20">
                             <StackPanel>
                                 <TextBlock Text="{lex:Loc Reports_Title}" FontSize="24" 

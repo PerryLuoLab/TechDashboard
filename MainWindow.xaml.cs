@@ -6,9 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Microsoft.Extensions.DependencyInjection;
 using TechDashboard.ViewModels;
 using TechDashboard.Services.Interfaces;
+using TechDashboard.Infrastructure;
 
 namespace TechDashboard
 {
@@ -18,6 +18,7 @@ namespace TechDashboard
         private const double CollapsedNavWidth = 60;
         private const double SnapThreshold = 100;
         private double _expandedNavWidth = 260;
+        private const double DragZoneWidth = 5;
 
         // Drag state
         private bool _isDragging = false;
@@ -25,20 +26,18 @@ namespace TechDashboard
         private double _dragStartWidth;
         private bool _isAnimating = false;
 
-        // Services (injected via IoC container)
+        // Services
         private readonly ILocalizationService _localizationService;
 
-        public MainWindow()
+        public MainWindow(MainViewModel viewModel, ILocalizationService localizationService)
         {
             InitializeComponent();
 
-            // Get services from IoC container
-            _localizationService = App.Services.GetRequiredService<ILocalizationService>();
-            
-            // Set DataContext using DI
-            DataContext = App.Services.GetRequiredService<MainViewModel>();
+            _localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
+            DataContext = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
 
             Loaded += OnLoaded;
+            Unloaded += OnUnloaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -75,8 +74,25 @@ namespace TechDashboard
             }
         }
 
-        #region Window Controls
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel vm)
+            {
+                vm.PropertyChanged -= Vm_PropertyChanged;
+            }
 
+            NavPanel.PreviewMouseLeftButtonDown -= NavPanel_PreviewMouseLeftButtonDown;
+            NavPanel.MouseLeftButtonDown -= NavPanel_MouseLeftButtonDown;
+            NavPanel.MouseMove -= NavPanel_MouseMove;
+            NavPanel.MouseLeftButtonUp -= NavPanel_MouseLeftButtonUp;
+            NavPanel.MouseLeave -= NavPanel_MouseLeave;
+
+            this.MouseMove -= MainWindow_MouseMove;
+            this.MouseLeftButtonUp -= MainWindow_MouseLeftButtonUp;
+        }
+
+        #region Window Controls
+        
         private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
@@ -85,47 +101,34 @@ namespace TechDashboard
             }
             else
             {
-                try
-                {
-                    DragMove();
-                }
-                catch { }
+                try { DragMove(); } catch { }
             }
         }
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            MaximizeRestore();
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+        
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e) => MaximizeRestore();
+        
+        private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
+        
         private void MaximizeRestore()
         {
             if (WindowState == WindowState.Maximized)
             {
                 WindowState = WindowState.Normal;
-                MaximizeIcon.Text = "\uE922"; // Maximize icon
+                MaximizeIcon.Text = "\uE922";
             }
             else
             {
                 WindowState = WindowState.Maximized;
-                MaximizeIcon.Text = "\uE923"; // Restore icon
+                MaximizeIcon.Text = "\uE923";
             }
         }
-
+        
         #endregion
 
         #region Menu Handlers
-
+        
         private void SetupMenuSubmenuHandlers()
         {
             if (MainMenu != null)
@@ -139,49 +142,19 @@ namespace TechDashboard
 
         private void MenuItem_SubmenuOpened(object sender, RoutedEventArgs e)
         {
-            try
+            if (sender is MenuItem menuItem && menuItem.HasItems)
             {
-                if (sender is MenuItem menuItem)
+                foreach (var item in menuItem.Items)
                 {
-                    Dispatcher.BeginInvoke(new Action(() =>
+                    if (item is MenuItem subItem)
                     {
-                        try
+                        var popup = FindVisualChild<System.Windows.Controls.Primitives.Popup>(subItem);
+                        if (popup != null)
                         {
-                            var popup = FindVisualChild<System.Windows.Controls.Primitives.Popup>(menuItem);
-                            if (popup != null && popup.Child != null)
-                            {
-                                var cardBackground = Application.Current.TryFindResource("CardBackgroundBrush") as SolidColorBrush;
-                                if (cardBackground != null)
-                                {
-                                    if (popup.Child is Border border)
-                                    {
-                                        border.Background = cardBackground;
-                                    }
-                                    else if (popup.Child is Panel panel)
-                                    {
-                                        panel.Background = cardBackground;
-                                    }
-                                    else
-                                    {
-                                        var innerBorder = FindVisualChild<Border>(popup.Child);
-                                        if (innerBorder != null)
-                                        {
-                                            innerBorder.Background = cardBackground;
-                                        }
-                                    }
-                                }
-                            }
+                            popup.AllowsTransparency = true;
                         }
-                        catch (Exception ex2)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"MenuItem_SubmenuOpened inner error: {ex2.Message}");
-                        }
-                    }), System.Windows.Threading.DispatcherPriority.Loaded);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"MenuItem_SubmenuOpened error: {ex.Message}");
             }
         }
 
@@ -202,7 +175,7 @@ namespace TechDashboard
             }
             return null;
         }
-
+        
         #endregion
 
         #region Navigation Width Calculation
@@ -217,31 +190,10 @@ namespace TechDashboard
                 const double buttonPadding = 12;
                 const double stackPanelMargin = 8;
 
-                const double dashboardIconWidth = 40;
-                const double dashboardIconTextSpacing = 12;
-
                 var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-                var typefaceBold = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Bold, FontStretches.Normal);
                 var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
-
-                // Get the text brush from resources
                 var textBrush = Application.Current.TryFindResource("TextBrush") as SolidColorBrush ?? Brushes.White;
-
-                // Use ILocalizationService instead of static LocalizationHelper
-                var dashboardText = _localizationService.GetString("Nav_Dashboard");
-                if (string.IsNullOrEmpty(dashboardText)) dashboardText = "DASHBOARD";
-                
-                var dashboardTextWidth = new FormattedText(
-                    dashboardText,
-                    System.Globalization.CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typefaceBold,
-                    16,
-                    textBrush,
-                    dpi).Width;
-
-                var dashboardWidth = dashboardIconWidth + dashboardIconTextSpacing + dashboardTextWidth;
-                maxContentWidth = Math.Max(maxContentWidth, dashboardWidth);
+                var culture = System.Globalization.CultureInfo.CurrentUICulture;
 
                 var navTexts = new[]
                 {
@@ -249,42 +201,19 @@ namespace TechDashboard
                     _localizationService.GetString("Nav_Analytics"),
                     _localizationService.GetString("Nav_Reports"),
                     _localizationService.GetString("Nav_Settings"),
-                    _localizationService.GetString("Nav_Collapse")
+                    _localizationService.GetString("Nav_Collapse"),
+                    _localizationService.GetString("Nav_Expand")
                 };
 
-                var expandText = _localizationService.GetString("Nav_Expand");
-                if (!string.IsNullOrEmpty(expandText) && expandText.Length > 0)
+                foreach (var text in navTexts.Where(t => !string.IsNullOrEmpty(t)))
                 {
-                    var allTexts = navTexts.ToList();
-                    allTexts.Add(expandText);
-                    navTexts = allTexts.ToArray();
-                }
-
-                foreach (var text in navTexts)
-                {
-                    if (string.IsNullOrEmpty(text)) continue;
-                    
-                    var textWidth = new FormattedText(
-                        text,
-                        System.Globalization.CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        typeface,
-                        14,
-                        textBrush,
-                        dpi).Width;
-
+                    var textWidth = new FormattedText(text, culture, FlowDirection.LeftToRight, typeface, 14, textBrush, dpi).Width;
                     var buttonContentWidth = iconWidth + iconTextSpacing + textWidth;
                     maxContentWidth = Math.Max(maxContentWidth, buttonContentWidth);
                 }
 
-                _expandedNavWidth = stackPanelMargin +
-                                    buttonPadding +
-                                    maxContentWidth +
-                                    buttonPadding +
-                                    stackPanelMargin;
-
-                _expandedNavWidth = Math.Max(CollapsedNavWidth, _expandedNavWidth);
-                _expandedNavWidth = Math.Min(_expandedNavWidth, 350);
+                _expandedNavWidth = stackPanelMargin + buttonPadding + maxContentWidth + buttonPadding + stackPanelMargin;
+                _expandedNavWidth = Math.Max(CollapsedNavWidth, Math.Min(_expandedNavWidth, 350));
 
                 NavColumn.MaxWidth = _expandedNavWidth;
             }
@@ -301,212 +230,174 @@ namespace TechDashboard
 
         private void NavPanel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            try
+            var pos = e.GetPosition(NavPanel);
+            
+            // Only in drag zone at right edge (5px), prevent event bubbling
+            if (pos.X >= NavPanel.ActualWidth - DragZoneWidth)
             {
-                if (_isAnimating) return;
-
-                var pos = e.GetPosition(NavPanel);
-                var currentWidth = NavColumn.ActualWidth;
-
-                if (DataContext is MainViewModel vm)
-                {
-                    var hitElement = NavPanel.InputHitTest(pos);
-                    bool isOnEmptyArea = !(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button)));
-
-                    if (isOnEmptyArea)
-                    {
-                        if (e.ClickCount == 2)
-                        {
-                            if (currentWidth <= CollapsedNavWidth + 10 && !vm.IsNavExpanded)
-                            {
-                                vm.IsNavExpanded = true;
-                            }
-                            else if (currentWidth > CollapsedNavWidth + 10 && vm.IsNavExpanded)
-                            {
-                                if (pos.X < NavPanel.ActualWidth - 5)
-                                {
-                                    vm.IsNavExpanded = false;
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
-                            e.Handled = true;
-                            return;
-                        }
-                        else if (e.ClickCount == 1)
-                        {
-                            if (currentWidth <= CollapsedNavWidth + 10)
-                            {
-                                e.Handled = true;
-                                return;
-                            }
-                            else if (currentWidth > CollapsedNavWidth + 10 && pos.X < NavPanel.ActualWidth - 5)
-                            {
-                                e.Handled = true;
-                                return;
-                            }
-                        }
-                    }
-                }
+                e.Handled = true;
+                return;
             }
-            catch (Exception ex)
+
+            // Handle double-click early (Preview) so inner controls like ScrollViewer cannot swallow it
+            if (e.ClickCount == 2)
             {
-                System.Diagnostics.Debug.WriteLine($"PreviewMouseLeftButtonDown error: {ex.Message}");
-            }
-        }
+                var originalSource = e.OriginalSource as DependencyObject;
+                var isButton = IsChildOfButton(originalSource);
 
-        private void NavPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                if (_isAnimating) return;
+                System.Diagnostics.Debug.WriteLine($"[NavPanel_PreviewMouseLeftButtonDown] Double-click detected. IsChildOfButton={isButton}");
 
-                var pos = e.GetPosition(NavPanel);
-                var currentWidth = NavColumn.ActualWidth;
-
-                if (currentWidth <= CollapsedNavWidth + 10)
+                if (!isButton)
                 {
-                    var hitElement = NavPanel.InputHitTest(pos);
-                    bool isOnEmptyArea = !(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button)));
-
-                    if (isOnEmptyArea)
+                    if (DataContext is MainViewModel vm)
                     {
+                        System.Diagnostics.Debug.WriteLine("[NavPanel_PreviewMouseLeftButtonDown] Toggling navigation via command");
+                        vm.ToggleNavCommand.Execute(null);
                         e.Handled = true;
                         return;
                     }
                 }
+            }
+            // Don't prevent other mouse events to allow single-click etc.
+        }
 
-                bool isInDragZone = false;
+        private void NavPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"[NavPanel_MouseLeftButtonDown] Triggered - ClickCount: {e.ClickCount}, Source: {e.Source?.GetType().Name}, OriginalSource: {e.OriginalSource?.GetType().Name}");
 
-                if (currentWidth > CollapsedNavWidth + 10)
+            var pos = e.GetPosition(NavPanel);
+
+            // Drag functionality: right edge 5px zone
+            if (pos.X >= NavPanel.ActualWidth - DragZoneWidth)
+            {
+                System.Diagnostics.Debug.WriteLine("[NavPanel_MouseLeftButtonDown] In drag zone, starting drag");
+                _isDragging = true;
+                _dragStartPoint = e.GetPosition(this);
+                _dragStartWidth = NavColumn.ActualWidth;
+                NavPanel.CaptureMouse();
+                Mouse.OverrideCursor = Cursors.SizeWE;
+                e.Handled = true;
+                return; // Exit early, don't process double-click
+            }
+
+            // Double-click functionality: blank area (not buttons)
+            if (e.ClickCount == 2)
+            {
+                System.Diagnostics.Debug.WriteLine("[NavPanel_MouseLeftButtonDown] Double-click detected");
+                
+                // Check if not clicking on button or child element
+                var originalSource = e.OriginalSource as DependencyObject;
+                var isButton = IsChildOfButton(originalSource);
+                
+                System.Diagnostics.Debug.WriteLine($"[NavPanel_MouseLeftButtonDown] IsChildOfButton: {isButton}");
+                
+                if (!isButton)
                 {
-                    isInDragZone = pos.X >= NavPanel.ActualWidth - 5;
-                }
-
-                if (isInDragZone)
-                {
-                    _isDragging = true;
-                    _dragStartPoint = e.GetPosition(this);
-                    _dragStartWidth = currentWidth;
-                    NavPanel.CaptureMouse();
-                    Mouse.OverrideCursor = Cursors.SizeWE;
+                    if (DataContext is MainViewModel vm)
+                    {
+                        System.Diagnostics.Debug.WriteLine("?? Double-click detected on NavPanel blank area, toggling navigation");
+                        System.Diagnostics.Debug.WriteLine($"Current IsNavExpanded: {vm.IsNavExpanded}");
+                        
+                        // Use the ToggleNavCommand instead of direct property assignment
+                        vm.ToggleNavCommand.Execute(null);
+                        
+                        System.Diagnostics.Debug.WriteLine($"After toggle command - IsNavExpanded: {vm.IsNavExpanded}");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("?? WARNING: DataContext is not MainViewModel!");
+                    }
                     e.Handled = true;
                 }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("[NavPanel_MouseLeftButtonDown] Click on button, ignoring");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                System.Diagnostics.Debug.WriteLine($"MouseDown error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[NavPanel_MouseLeftButtonDown] Single click (ClickCount={e.ClickCount})");
             }
+        }
+
+        // Helper method to check if element is a button or child of button
+        private bool IsChildOfButton(DependencyObject? element)
+        {
+            while (element != null)
+            {
+                if (element is Button)
+                {
+                    return true;
+                }
+                element = VisualTreeHelper.GetParent(element);
+            }
+            return false;
         }
 
         private void NavPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            try
+            if (_isAnimating) return;
+
+            var pos = e.GetPosition(NavPanel);
+            UpdateCursor(pos, e.OriginalSource as DependencyObject);
+
+            if (_isDragging)
             {
-                if (_isDragging)
-                {
-                    UpdateDragWidth(e.GetPosition(this));
-                }
-                else if (!_isAnimating)
-                {
-                    UpdateCursor(e.GetPosition(NavPanel));
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"NavPanel_MouseMove error: {ex.Message}");
+                var currentPoint = e.GetPosition(this);
+                UpdateDragWidth(currentPoint);
             }
         }
 
         private void MainWindow_MouseMove(object sender, MouseEventArgs e)
         {
-            try
+            if (_isDragging)
             {
-                if (_isDragging)
-                {
-                    UpdateDragWidth(e.GetPosition(this));
-                }
-                else if (!_isAnimating)
-                {
-                    var pos = e.GetPosition(this);
-                    var currentWidth = NavColumn.ActualWidth;
-
-                    if (Math.Abs(pos.X - currentWidth) < 5)
-                    {
-                        Mouse.OverrideCursor = Cursors.SizeWE;
-                    }
-                    else if (!NavPanel.IsMouseOver)
-                    {
-                        Mouse.OverrideCursor = null;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"MainWindow_MouseMove error: {ex.Message}");
+                var currentPoint = e.GetPosition(this);
+                UpdateDragWidth(currentPoint);
             }
         }
 
         private void UpdateDragWidth(Point currentPoint)
         {
-            try
+            var deltaX = currentPoint.X - _dragStartPoint.X;
+            var newWidth = _dragStartWidth + deltaX;
+
+            newWidth = Math.Max(CollapsedNavWidth, Math.Min(newWidth, _expandedNavWidth));
+
+            NavColumn.Width = new GridLength(newWidth);
+
+            if (DataContext is MainViewModel vm)
             {
-                var deltaX = currentPoint.X - _dragStartPoint.X;
-                var newWidth = _dragStartWidth + deltaX;
-
-                newWidth = Math.Max(CollapsedNavWidth, Math.Min(_expandedNavWidth, newWidth));
-
-                NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
-                NavColumn.Width = new GridLength(newWidth);
-
-                if (DataContext is MainViewModel vm)
-                {
-                    bool shouldShowExpanded = newWidth > SnapThreshold;
-                    if (vm.IsNavExpanded != shouldShowExpanded)
-                    {
-                        vm.IsNavExpanded = shouldShowExpanded;
-                    }
-                    vm.NavWidth = newWidth;
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"UpdateDragWidth error: {ex.Message}");
+                vm.NavWidth = newWidth;
             }
         }
 
-        private void UpdateCursor(Point pos)
+        private void UpdateCursor(Point pos, DependencyObject? source)
         {
-            try
-            {
-                var currentWidth = NavColumn.ActualWidth;
+            if (_isDragging || _isAnimating)
+                return;
 
-                if (currentWidth > CollapsedNavWidth + 10)
-                {
-                    if (pos.X >= NavPanel.ActualWidth - 5)
-                    {
-                        Mouse.OverrideCursor = Cursors.SizeWE;
-                        return;
-                    }
-                }
-                else
-                {
-                    var hitElement = NavPanel.InputHitTest(pos);
-                    if (!(hitElement is Button || IsChildOf(hitElement as DependencyObject, typeof(Button))))
-                    {
-                        Mouse.OverrideCursor = Cursors.SizeWE;
-                        return;
-                    }
-                }
-
-                Mouse.OverrideCursor = null;
-            }
-            catch (Exception ex)
+            // Check if hovering over drag zone at the right edge
+            if (pos.X >= NavPanel.ActualWidth - DragZoneWidth)
             {
-                System.Diagnostics.Debug.WriteLine($"UpdateCursor error: {ex.Message}");
+                Mouse.OverrideCursor = Cursors.SizeWE;
+                return;
             }
+
+            // Show double-arrow cursor on blank area (not buttons) for both expanded and collapsed states
+            // This indicates that double-clicking will toggle the navigation panel
+            if (DataContext is MainViewModel vm)
+            {
+                // Show cursor hint on blank area to indicate double-click toggle functionality
+                if (!IsChildOfButton(source))
+                {
+                    Mouse.OverrideCursor = Cursors.SizeWE;
+                    return;
+                }
+            }
+
+            // Default: no special cursor
+            Mouse.OverrideCursor = null;
         }
 
         private void NavPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -524,26 +415,26 @@ namespace TechDashboard
 
         private void HandleDragEnd()
         {
-            try
+            if (!_isDragging) return;
+
+            _isDragging = false;
+            NavPanel.ReleaseMouseCapture();
+            Mouse.OverrideCursor = null;
+
+            if (DataContext is MainViewModel vm)
             {
-                if (!_isDragging) return;
+                var currentWidth = NavColumn.ActualWidth;
 
-                _isDragging = false;
-                NavPanel.ReleaseMouseCapture();
-                Mouse.OverrideCursor = null;
-
-                var finalWidth = NavColumn.ActualWidth;
-
-                if (DataContext is MainViewModel vm)
+                if (currentWidth < SnapThreshold)
                 {
-                    bool shouldExpand = finalWidth >= SnapThreshold;
-                    vm.IsNavExpanded = shouldExpand;
-                    AnimateNavWidth(shouldExpand);
+                    vm.IsNavExpanded = false;
+                    AnimateNavWidth(false);
                 }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"HandleDragEnd error: {ex.Message}");
+                else
+                {
+                    vm.IsNavExpanded = true;
+                    AnimateNavWidth(true);
+                }
             }
         }
 
@@ -586,29 +477,15 @@ namespace TechDashboard
 
                             Dispatcher.BeginInvoke(new Action(() =>
                             {
-                                try
+                                CalculateOptimalNavWidth();
+                                if (sender is MainViewModel viewModel && viewModel.IsNavExpanded)
                                 {
-                                    CalculateOptimalNavWidth();
-
-                                    if (sender is MainViewModel viewModel)
-                                    {
-                                        if (viewModel.IsNavExpanded)
-                                        {
-                                            NavColumn.Width = new GridLength(_expandedNavWidth);
-                                            viewModel.NavWidth = _expandedNavWidth;
-                                        }
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    System.Diagnostics.Debug.WriteLine($"Error calculating nav width after language change: {ex.Message}");
+                                    NavColumn.Width = new GridLength(_expandedNavWidth);
+                                    viewModel.NavWidth = _expandedNavWidth;
                                 }
                             }), System.Windows.Threading.DispatcherPriority.Loaded);
                         }
-                        catch (Exception ex)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"Error updating layout after language change: {ex.Message}");
-                        }
+                        catch (Exception) { }
                     }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
                 }
             }
@@ -620,105 +497,64 @@ namespace TechDashboard
 
         private void UpdateToggleIcon(bool expanded)
         {
-            try
+            if (ToggleIcon != null)
             {
-                if (ToggleIcon != null)
-                {
-                    ToggleIcon.Text = expanded ? "\uE76B" : "\uE76C";
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"UpdateToggleIcon error: {ex.Message}");
+                ToggleIcon.Text = expanded ? "\uE76B" : "\uE76C";
             }
         }
 
         private void AnimateNavWidth(bool expanded)
         {
-            try
+            _isAnimating = true;
+
+            var targetWidth = expanded ? _expandedNavWidth : CollapsedNavWidth;
+            var currentWidth = NavColumn.ActualWidth;
+            var duration = TimeSpan.FromMilliseconds(200);
+
+            // 使用 Storyboard 和自定义动画
+            var storyboard = new Storyboard();
+            
+            var animation = new GridLengthAnimation
             {
-                double targetWidth = expanded ? _expandedNavWidth : CollapsedNavWidth;
-                double currentWidth = NavColumn.ActualWidth;
+                From = new GridLength(currentWidth),
+                To = new GridLength(targetWidth),
+                Duration = new Duration(duration),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
+            };
 
-                if (Math.Abs(currentWidth - targetWidth) < 1)
-                {
-                    NavColumn.Width = new GridLength(targetWidth);
-                    if (DataContext is MainViewModel vm)
-                    {
-                        vm.NavWidth = targetWidth;
-                    }
-                    return;
-                }
-
-                NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
-
-                if (NavColumn.Width.IsAuto || NavColumn.Width.IsStar)
-                {
-                    NavColumn.Width = new GridLength(currentWidth);
-                }
-
-                _isAnimating = true;
-
-                var animation = new DoubleAnimation
-                {
-                    From = currentWidth,
-                    To = targetWidth,
-                    Duration = TimeSpan.FromMilliseconds(200),
-                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
-                };
-
-                animation.Completed += (s, e) =>
-                {
-                    try
-                    {
-                        _isAnimating = false;
-                        NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, null);
-                        NavColumn.Width = new GridLength(targetWidth);
-
-                        if (DataContext is MainViewModel vm)
-                        {
-                            vm.NavWidth = targetWidth;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Animation completed error: {ex.Message}");
-                    }
-                };
-
-                NavColumn.BeginAnimation(ColumnDefinition.WidthProperty, animation);
-            }
-            catch (Exception ex)
+            Storyboard.SetTarget(animation, NavColumn);
+            Storyboard.SetTargetProperty(animation, new PropertyPath(ColumnDefinition.WidthProperty));
+            
+            storyboard.Children.Add(animation);
+            
+            storyboard.Completed += (s, e) =>
             {
-                System.Diagnostics.Debug.WriteLine($"AnimateNavWidth error: {ex.Message}");
-                try
+                _isAnimating = false;
+                
+                if (DataContext is MainViewModel vm)
                 {
-                    _isAnimating = false;
-                    double targetWidth = expanded ? _expandedNavWidth : CollapsedNavWidth;
-                    NavColumn.Width = new GridLength(targetWidth);
+                    vm.NavWidth = targetWidth;
                 }
-                catch { }
-            }
+                
+                // 确保最终宽度设置正确
+                NavColumn.Width = new GridLength(targetWidth);
+                
+                System.Diagnostics.Debug.WriteLine($"? Animation completed: {(expanded ? "Expanded" : "Collapsed")} to {targetWidth}px");
+            };
+
+            storyboard.Begin();
         }
-
-        #endregion
-
-        #region Helper Methods
 
         private bool IsChildOf(DependencyObject? child, Type parentType)
         {
-            if (child == null) return false;
-
-            DependencyObject? parent = VisualTreeHelper.GetParent(child);
-
-            while (parent != null)
+            while (child != null)
             {
-                if (parent.GetType() == parentType)
+                if (child.GetType() == parentType || child.GetType().IsSubclassOf(parentType))
+                {
                     return true;
-
-                parent = VisualTreeHelper.GetParent(parent);
+                }
+                child = VisualTreeHelper.GetParent(child);
             }
-
             return false;
         }
 

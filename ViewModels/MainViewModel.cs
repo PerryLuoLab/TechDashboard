@@ -39,7 +39,8 @@ namespace TechDashboard.ViewModels
             get => _isNavExpanded;
             set => SetProperty(ref _isNavExpanded, value, action: () =>
             {
-                NavWidth = value ? 260 : 60;
+                // [Fix 4] Removed hardcoded width logic. 
+                // The View (MainWindow.xaml.cs) drives the animation and updates NavWidth.
             });
         }
 
@@ -165,7 +166,6 @@ namespace TechDashboard.ViewModels
 
         private void QuickToggleTheme()
         {
-            // Cycle through themes: Dark -> Light -> BlueTech -> Dark
             var nextTheme = CurrentTheme switch
             {
                 "Dark" => "Light",
@@ -179,7 +179,6 @@ namespace TechDashboard.ViewModels
 
         private void QuickToggleLanguage()
         {
-            // Cycle through languages: en-US -> zh-CN -> zh-TW -> ko-KR -> ja-JP -> en-US
             var nextLanguage = CurrentLanguage switch
             {
                 "en-US" => "zh-CN",

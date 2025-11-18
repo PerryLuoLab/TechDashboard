@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:TechDashboard.Converters"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
-             StartupUri="MainWindow.xaml">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <!-- NOTE: StartupUri removed, MainWindow is created in App.xaml.cs OnStartup using DI -->
     <Application.Resources>
         <ResourceDictionary>
             <!-- Converters -->

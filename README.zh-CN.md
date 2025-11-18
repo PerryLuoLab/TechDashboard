@@ -279,15 +279,35 @@ private void CalculateOptimalNavWidth()
 ```csharp
 // 拖拽阈值：100px 中点
 // 对齐到折叠（60px）或展开（计算的宽度）
-// 动画持续时间：200ms，使用 EaseInOut
 ```
-
-### 3. 资源管理
+ 动画持续时间：200ms，使用 EaseInOut
+```csharp
+// 资源管理
 - 主题使用 `DynamicResource` 进行热交换
 - 语言使用 `system:String` 进行本地化
 - 所有资源都适当作用域和类型化
+```
 
 ## 🐛 故障排除
+
+### XAML 设计器问题（仅设计时）
+如果您在 Visual Studio XAML 设计器中看到类似错误：
+```
+Could not load file or assembly 'WPFLocalizeExtension'...
+```
+
+**不要担心！** 这是 WPFLocalizeExtension 的已知设计时限制：
+- ✅ **构建成功**：`dotnet build` 正常工作
+- ✅ **运行时正常**：应用程序完美运行
+- ✅ **本地化有效**：所有翻译正确显示
+- ❌ **仅设计器**：Visual Studio 设计器无法加载扩展
+
+**解决方案：**
+1. **忽略设计器错误**（推荐）- 它们不影响功能
+2. **使用 XAML 代码视图** 而不是设计器视图
+3. **使用热重载** - 运行应用程序 (F5) 并实时预览更改
+
+📖 查看 [XAML_DESIGNER_SOLUTION.zh-CN.md](XAML_DESIGNER_SOLUTION.zh-CN.md) 了解详细说明
 
 ### 主题未应用
 - 确保主题文件存在于 `Themes/` 文件夹中

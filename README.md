@@ -288,6 +288,25 @@ private void CalculateOptimalNavWidth()
 
 ## 🐛 Troubleshooting
 
+### XAML Designer Issues (Design-Time Only)
+If you see errors in Visual Studio XAML designer like:
+```
+Could not load file or assembly 'WPFLocalizeExtension'...
+```
+
+**Don't worry!** This is a known design-time limitation of WPFLocalizeExtension:
+- ✅ **Build succeeds**: `dotnet build` works fine
+- ✅ **Runtime works**: Application runs perfectly
+- ✅ **Localization works**: All translations display correctly
+- ❌ **Designer only**: Visual Studio designer can't load the extension
+
+**Solutions:**
+1. **Ignore the designer errors** (Recommended) - They don't affect functionality
+2. **Use XAML code view** instead of designer view
+3. **Use Hot Reload** - Run the app (F5) and preview changes in real-time
+
+📖 See [XAML_DESIGNER_SOLUTION.zh-CN.md](XAML_DESIGNER_SOLUTION.zh-CN.md) for detailed explanation (中文说明)
+
 ### Theme Not Applying
 - Ensure theme file exists in `Themes/` folder
 - Check resource keys match between theme and usage

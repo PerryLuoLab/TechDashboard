@@ -1,10 +1,8 @@
 using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using TechDashboard.Services.Interfaces;
-using WPFLocalizeExtension.Engine;
 
 namespace TechDashboard
 {
@@ -34,6 +32,10 @@ namespace TechDashboard
 
             System.Diagnostics.Debug.WriteLine("? Application services initialized");
             System.Diagnostics.Debug.WriteLine($"  Localization: {localizationService.CurrentCulture.Name}");
+
+            // Create and show MainWindow using DI
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            mainWindow.Show();
         }
 
         protected override void OnExit(ExitEventArgs e)

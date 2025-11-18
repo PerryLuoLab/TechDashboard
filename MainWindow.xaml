@@ -3,18 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:TechDashboard.ViewModels"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        d:DesignHeight="720" d:DesignWidth="1100"
         lex:LocalizeDictionary.DesignCulture="en-US"
         lex:ResxLocalizationProvider.DefaultAssembly="TechDashboard"
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-        Title="{lex:Loc Dashboard_Title}" Height="720" Width="1100"
+        Title="{lex:Loc Dashboard_Title}" 
+        Height="720" Width="1100"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True">
-
-    <!-- DataContext will be set in code-behind using DI -->
 
     <Border Background="{DynamicResource WindowBackgroundBrush}" 
             BorderBrush="{DynamicResource BorderBrush}" 
@@ -27,7 +30,6 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Enhanced Title Bar -->
             <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" 
                     BorderBrush="{DynamicResource BorderBrush}" 
                     BorderThickness="0,0,0,1" 
@@ -46,7 +48,6 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- App Icon -->
                     <Border Grid.Column="0" Width="64" Height="64" Margin="8,8,0,8">
                         <Border Width="48" Height="48" Background="{DynamicResource AccentBrush}" CornerRadius="8">
                             <TextBlock Text="D" FontSize="24" FontWeight="Bold" 
@@ -56,7 +57,6 @@
                         </Border>
                     </Border>
 
-                    <!-- App Name -->
                     <TextBlock Grid.Column="1" 
                                Text="{lex:Loc Dashboard_Title}" 
                                Foreground="{DynamicResource TextBrush}" 
@@ -65,7 +65,6 @@
                                VerticalAlignment="Center" 
                                Margin="12,0,24,0"/>
 
-                    <!-- Menu & Toolbar Stack -->
                     <Grid Grid.Column="2" Margin="0,4,0,4" ClipToBounds="False">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -73,7 +72,6 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <!-- Menu Row -->
                         <Menu x:Name="MainMenu" 
                               Grid.Row="0" 
                               Background="Transparent" 
@@ -95,7 +93,7 @@
                                 <MenuItem Header="{lex:Loc Menu_File_Exit}">
                                     <MenuItem.Icon>
                                         <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
-                                                   Foreground="#F44336"/>
+                                                   Foreground="{DynamicResource ErrorBrush}"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </MenuItem>
@@ -149,13 +147,11 @@
                             </MenuItem>
                         </Menu>
 
-                        <!-- Horizontal Separator Line -->
                         <Border Grid.Row="1" 
                                 Height="2" 
                                 Background="{DynamicResource BorderBrush}" 
                                 Margin="0,2"/>
 
-                        <!-- Toolbar Row -->
                         <StackPanel Grid.Row="2" 
                                     Orientation="Horizontal" 
                                     VerticalAlignment="Center"
@@ -163,64 +159,59 @@
                                     MinHeight="32"
                                     ClipToBounds="False">
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
-                                    ToolTip="New"
+                                    ToolTip="{lex:Loc ToolTip_New}"
                                     Margin="0,0,5,0">
                                 <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
-                                    ToolTip="Open"
+                                    ToolTip="{lex:Loc ToolTip_Open}"
                                     Margin="0,0,5,0">
                                 <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
-                                    ToolTip="Save"
+                                    ToolTip="{lex:Loc Common_Save}"
                                     Margin="0,0,5,0">
-                                <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                                <TextBlock Text="&#xE74E;" FontFamily="Segoe Fluent Icons" FontSize="16"/>
                             </Button>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
-                                    ToolTip="Undo"
+                                    ToolTip="{lex:Loc Menu_Edit_Undo}"
                                     Margin="0,0,5,0">
                                 <TextBlock Text="&#xE7A7;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
-                                    ToolTip="Redo"
+                                    ToolTip="{lex:Loc Menu_Edit_Redo}"
                                     Margin="0,0,5,0">
                                 <TextBlock Text="&#xE7A6;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                             <Button Style="{StaticResource ToolbarButtonStyle}" 
-                                    ToolTip="Search"
+                                    ToolTip="{lex:Loc Common_Search}"
                                     Margin="0">
                                 <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                             </Button>
                         </StackPanel>
                     </Grid>
 
-                    <!-- Theme Toggle -->
                     <Button Grid.Column="4" 
                             Command="{Binding QuickToggleThemeCommand}"
                             Style="{StaticResource ThemeToggleButtonStyle}"
                             Width="40" Height="40"
                             Margin="12,0,3,0"
-                            ToolTip="Toggle Theme">
+                            ToolTip="{lex:Loc Settings_ToggleTheme}">
                         <TextBlock x:Name="ThemeIcon" 
-                                   Text="&#xE793;" 
-                                   FontFamily="Segoe MDL2 Assets" 
+                                   Text="&#xE793;" FontFamily="Segoe MDL2 Assets" 
                                    FontSize="18"/>
                     </Button>
 
-                    <!-- Language Toggle -->
                     <Button Grid.Column="5" 
                             Command="{Binding QuickToggleLanguageCommand}"
                             Style="{StaticResource ThemeToggleButtonStyle}"
                             Width="40" Height="40"
                             Margin="0,0,12,0"
-                            ToolTip="Toggle Language">
-                        <TextBlock Text="&#xF2B7;" 
-                                   FontFamily="Segoe MDL2 Assets" 
+                            ToolTip="{lex:Loc Settings_ToggleLanguage}">
+                        <TextBlock Text="&#xF2B7;" FontFamily="Segoe MDL2 Assets" 
                                    FontSize="18"/>
                     </Button>
 
-                    <!-- Window Controls -->
                     <StackPanel Grid.Column="6" 
                                 Orientation="Horizontal" 
                                 Margin="8,0,0,0">
@@ -243,29 +234,26 @@
                 </Grid>
             </Border>
 
-            <!-- Main Content Area -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="NavColumn" Width="260" MinWidth="60"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Navigation Panel -->
                 <Border x:Name="NavPanel" Grid.Column="0" 
                         Background="{DynamicResource NavBackgroundBrush}" 
-                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
-                    <Grid>
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0"
+                        MouseLeftButtonDown="NavPanel_MouseLeftButtonDown"
+                        Cursor="Hand">
+                    <Grid Background="Transparent">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <!-- Navigation Content -->
                         <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <StackPanel Margin="8">
-                                <!-- Navigation Buttons -->
                                 <StackPanel>
-                                    <!-- Overview Button -->
                                     <Button Command="{Binding NavigateCommand}" CommandParameter="Overview"
                                             Margin="0,8,0,4" Height="44">
                                         <Button.Style>
@@ -296,7 +284,6 @@
                                         </Grid>
                                     </Button>
 
-                                    <!-- Analytics Button -->
                                     <Button Command="{Binding NavigateCommand}" CommandParameter="Analytics"
                                             Margin="0,0,0,4" Height="44">
                                         <Button.Style>
@@ -327,7 +314,6 @@
                                         </Grid>
                                     </Button>
 
-                                    <!-- Reports Button -->
                                     <Button Command="{Binding NavigateCommand}" CommandParameter="Reports"
                                             Margin="0,0,0,4" Height="44">
                                         <Button.Style>
@@ -358,7 +344,6 @@
                                         </Grid>
                                     </Button>
 
-                                    <!-- Settings Button -->
                                     <Button Command="{Binding NavigateCommand}" CommandParameter="Settings"
                                             Margin="0,0,0,4" Height="44">
                                         <Button.Style>
@@ -392,13 +377,11 @@
                             </StackPanel>
                         </ScrollViewer>
 
-                        <!-- Collapse/Expand Toggle Button -->
                         <Button Grid.Row="1" Command="{Binding ToggleNavCommand}" 
                                 Style="{StaticResource NavButtonStyle}" Height="48" Margin="4">
                             <Grid>
                                 <Grid Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVis}}">
-                                    <TextBlock x:Name="ToggleIcon" Text="&#xE76C;" 
-                                               FontFamily="Segoe MDL2 Assets" FontSize="16" 
+                                    <TextBlock x:Name="ToggleIcon" Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="16" 
                                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                                ToolTip="{lex:Loc Nav_Expand}"/>
                                 </Grid>
@@ -415,16 +398,13 @@
                     </Grid>
                 </Border>
 
-                <!-- Main Content Area -->
                 <Grid Grid.Column="1">
-                    <!-- Overview Page -->
                     <Grid Visibility="{Binding IsOverviewPage, Converter={StaticResource BoolToVis}}" Margin="24">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <!-- Stats Cards -->
                         <WrapPanel Orientation="Horizontal" Margin="0,0,0,20">
                             <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
                                 <StackPanel>
@@ -433,7 +413,7 @@
                                     <TextBlock Text="1,243" FontSize="32" FontWeight="Bold" 
                                                Margin="0,8,0,4" Foreground="{DynamicResource AccentBrush}"/>
                                     <TextBlock Text="{lex:Loc Dashboard_VsLastMonth}" FontSize="11" 
-                                               Foreground="#00C853"/>
+                                               Foreground="{DynamicResource SuccessBrush}"/>
                                 </StackPanel>
                             </Border>
 
@@ -457,12 +437,11 @@
                                     <TextBlock Text="3" FontSize="32" FontWeight="Bold" 
                                                Margin="0,8,0,4" Foreground="{DynamicResource AccentBrush}"/>
                                     <TextBlock Text="{lex:Loc Dashboard_AllSystemsOK}" FontSize="11" 
-                                               Foreground="#00C853"/>
+                                               Foreground="{DynamicResource SuccessBrush}"/>
                                 </StackPanel>
                             </Border>
                         </WrapPanel>
 
-                        <!-- Performance Chart -->
                         <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -507,19 +486,16 @@
                         </Border>
                     </Grid>
 
-                    <!-- Settings Page -->
                     <Grid Visibility="{Binding IsSettingsPage, Converter={StaticResource BoolToVis}}" 
                           Margin="24" Background="{DynamicResource NavBackgroundBrush}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
-                                <!-- Appearance Section -->
                                 <TextBlock Text="{lex:Loc Settings_Appearance}" FontSize="24" 
                                            FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
 
                                 <TextBlock Text="{lex:Loc Settings_ChooseTheme}" FontSize="14" 
                                            Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
 
-                                <!-- Theme Selector -->
                                 <WrapPanel Margin="0,0,0,32">
                                     <ToggleButton Content="{lex:Loc Settings_Theme_Dark}" 
                                                   Style="{StaticResource ThemeToggleButton}"
@@ -559,14 +535,12 @@
                                     </ToggleButton>
                                 </WrapPanel>
 
-                                <!-- Language Section -->
                                 <TextBlock Text="{lex:Loc Settings_Language}" FontSize="24" 
                                            FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,16,0,16"/>
 
                                 <TextBlock Text="{lex:Loc Settings_ChooseLanguage}" FontSize="14" 
                                            Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
 
-                                <!-- Language Selector -->
                                 <WrapPanel>
                                     <ToggleButton Content="{lex:Loc Settings_Lang_English}" 
                                                   Style="{StaticResource LanguageToggleButton}"
@@ -597,7 +571,6 @@
                         </ScrollViewer>
                     </Grid>
 
-                    <!-- Analytics Page -->
                     <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVis}}" Margin="24">
                         <Border Style="{StaticResource DashboardCard}" Padding="20">
                             <StackPanel>
@@ -609,7 +582,6 @@
                         </Border>
                     </Grid>
 
-                    <!-- Reports Page -->
                     <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVis}}" Margin="24">
                         <Border Style="{StaticResource DashboardCard}" Padding="20">
                             <StackPanel>
@@ -623,7 +595,6 @@
                 </Grid>
             </Grid>
 
-            <!-- Bottom Status Bar -->
             <Border Grid.Row="2" Background="{DynamicResource HeaderBackgroundBrush}" 
                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" 
                     Height="24"
@@ -636,7 +607,7 @@
 
                     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="12" 
-                                   Foreground="#00C853" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                   Foreground="{DynamicResource SuccessBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <TextBlock Text="{lex:Loc Status_Ready}" FontSize="11" 
                                    Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
                     </StackPanel>

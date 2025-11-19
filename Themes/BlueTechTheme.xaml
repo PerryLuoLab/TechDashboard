@@ -1,54 +1,56 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Blue Tech Theme Colors -->
+    <!-- Light Blue Crystal Theme Colors - 浅蓝水晶风格 -->
 
-    <!-- Solid Brushes -->
-    <SolidColorBrush x:Key="NavBackgroundBrush" Color="#1A1F2E"/>
-    <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.95">
-        <GradientStop Color="#1E2433" Offset="0"/>
-        <GradientStop Color="#1A1F2E" Offset="1"/>
+    <!-- Solid Brushes - 浅蓝色调 -->
+    <SolidColorBrush x:Key="NavBackgroundBrush" Color="#E8F4F8"/>
+    <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.85">
+        <GradientStop Color="#F0F8FF" Offset="0"/>
+        <GradientStop Color="#E1F5FE" Offset="1"/>
     </LinearGradientBrush>
-    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#141922"/>
-    <SolidColorBrush x:Key="TextBrush" Color="#E3E8F0"/>
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#8B95A8"/>
-    <SolidColorBrush x:Key="AccentBrush" Color="#00A8FF"/>
-    <SolidColorBrush x:Key="HoverBrush" Color="#252B3A"/>
-    <SolidColorBrush x:Key="SelectedBrush" Color="#00D4FF"/>
-    <SolidColorBrush x:Key="BorderBrush" Color="#2D3548"/>
+    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#D6EAF8"/>
+    <SolidColorBrush x:Key="TextBrush" Color="#1A2332"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#546E7A"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#0288D1"/>
+    <SolidColorBrush x:Key="HoverBrush" Color="#B3E5FC"/>
+    <SolidColorBrush x:Key="SelectedBrush" Color="#0277BD"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#81D4FA"/>
 
-    <!-- Status Color Brushes - Optimized for Blue Tech Theme -->
-    <SolidColorBrush x:Key="SuccessBrush" Color="#00E676"/>
-    <SolidColorBrush x:Key="ErrorBrush" Color="#FF5252"/>
-    <SolidColorBrush x:Key="WarningBrush" Color="#FFAB40"/>
-    <SolidColorBrush x:Key="InfoBrush" Color="#40C4FF"/>
+    <!-- Status Color Brushes - 优化为浅蓝水晶主题 -->
+    <SolidColorBrush x:Key="SuccessBrush" Color="#00C853"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#E53935"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="#FFB300"/>
+    <SolidColorBrush x:Key="InfoBrush" Color="#0288D1"/>
 
-    <!-- Window Background Gradient with Transparency -->
-    <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
-        <GradientStop Color="#0F1419" Offset="0"/>
-        <GradientStop Color="#0A2540" Offset="0.5"/>
-        <GradientStop Color="#0F1419" Offset="1"/>
+    <!-- Window Background Gradient - 浅蓝渐变水晶背景 -->
+    <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.95">
+        <GradientStop Color="#E3F2FD" Offset="0"/>
+        <GradientStop Color="#BBDEFB" Offset="0.3"/>
+        <GradientStop Color="#90CAF9" Offset="0.6"/>
+        <GradientStop Color="#E3F2FD" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Progress Bar Background -->
-    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="#1A3A5C"/>
+    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="#B3E5FC"/>
 
-    <!-- Accent Gradient -->
+    <!-- Accent Gradient - 水晶蓝色渐变 -->
     <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#00A8FF" Offset="0"/>
-        <GradientStop Color="#00D4FF" Offset="1"/>
+        <GradientStop Color="#0288D1" Offset="0"/>
+        <GradientStop Color="#03A9F4" Offset="0.5"/>
+        <GradientStop Color="#00BCD4" Offset="1"/>
     </LinearGradientBrush>
 
-    <!-- Progress Gradient -->
+    <!-- Progress Gradient - 明亮水晶进度条 -->
     <LinearGradientBrush x:Key="ProgressGradientBrush" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#00A8FF" Offset="0"/>
-        <GradientStop Color="#39C2FF" Offset="0.5"/>
-        <GradientStop Color="#00D4FF" Offset="1"/>
+        <GradientStop Color="#0288D1" Offset="0"/>
+        <GradientStop Color="#29B6F6" Offset="0.5"/>
+        <GradientStop Color="#4FC3F7" Offset="1"/>
     </LinearGradientBrush>
 
-    <!-- Effects -->
-    <DropShadowEffect x:Key="CardShadow" Color="#00294D" BlurRadius="22" ShadowDepth="0" Opacity="0.6"/>
-    <DropShadowEffect x:Key="AccentGlow" Color="#00A8FF" BlurRadius="18" ShadowDepth="0" Opacity="0.7"/>
+    <!-- Effects - 水晶光泽效果 -->
+    <DropShadowEffect x:Key="CardShadow" Color="#4FC3F7" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+    <DropShadowEffect x:Key="AccentGlow" Color="#0288D1" BlurRadius="16" ShadowDepth="0" Opacity="0.5"/>
 
     <!-- Menu Style -->
     <Style TargetType="MenuItem">
@@ -113,7 +115,8 @@
                                         BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
                                         Padding="2"
-                                        CornerRadius="4">
+                                        CornerRadius="4"
+                                        Effect="{StaticResource CardShadow}">
                                     <ScrollViewer Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type FrameworkElement}, ResourceId=MenuScrollViewer}}">
                                         <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Cycle"
                                                       Grid.IsSharedSizeScope="True"
@@ -203,11 +206,20 @@
         </Setter>
     </Style>
 
-    <!-- Toolbar Button Style -->
+    <!-- Toolbar Button Style - 水晶玻璃效果 -->
     <Style x:Key="ToolbarButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="#F0F8FF" Opacity="0.6"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="#81D4FA" Opacity="0.5"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Width" Value="34"/>
         <Setter Property="Height" Value="34"/>
         <Setter Property="Padding" Value="0"/>
@@ -218,14 +230,24 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" Background="{TemplateBinding Background}" 
-                            CornerRadius="5" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="1" SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#B3E5FC" Opacity="0.8"/>
+                                </Setter.Value>
+                            </Setter>
                             <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#0288D1" BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentBrush}"/>
@@ -283,11 +305,11 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#E81123"/>
+                            <Setter TargetName="border" Property="Background" Value="#E53935"/>
                             <Setter Property="Foreground" Value="White"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="#C50F1F"/>
+                            <Setter TargetName="border" Property="Background" Value="#C62828"/>
                             <Setter Property="Foreground" Value="White"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -298,10 +320,18 @@
 
     <!-- Theme Toggle Button Style -->
     <Style x:Key="ThemeToggleButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="#F0F8FF" Opacity="0.6"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="#81D4FA" Opacity="0.5"/>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -314,8 +344,17 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#B3E5FC" Opacity="0.8"/>
+                                </Setter.Value>
+                            </Setter>
                             <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#0288D1" BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentBrush}"/>
@@ -327,17 +366,22 @@
         </Setter>
     </Style>
 
+    <!-- Dashboard Card - 水晶玻璃卡片 -->
     <Style x:Key="DashboardCard" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
         <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="#81D4FA" Opacity="0.6"/>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- Theme/Language Toggle Button Style -->
-    <SolidColorBrush x:Key="ThemeSelectedBrush" Color="#00C853"/>
+    <SolidColorBrush x:Key="ThemeSelectedBrush" Color="#0288D1"/>
 
     <Style x:Key="ThemeToggleButton" TargetType="ToggleButton">
         <Setter Property="Width" Value="120"/>
@@ -371,6 +415,7 @@
                             <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource ThemeSelectedBrush}"/>
                             <Setter TargetName="border" Property="BorderThickness" Value="3"/>
                             <Setter TargetName="CheckmarkIcon" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Effect" Value="{StaticResource CardShadow}"/>
@@ -403,6 +448,7 @@
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource ThemeSelectedBrush}"/>
                             <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Effect" Value="{StaticResource CardShadow}"/>
@@ -413,6 +459,7 @@
         </Setter>
     </Style>
 
+    <!-- Icon Box Style - 水晶图标框 -->
     <Style x:Key="IconBoxStyle" TargetType="Border">
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>

@@ -1,5 +1,5 @@
 using System.Windows.Input;
-using TechDashboard.Core.Infrastructure;  // ? 更新引用
+using TechDashboard.Core.Infrastructure;
 using TechDashboard.Services.Interfaces;
 
 namespace TechDashboard.ViewModels
@@ -170,7 +170,8 @@ namespace TechDashboard.ViewModels
             {
                 "Dark" => "Light",
                 "Light" => "LightBlue",
-                "LightBlue" => "Dark",
+                "LightBlue" => "BlueTech",
+                "BlueTech" => "Dark",
                 _ => "Dark"
             };
 

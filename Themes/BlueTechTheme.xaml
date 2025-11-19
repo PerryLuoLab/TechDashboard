@@ -1,0 +1,588 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- BlueTech Theme - Glassmorphism with Neon Glow -->
+
+    <!-- Base Colors -->
+    <Color x:Key="DeepSpaceBlue">#0A0E27</Color>
+    <Color x:Key="MidnightBlue">#0F1419</Color>
+    <Color x:Key="CyberBlue">#1A2332</Color>
+    <Color x:Key="NeonBlue">#00D9FF</Color>
+    <Color x:Key="ElectricBlue">#0099FF</Color>
+    <Color x:Key="AquaGlow">#00FFFF</Color>
+    <Color x:Key="SapphireBlue">#0066CC</Color>
+    
+    <!-- Glassmorphism Base Brushes -->
+    <SolidColorBrush x:Key="TextBrush" Color="#E8F4F8" Opacity="0.95"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#8FB8D9" Opacity="0.85"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource NeonBlue}"/>
+    <SolidColorBrush x:Key="SelectedBrush" Color="{StaticResource AquaGlow}"/>
+    
+    <!-- Glass Effect Backgrounds -->
+    <LinearGradientBrush x:Key="NavBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.15">
+        <GradientStop Color="#0A2540" Offset="0"/>
+        <GradientStop Color="#0F1419" Offset="0.5"/>
+        <GradientStop Color="#0A2540" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Crystal Card Background -->
+    <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.25">
+        <GradientStop Color="#1A2F4D" Offset="0"/>
+        <GradientStop Color="#0D1B2E" Offset="0.5"/>
+        <GradientStop Color="#1A2F4D" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Header Glass Background -->
+    <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.20">
+        <GradientStop Color="#0F1F33" Offset="0"/>
+        <GradientStop Color="#0A1628" Offset="0.5"/>
+        <GradientStop Color="#0F1F33" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Main Window Holographic Background -->
+    <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
+        <GradientStop Color="{StaticResource DeepSpaceBlue}" Offset="0"/>
+        <GradientStop Color="{StaticResource MidnightBlue}" Offset="0.3"/>
+        <GradientStop Color="#0A2540" Offset="0.6"/>
+        <GradientStop Color="{StaticResource MidnightBlue}" Offset="0.85"/>
+        <GradientStop Color="{StaticResource DeepSpaceBlue}" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Hover Glass Effect -->
+    <LinearGradientBrush x:Key="HoverBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.35">
+        <GradientStop Color="#00D9FF" Offset="0"/>
+        <GradientStop Color="#0099FF" Offset="0.5"/>
+        <GradientStop Color="#00D9FF" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Border with Neon Glow -->
+    <SolidColorBrush x:Key="BorderBrush" Color="#00D9FF" Opacity="0.3"/>
+    
+    <!-- Status Color Brushes - Neon Style -->
+    <SolidColorBrush x:Key="SuccessBrush" Color="#00E676"/>
+    <SolidColorBrush x:Key="ErrorBrush" Color="#FF5252"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="#FFAB40"/>
+    <SolidColorBrush x:Key="InfoBrush" Color="#40C4FF"/>
+    
+    <!-- Neon Gradient Brushes -->
+    <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#00D9FF" Offset="0"/>
+        <GradientStop Color="#0099FF" Offset="0.5"/>
+        <GradientStop Color="#00FFFF" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Holographic Progress Gradient -->
+    <LinearGradientBrush x:Key="ProgressGradientBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#00D9FF" Offset="0"/>
+        <GradientStop Color="#0099FF" Offset="0.3"/>
+        <GradientStop Color="#00FFFF" Offset="0.6"/>
+        <GradientStop Color="#00D9FF" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <!-- Progress Bar Crystal Background -->
+    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="#1A2F4D" Opacity="0.4"/>
+    
+    <!-- Neon Glow Effects -->
+    <DropShadowEffect x:Key="CardShadow" Color="#00D9FF" BlurRadius="25" ShadowDepth="0" Opacity="0.5"/>
+    <DropShadowEffect x:Key="AccentGlow" Color="#00FFFF" BlurRadius="20" ShadowDepth="0" Opacity="0.7"/>
+    <DropShadowEffect x:Key="StrongNeonGlow" Color="#00D9FF" BlurRadius="30" ShadowDepth="0" Opacity="0.8"/>
+    
+    <!-- Additional Glass Effects -->
+    <DropShadowEffect x:Key="GlassReflection" Color="#FFFFFF" BlurRadius="15" ShadowDepth="0" Opacity="0.15" Direction="90"/>
+    <BlurEffect x:Key="GlassBlur" Radius="8"/>
+
+    <!-- Menu Style with Glassmorphism -->
+    <Style TargetType="MenuItem">
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="0"
+                            SnapsToDevicePixels="True"
+                            CornerRadius="4">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                                <ColumnDefinition Width="14"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <ContentPresenter x:Name="Icon"
+                                            Grid.Column="0"
+                                            Content="{TemplateBinding Icon}"
+                                            ContentSource="Icon"
+                                            Margin="4,0,6,0"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                            VerticalAlignment="Center"/>
+                            
+                            <ContentPresenter x:Name="HeaderHost"
+                                            Grid.Column="1"
+                                            ContentSource="Header"
+                                            Margin="{TemplateBinding Padding}"
+                                            RecognizesAccessKey="True"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                            VerticalAlignment="Center"/>
+                            
+
+                            <TextBlock x:Name="InputGestureText"
+                                     Grid.Column="2"
+                                     Text="{TemplateBinding InputGestureText}"
+                                     Margin="16,0,0,0"
+                                     VerticalAlignment="Center"/>
+                            
+
+                            <Path x:Name="ArrowPanel"
+                                Grid.Column="3"
+                                Data="M 0,0 L 4,3.5 L 0,7 Z"
+                                Fill="{TemplateBinding Foreground}"
+                                Margin="4,0,6,0"
+                                VerticalAlignment="Center"
+                                Visibility="Collapsed"/>
+                            
+
+                            <Popup x:Name="PART_Popup"
+                                   AllowsTransparency="True"
+                                   Placement="Right"
+                                   VerticalOffset="-3"
+                                   HorizontalOffset="-2"
+                                   IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Focusable="False"
+                                   PopupAnimation="Fade">
+                                <Border BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        Padding="2"
+                                        CornerRadius="6"
+                                        Effect="{StaticResource CardShadow}">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.95">
+                                            <GradientStop Color="#0F1F33" Offset="0"/>
+                                            <GradientStop Color="#0A1628" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <ScrollViewer Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type FrameworkElement}, ResourceId=MenuScrollViewer}}">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Cycle"
+                                                      Grid.IsSharedSizeScope="True"
+                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Icon" Value="{x:Null}">
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="TopLevelHeader">
+                            <Setter Property="Padding" Value="7,2"/>
+                            <Setter TargetName="PART_Popup" Property="Placement" Value="Bottom"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="TopLevelItem">
+                            <Setter Property="Padding" Value="7,2"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="SubmenuHeader">
+                            <Setter TargetName="ArrowPanel" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="Role" Value="SubmenuItem">
+                            <Setter Property="Padding" Value="2,6"/>
+                        </Trigger>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            <Setter TargetName="Bd" Property="Effect" Value="{StaticResource AccentGlow}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Neon Accent Button -->
+    <Style x:Key="AccentButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource AccentGradientBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6" 
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource StrongNeonGlow}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Opacity" Value="0.85"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Glass Navigation Button -->
+    <Style x:Key="NavButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="8" 
+                            Padding="{TemplateBinding Padding}"
+                            BorderThickness="1"
+                            BorderBrush="Transparent">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Crystal Toolbar Button -->
+    <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.2">
+                    <GradientStop Color="#1A2F4D" Offset="0"/>
+                    <GradientStop Color="#0D1B2E" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="#00D9FF" Opacity="0.25"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Width" Value="34"/>
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="6" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.4">
+                                        <GradientStop Color="#00D9FF" Offset="0"/>
+                                        <GradientStop Color="#0099FF" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#00FFFF" Opacity="0.6"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                            <Setter Property="Foreground" Value="#0A0E27"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Toolbar Separator Style -->
+    <Style x:Key="ToolbarSeparatorStyle" TargetType="Separator">
+        <Setter Property="Width" Value="1"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="Margin" Value="8,0"/>
+        <Setter Property="Background" Value="{DynamicResource BorderBrush}"/>
+    </Style>
+
+    <!-- Window Control Button Style -->
+    <Style x:Key="WindowControlButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#00D9FF" Opacity="0.3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Close Button with Red Neon -->
+    <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource WindowControlButtonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="0,8,0,0">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#FF1744"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="#FF1744" BlurRadius="20" ShadowDepth="0" Opacity="0.8"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#D50000"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Theme Toggle Button with Glass Effect -->
+    <Style x:Key="ThemeToggleButtonStyle" TargetType="Button">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.2">
+                    <GradientStop Color="#1A2F4D" Offset="0"/>
+                    <GradientStop Color="#0D1B2E" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="#00D9FF" Opacity="0.3"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" 
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.35">
+                                        <GradientStop Color="#00D9FF" Offset="0"/>
+                                        <GradientStop Color="#0099FF" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderBrush">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#00FFFF" Opacity="0.6"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                            <Setter Property="Foreground" Value="#0A0E27"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Holographic Dashboard Card -->
+    <Style x:Key="DashboardCard" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.4">
+                    <GradientStop Color="#00D9FF" Offset="0"/>
+                    <GradientStop Color="#0099FF" Offset="0.5"/>
+                    <GradientStop Color="#00FFFF" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Theme Selection Button with Neon -->
+    <SolidColorBrush x:Key="ThemeSelectedBrush" Color="#00FFFF"/>
+
+    <Style x:Key="ThemeToggleButton" TargetType="ToggleButton">
+        <Setter Property="Width" Value="120"/>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Margin" Value="8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="border" 
+                            Background="{DynamicResource CardBackgroundBrush}" 
+                            BorderBrush="{DynamicResource BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="10" 
+                            Padding="8">
+                        <Grid>
+                            <StackPanel>
+                                <TextBlock Text="{TemplateBinding Content}" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="{DynamicResource TextBrush}" 
+                                           HorizontalAlignment="Center"/>
+                                <Grid Height="30" Margin="0,8,0,0">
+                                    <Border x:Name="ColorBlock" 
+                                            Height="30" 
+                                            CornerRadius="6" 
+                                            Background="{TemplateBinding Tag}"/>
+                                    <TextBlock x:Name="CheckmarkIcon" 
+                                               Text="&#xE73E;" 
+                                               FontFamily="Segoe MDL2 Assets" 
+                                               FontSize="18" 
+                                               Foreground="{StaticResource ThemeSelectedBrush}"
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"
+                                               Visibility="Collapsed"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#00FFFF" Opacity="0.8"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            <Setter TargetName="CheckmarkIcon" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource StrongNeonGlow}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Language Toggle Button with Glass Effect -->
+    <Style x:Key="LanguageToggleButton" TargetType="ToggleButton">
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="Margin" Value="8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="border" 
+                            Background="{DynamicResource CardBackgroundBrush}" 
+                            BorderBrush="{DynamicResource BorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="10" 
+                            Padding="8">
+                        <Grid>
+                            <TextBlock Text="{TemplateBinding Content}" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource TextBrush}" 
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#00FFFF" Opacity="0.8"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource StrongNeonGlow}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Neon Icon Box Style -->
+    <Style x:Key="IconBoxStyle" TargetType="Border">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Background" Value="{StaticResource AccentGradientBrush}"/>
+        <Setter Property="Effect" Value="{StaticResource StrongNeonGlow}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="#00FFFF" Opacity="0.5"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

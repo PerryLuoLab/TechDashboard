@@ -24,6 +24,11 @@ namespace TechDashboard.Core.Constants
             /// Light Blue theme (浅蓝色主题)
             /// </summary>
             public const string LightBlue = "LightBlue";
+
+            /// <summary>
+            /// BlueTech theme - Glassmorphism with Neon Glow (科技蓝主题 - 玻璃拟态霓虹辉光)
+            /// </summary>
+            public const string BlueTech = "BlueTech";
         }
 
         /// <summary>
@@ -45,6 +50,11 @@ namespace TechDashboard.Core.Constants
             /// Light Blue theme resource dictionary path (浅蓝色主题)
             /// </summary>
             public const string LightBlue = "Themes/LightBlueTheme.xaml";
+
+            /// <summary>
+            /// BlueTech theme resource dictionary path (科技蓝主题 - 玻璃拟态)
+            /// </summary>
+            public const string BlueTech = "Themes/BlueTechTheme.xaml";
         }
 
         /// <summary>
@@ -113,6 +123,7 @@ namespace TechDashboard.Core.Constants
                 ThemeNames.Dark => ThemeResourcePaths.Dark,
                 ThemeNames.Light => ThemeResourcePaths.Light,
                 ThemeNames.LightBlue => ThemeResourcePaths.LightBlue,
+                ThemeNames.BlueTech => ThemeResourcePaths.BlueTech,
                 _ => ThemeResourcePaths.Light
             };
         }
@@ -127,7 +138,8 @@ namespace TechDashboard.Core.Constants
             {
                 ThemeNames.Dark,
                 ThemeNames.Light,
-                ThemeNames.LightBlue
+                ThemeNames.LightBlue,
+                ThemeNames.BlueTech
             };
         }
     }

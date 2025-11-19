@@ -166,6 +166,9 @@
   <data name="Settings_Theme_LightBlue" xml:space="preserve">
     <value>라이트 블루</value>
   </data>
+  <data name="Settings_Theme_BlueTech" xml:space="preserve">
+    <value>블루테크</value>
+  </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>언어</value>
   </data>
@@ -219,6 +222,9 @@
   </data>
   <data name="Status_Theme_LightBlue" xml:space="preserve">
     <value>라이트 블루</value>
+  </data>
+  <data name="Status_Theme_BlueTech" xml:space="preserve">
+    <value>블루테크</value>
   </data>
   <data name="Status_Page_Overview" xml:space="preserve">
     <value>개요</value>

@@ -18,29 +18,29 @@
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource NeonBlue}"/>
     <SolidColorBrush x:Key="SelectedBrush" Color="{StaticResource AquaGlow}"/>
     
-    <!-- Glass Effect Backgrounds -->
-    <LinearGradientBrush x:Key="NavBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.15">
+    <!-- Glass Effect Backgrounds - Reduced Transparency -->
+    <LinearGradientBrush x:Key="NavBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.50">
         <GradientStop Color="#0A2540" Offset="0"/>
         <GradientStop Color="#0F1419" Offset="0.5"/>
         <GradientStop Color="#0A2540" Offset="1"/>
     </LinearGradientBrush>
     
-    <!-- Crystal Card Background -->
-    <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.25">
+    <!-- Crystal Card Background - Reduced Transparency -->
+    <LinearGradientBrush x:Key="CardBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.60">
         <GradientStop Color="#1A2F4D" Offset="0"/>
         <GradientStop Color="#0D1B2E" Offset="0.5"/>
         <GradientStop Color="#1A2F4D" Offset="1"/>
     </LinearGradientBrush>
     
-    <!-- Header Glass Background -->
-    <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.20">
+    <!-- Header Glass Background - Reduced Transparency -->
+    <LinearGradientBrush x:Key="HeaderBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.55">
         <GradientStop Color="#0F1F33" Offset="0"/>
         <GradientStop Color="#0A1628" Offset="0.5"/>
         <GradientStop Color="#0F1F33" Offset="1"/>
     </LinearGradientBrush>
     
-    <!-- Main Window Holographic Background -->
-    <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
+    <!-- Main Window Holographic Background - Slightly Reduced Transparency -->
+    <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0,0" EndPoint="1,1" Opacity="1.0">
         <GradientStop Color="{StaticResource DeepSpaceBlue}" Offset="0"/>
         <GradientStop Color="{StaticResource MidnightBlue}" Offset="0.3"/>
         <GradientStop Color="#0A2540" Offset="0.6"/>
@@ -48,15 +48,15 @@
         <GradientStop Color="{StaticResource DeepSpaceBlue}" Offset="1"/>
     </LinearGradientBrush>
     
-    <!-- Hover Glass Effect -->
-    <LinearGradientBrush x:Key="HoverBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.35">
+    <!-- Hover Glass Effect - Reduced Transparency -->
+    <LinearGradientBrush x:Key="HoverBrush" StartPoint="0,0" EndPoint="1,1" Opacity="0.55">
         <GradientStop Color="#00D9FF" Offset="0"/>
         <GradientStop Color="#0099FF" Offset="0.5"/>
         <GradientStop Color="#00D9FF" Offset="1"/>
     </LinearGradientBrush>
     
-    <!-- Border with Neon Glow -->
-    <SolidColorBrush x:Key="BorderBrush" Color="#00D9FF" Opacity="0.3"/>
+    <!-- Border with Neon Glow - Increased Opacity -->
+    <SolidColorBrush x:Key="BorderBrush" Color="#00D9FF" Opacity="0.55"/>
     
     <!-- Status Color Brushes - Neon Style -->
     <SolidColorBrush x:Key="SuccessBrush" Color="#00E676"/>
@@ -79,8 +79,8 @@
         <GradientStop Color="#00D9FF" Offset="1"/>
     </LinearGradientBrush>
     
-    <!-- Progress Bar Crystal Background -->
-    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="#1A2F4D" Opacity="0.4"/>
+    <!-- Progress Bar Crystal Background - Reduced Transparency -->
+    <SolidColorBrush x:Key="ProgressBarBackgroundBrush" Color="#1A2F4D" Opacity="0.65"/>
     
     <!-- Neon Glow Effects -->
     <DropShadowEffect x:Key="CardShadow" Color="#00D9FF" BlurRadius="25" ShadowDepth="0" Opacity="0.5"/>
@@ -270,11 +270,11 @@
         </Setter>
     </Style>
 
-    <!-- Crystal Toolbar Button -->
+    <!-- Crystal Toolbar Button - Reduced Transparency -->
     <Style x:Key="ToolbarButtonStyle" TargetType="Button">
         <Setter Property="Background">
             <Setter.Value>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.2">
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.45">
                     <GradientStop Color="#1A2F4D" Offset="0"/>
                     <GradientStop Color="#0D1B2E" Offset="1"/>
                 </LinearGradientBrush>
@@ -284,7 +284,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush">
             <Setter.Value>
-                <SolidColorBrush Color="#00D9FF" Opacity="0.25"/>
+                <SolidColorBrush Color="#00D9FF" Opacity="0.45"/>
             </Setter.Value>
         </Setter>
         <Setter Property="Width" Value="34"/>
@@ -306,7 +306,7 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Background">
                                 <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.4">
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.65">
                                         <GradientStop Color="#00D9FF" Offset="0"/>
                                         <GradientStop Color="#0099FF" Offset="1"/>
                                     </LinearGradientBrush>
@@ -314,7 +314,7 @@
                             </Setter>
                             <Setter TargetName="border" Property="BorderBrush">
                                 <Setter.Value>
-                                    <SolidColorBrush Color="#00FFFF" Opacity="0.6"/>
+                                    <SolidColorBrush Color="#00FFFF" Opacity="0.80"/>
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>
@@ -395,11 +395,11 @@
         </Setter>
     </Style>
 
-    <!-- Theme Toggle Button with Glass Effect -->
+    <!-- Theme Toggle Button with Glass Effect - Reduced Transparency -->
     <Style x:Key="ThemeToggleButtonStyle" TargetType="Button">
         <Setter Property="Background">
             <Setter.Value>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.2">
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.45">
                     <GradientStop Color="#1A2F4D" Offset="0"/>
                     <GradientStop Color="#0D1B2E" Offset="1"/>
                 </LinearGradientBrush>
@@ -409,7 +409,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush">
             <Setter.Value>
-                <SolidColorBrush Color="#00D9FF" Opacity="0.3"/>
+                <SolidColorBrush Color="#00D9FF" Opacity="0.55"/>
             </Setter.Value>
         </Setter>
         <Setter Property="Cursor" Value="Hand"/>
@@ -427,7 +427,7 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Background">
                                 <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.35">
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.60">
                                         <GradientStop Color="#00D9FF" Offset="0"/>
                                         <GradientStop Color="#0099FF" Offset="1"/>
                                     </LinearGradientBrush>
@@ -435,7 +435,7 @@
                             </Setter>
                             <Setter TargetName="border" Property="BorderBrush">
                                 <Setter.Value>
-                                    <SolidColorBrush Color="#00FFFF" Opacity="0.6"/>
+                                    <SolidColorBrush Color="#00FFFF" Opacity="0.80"/>
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="border" Property="Effect" Value="{StaticResource AccentGlow}"/>

@@ -1,4 +1,4 @@
-namespace TechDashboard.Core.Constants
+ï»¿namespace TechDashboard.Core.Constants
 {
     /// <summary>
     /// Language-related constants and configuration values.
@@ -49,22 +49,22 @@ namespace TechDashboard.Core.Constants
             /// <summary>
             /// Simplified Chinese display name
             /// </summary>
-            public const string SimplifiedChinese = "¼òÌåÖĞÎÄ";
+            public const string SimplifiedChinese = "ç®€ä½“ä¸­æ–‡";
 
             /// <summary>
             /// Traditional Chinese display name
             /// </summary>
-            public const string TraditionalChinese = "·±ówÖĞÎÄ";
+            public const string TraditionalChinese = "ç¹é«”ä¸­æ–‡";
 
             /// <summary>
             /// Korean display name
             /// </summary>
-            public const string Korean = "???";
+            public const string Korean = "í•œêµ­ì–´";
 
             /// <summary>
             /// Japanese display name
             /// </summary>
-            public const string Japanese = "ÈÕ±¾ÕZ";
+            public const string Japanese = "æ—¥æœ¬èª";
         }
 
         /// <summary>

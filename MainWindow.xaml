@@ -526,10 +526,11 @@
                                                   IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=LightBlue}"
                                                   Command="{Binding ChangeThemeCommand}" CommandParameter="LightBlue">
                                         <ToggleButton.Tag>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
-                                                <GradientStop Color="#0F1419" Offset="0"/>
-                                                <GradientStop Color="#0A2540" Offset="0.5"/>
-                                                <GradientStop Color="#0F1419" Offset="1"/>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#E3F2FD" Offset="0"/>
+                                                <GradientStop Color="#BBDEFB" Offset="0.3"/>
+                                                <GradientStop Color="#90CAF9" Offset="0.6"/>
+                                                <GradientStop Color="#E3F2FD" Offset="1"/>
                                             </LinearGradientBrush>
                                         </ToggleButton.Tag>
                                     </ToggleButton>
@@ -539,10 +540,11 @@
                                                   IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=BlueTech}"
                                                   Command="{Binding ChangeThemeCommand}" CommandParameter="BlueTech">
                                         <ToggleButton.Tag>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
-                                                <GradientStop Color="#00D9FF" Offset="0"/>
-                                                <GradientStop Color="#0A0E27" Offset="0.3"/>
-                                                <GradientStop Color="#0099FF" Offset="0.6"/>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#0A0E27" Offset="0"/>
+                                                <GradientStop Color="#00D9FF" Offset="0.25"/>
+                                                <GradientStop Color="#0F1419" Offset="0.5"/>
+                                                <GradientStop Color="#0099FF" Offset="0.75"/>
                                                 <GradientStop Color="#00FFFF" Offset="1"/>
                                             </LinearGradientBrush>
                                         </ToggleButton.Tag>

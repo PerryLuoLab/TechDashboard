@@ -232,4 +232,22 @@
   <data name="Status_Page_Settings" xml:space="preserve">
     <value>設定</value>
   </data>
+  <data name="Settings_ToggleTheme" xml:space="preserve">
+    <value>テーマを切り替え</value>
+  </data>
+  <data name="Settings_ToggleLanguage" xml:space="preserve">
+    <value>言語を切り替え</value>
+  </data>
+  <data name="ToolTip_New" xml:space="preserve">
+    <value>新規</value>
+  </data>
+  <data name="ToolTip_Open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>検索</value>
+  </data>
 </root>

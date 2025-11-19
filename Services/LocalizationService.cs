@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using TechDashboard.Options;
 using TechDashboard.Services.Interfaces;
 using WPFLocalizeExtension.Engine;
+using TechDashboard.Core.Constants;
 
 namespace TechDashboard.Services
 {
@@ -88,7 +89,7 @@ namespace TechDashboard.Services
                 
                 LocalizeDictionary.Instance.Culture = culture;
                 
-                System.Diagnostics.Debug.WriteLine($"? Language changed to: {cultureCode}");
+                System.Diagnostics.Debug.WriteLine($"Language changed to: {cultureCode}");
             }
             catch (Exception ex)
             {
@@ -122,16 +123,8 @@ namespace TechDashboard.Services
         /// <inheritdoc/>
         public string GetLanguageDisplayName(string cultureCode)
         {
-            // This can be extended to use localized display names from resources
-            return cultureCode switch
-            {
-                "en-US" => "English",
-                "zh-CN" => "简体中文",
-                "zh-TW" => "繁體中文",
-                "ko-KR" => "???",
-                "ja-JP" => "日本語",
-                _ => cultureCode
-            };
+            // Delegate to centralized constants to avoid duplicated hard-coded values
+            return LanguageConstants.GetDisplayName(cultureCode);
         }
     }
 }

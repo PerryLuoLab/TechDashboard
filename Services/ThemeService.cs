@@ -98,6 +98,7 @@ namespace TechDashboard.Services
                 "Dark" => "Status_Theme_Dark",
                 "Light" => "Status_Theme_Light",
                 "LightBlue" => "Status_Theme_LightBlue",
+                "BlueTech" => "Status_Theme_BlueTech",
                 _ => null
             };
 

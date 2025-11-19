@@ -169,8 +169,8 @@ namespace TechDashboard.ViewModels
             var nextTheme = CurrentTheme switch
             {
                 "Dark" => "Light",
-                "Light" => "BlueTech",
-                "BlueTech" => "Dark",
+                "Light" => "LightBlue",
+                "LightBlue" => "Dark",
                 _ => "Dark"
             };
 

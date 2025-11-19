@@ -163,8 +163,8 @@
   <data name="Settings_Theme_Light" xml:space="preserve">
     <value>淺色</value>
   </data>
-  <data name="Settings_Theme_BlueTech" xml:space="preserve">
-    <value>藍色科技</value>
+  <data name="Settings_Theme_LightBlue" xml:space="preserve">
+    <value>淺藍色</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>語言</value>
@@ -217,8 +217,8 @@
   <data name="Status_Theme_Light" xml:space="preserve">
     <value>淺色</value>
   </data>
-  <data name="Status_Theme_BlueTech" xml:space="preserve">
-    <value>藍色科技</value>
+  <data name="Status_Theme_LightBlue" xml:space="preserve">
+    <value>淺藍色</value>
   </data>
   <data name="Status_Page_Overview" xml:space="preserve">
     <value>概覽</value>

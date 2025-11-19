@@ -521,10 +521,10 @@
                                         </ToggleButton.Tag>
                                     </ToggleButton>
 
-                                    <ToggleButton Content="{lex:Loc Settings_Theme_BlueTech}" 
+                                    <ToggleButton Content="{lex:Loc Settings_Theme_LightBlue}" 
                                                   Style="{StaticResource ThemeToggleButton}"
-                                                  IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=BlueTech}"
-                                                  Command="{Binding ChangeThemeCommand}" CommandParameter="BlueTech">
+                                                  IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=LightBlue}"
+                                                  Command="{Binding ChangeThemeCommand}" CommandParameter="LightBlue">
                                         <ToggleButton.Tag>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" Opacity="0.92">
                                                 <GradientStop Color="#0F1419" Offset="0"/>

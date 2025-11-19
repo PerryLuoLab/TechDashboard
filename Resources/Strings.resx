@@ -163,8 +163,8 @@
   <data name="Settings_Theme_Light" xml:space="preserve">
     <value>Light</value>
   </data>
-  <data name="Settings_Theme_BlueTech" xml:space="preserve">
-    <value>Blue Tech</value>
+  <data name="Settings_Theme_LightBlue" xml:space="preserve">
+    <value>Light Blue</value>
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Language</value>
@@ -223,8 +223,8 @@
   <data name="Status_Theme_Light" xml:space="preserve">
     <value>Light</value>
   </data>
-  <data name="Status_Theme_BlueTech" xml:space="preserve">
-    <value>Blue Tech</value>
+  <data name="Status_Theme_LightBlue" xml:space="preserve">
+    <value>Light Blue</value>
   </data>
   <data name="Status_Page_Overview" xml:space="preserve">
     <value>Overview</value>

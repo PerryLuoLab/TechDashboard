@@ -21,9 +21,9 @@ namespace TechDashboard.Core.Constants
             public const string Light = "Light";
 
             /// <summary>
-            /// Blue Tech theme
+            /// Light Blue theme (浅蓝色主题)
             /// </summary>
-            public const string BlueTech = "BlueTech";
+            public const string LightBlue = "LightBlue";
         }
 
         /// <summary>
@@ -42,9 +42,9 @@ namespace TechDashboard.Core.Constants
             public const string Light = "Themes/LightTheme.xaml";
 
             /// <summary>
-            /// Blue Tech theme resource dictionary path
+            /// Light Blue theme resource dictionary path (浅蓝色主题)
             /// </summary>
-            public const string BlueTech = "Themes/BlueTechTheme.xaml";
+            public const string LightBlue = "Themes/LightBlueTheme.xaml";
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace TechDashboard.Core.Constants
             {
                 ThemeNames.Dark => ThemeResourcePaths.Dark,
                 ThemeNames.Light => ThemeResourcePaths.Light,
-                ThemeNames.BlueTech => ThemeResourcePaths.BlueTech,
+                ThemeNames.LightBlue => ThemeResourcePaths.LightBlue,
                 _ => ThemeResourcePaths.Light
             };
         }
@@ -127,7 +127,7 @@ namespace TechDashboard.Core.Constants
             {
                 ThemeNames.Dark,
                 ThemeNames.Light,
-                ThemeNames.BlueTech
+                ThemeNames.LightBlue
             };
         }
     }

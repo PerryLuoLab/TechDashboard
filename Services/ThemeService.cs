@@ -12,7 +12,7 @@ namespace TechDashboard.Services
     {
         private readonly ILocalizationService _localizationService;
         private string _currentTheme = "Dark";
-        private readonly string[] _availableThemes = { "Dark", "Light", "BlueTech" };
+        private readonly string[] _availableThemes = { "Dark", "Light", "LightBlue" };
 
         public ThemeService(ILocalizationService localizationService)
         {
@@ -97,7 +97,7 @@ namespace TechDashboard.Services
             {
                 "Dark" => "Status_Theme_Dark",
                 "Light" => "Status_Theme_Light",
-                "BlueTech" => "Status_Theme_BlueTech",
+                "LightBlue" => "Status_Theme_LightBlue",
                 _ => null
             };
 

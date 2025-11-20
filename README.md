@@ -5,7 +5,7 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![WPF](https://img.shields.io/badge/WPF-Windows-blue.svg)](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.2-blue.svg)](V1.2_UPDATE_NOTES.md)
+[![Version](https://img.shields.io/badge/version-1.3-blue.svg)](V1.3_UPDATE_NOTES.md)
 
 A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing advanced UI/UX patterns and MVVM architecture.
 
@@ -36,285 +36,106 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 
 ### 🎨 Modern UI/UX
 - **Three Premium Themes**: Dark (Gray-Black), Light, and Blue Tech - all carefully optimized
-- **Semantic Color System** ✨ v1.1: Customized status colors (Success, Error, Warning, Info) for each theme, ensuring optimal contrast and readability
-- **Unified Icon System** ✨ v1.3: Centralized icon management with 200+ icons, type-safe constants
-- **Smooth Animations**: All UI transitions animated with easing functions
-- **Responsive Layout**: Adaptive design for various screen sizes
-- **Gradient Effects**: Beautiful gradients and shadows throughout
+- **Semantic Color System** ✨ v1.1: Customized status colors (Success, Error, Warning, Info) for each theme
+- **Unified Icon System** ✨ v1.3: Centralized icon management with grouped constants
+- **Smooth Animations**: Eased transitions (navigation width, hover effects)
+- **Adaptive Navigation Width** ✨ v1.3: Dynamically fits longest label + 6px buffer, auto-updates on language change
 
 ### 🌐 Internationalization (i18n)
-- **Multi-Language Support**: English, Simplified Chinese, Traditional Chinese, Korean, Japanese
-- **Dynamic Switching**: Change language on-the-fly without restart
-- **Resource-Based**: Easy to add more languages
+- Multi-language support (English, Simplified Chinese, Traditional Chinese, Korean, Japanese)
+- Runtime switching without restart
+- Easy addition via .resx + LanguageConstants
 
 ### 🔄 Smart Navigation
-- **Collapsible Sidebar**: Smooth expand/collapse with 200ms animation
-- **Auto-Width Calculation**: Navigation width automatically adjusts to longest text
-- **Language-Aware Resize**: Automatically recalculates width when language changes
-- **Drag-to-Resize**: Drag the navigation panel edge to custom resize
-- **Double-Click Expand/Collapse**: Double-click empty area to toggle
-- **Visual Feedback**: Hover effects and selected state indicators
+- Collapsible sidebar (200ms animation)
+- Drag edge to resize within calculated max
+- Double-click blank area to toggle
+- Width recalculation on culture change
+
+### 🧱 Architecture
+- Clean MVVM (ObservableObject, RelayCommand)
+- Core layer for reusables: Constants, Converters, Infrastructure
+- Services for theme & localization abstraction
+- No magic strings: PageConstants, ThemeConstants, LanguageConstants, IconConstants centralize identifiers
 
 ### 🎯 Technical Highlights
-- **Clean MVVM Architecture**: Proper separation of concerns
-- **Modular Structure** ✨ v1.2: Core layer organization, clear code layering
-- **Observable Pattern**: Reactive property updates with `INotifyPropertyChanged`
-- **Command Pattern**: Reusable `RelayCommand` implementation
-- **Theme Management**: Dynamic theme switching with merged dictionaries
-- **Type-Safe Resources**: Strongly-typed access to localized strings
-- **Constants Management** ✨ v1.1: Centralized constant classes eliminate magic strings
-- **Icon System** ✨ v1.3: Unified icon management with `IconConstants`, eliminating hardcoded Unicode characters
-- **Complete Documentation** ✨ v1.1: All public APIs have XML documentation comments
-
-## 📋 Requirements
-
-- **.NET 8 SDK** or later
-- **Windows 10/11** (WPF is Windows-only)
-- **Visual Studio 2022** (recommended) or any .NET-compatible IDE
-
-## 🚀 Getting Started
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/PerryLuoLab/TechDashboard.git
-   cd TechDashboard
-   ```
-
-2. **Build the project**
-   ```bash
-   dotnet restore
-   dotnet build
-   ```
-
-3. **Run the application**
-   ```bash
-   dotnet run --project TechDashboard.csproj
-   ```
-
-### Using Visual Studio
-
-1. Open `TechDashboard.sln` in Visual Studio 2022
-2. Press `F5` to build and run
-3. Or use `Ctrl+F5` to run without debugging
+- Custom GridLengthAnimation for column transitions
+- Strongly typed constants for themes, pages, languages, icons
+- Measured text width using FormattedText for precision
+- DI-friendly services (constructor injection)
 
 ## 📁 Project Structure
-
 ```
 TechDashboard/
-├── App.xaml                    # Application entry point & resources
-├── App.xaml.cs                 # IoC container configuration
-├── MainWindow.xaml             # Main window UI definition
-├── MainWindow.xaml.cs          # Window logic & navigation handling
-│
-├── Core/                                    # ✨ v1.2 Core Layer
-│   ├── Infrastructure/                      # Infrastructure components
-│   │   ├── ObservableObject.cs             # ViewModel base class
-│   │   ├── RelayCommand.cs                 # Generic command implementation
-│   │   └── GridLengthAnimation.cs          # Grid length animation
-│   │
-│   ├── Constants/                           # Constant definitions
-│   │   ├── NavigationConstants.cs          # Navigation constants
-│   │   ├── ThemeConstants.cs               # Theme constants ✨ v1.1
-│   │   ├── LanguageConstants.cs            # Language constants ✨ v1.1
-│   │   └── IconConstants.cs                # Icon constants ✨ v1.3
-│   │
-│   ├── Converters/                          # Value converters
-│   │   ├── ThemeConverter.cs               # Theme converter
-│   │   ├── LanguageConverter.cs            # Language converter
-│   │   ├── BoolToVisibilityConverter.cs    # Visibility converter ✨ v1.1
-│   │   └── IconConverter.cs                # Icon converter ✨ v1.3
-│   │
-│   └── Extensions/                          # Extension methods
-│       └── ServiceCollectionExtensions.cs  # DI service registration ✨ v1.2
-│
-├── Options/
-│   └── LocalizationOptions.cs  # Localization configuration
-│
-├── Services/
-│   ├── Interfaces/
-│   │   ├── ILocalizationService.cs  # Localization service interface
-│   │   └── IThemeService.cs         # Theme service interface
-│   ├── LocalizationService.cs       # Localization service
-│   └── ThemeService.cs              # Theme service
-│
-├── ViewModels/
-│   └── MainViewModel.cs        # Main window ViewModel
-│
-├── Themes/
-│   ├── DarkTheme.xaml          # Dark theme (optimized colors) ✨ v1.1
-│   ├── LightTheme.xaml         # Light theme (optimized colors) ✨ v1.1
-│   └── BlueTechTheme.xaml      # Blue tech theme (optimized colors) ✨ v1.1
-│
-└── Resources/
-    ├── Strings.resx            # English resources
-    ├── Strings.zh-CN.resx      # Simplified Chinese
-    ├── Strings.zh-TW.resx      # Traditional Chinese
-    ├── Strings.ko-KR.resx      # Korean
-    └── Strings.ja-JP.resx      # Japanese
+├── App.xaml / App.xaml.cs
+├── MainWindow.xaml / MainWindow.xaml.cs
+├── Core/
+│   ├── Infrastructure/ (ObservableObject, RelayCommand, GridLengthAnimation)
+│   ├── Constants/ (Navigation, Theme, Language, Icon, Page)
+│   ├── Converters/ (Theme, Language, BoolToVisibility, Icon)
+│   └── Extensions/ (ServiceCollectionExtensions)
+├── Services/ (LocalizationService, ThemeService + Interfaces)
+├── ViewModels/ (MainViewModel)
+├── Themes/ (*.xaml theme dictionaries)
+├── Resources/ (*.resx language files)
+└── ARCHITECTURE.md
 ```
 
-## 🎨 Theme Customization
+## 🧩 Module Responsibilities
+See [ARCHITECTURE.md](ARCHITECTURE.md) for a full breakdown.
 
-### Semantic Color System ✨ v1.1
-
-Each theme now includes complete semantic status color brushes for optimal readability:
-
-| Theme | Success | Error | Warning | Info |
-|-------|---------|-------|---------|------|
-| **Dark** | #4CAF50 | #F44336 | #FF9800 | #2196F3 |
-| **BlueTech** | #00E676 | #FF5252 | #FFAB40 | #40C4FF |
-| **Light** | #1A7F37 | #CF222E | #BF8700 | #0969DA |
-
-**Usage Example**:
-```xml
-<TextBlock Text="Success!" Foreground="{DynamicResource SuccessBrush}"/>
-<TextBlock Text="Error" Foreground="{DynamicResource ErrorBrush}"/>
-<TextBlock Text="Warning" Foreground="{DynamicResource WarningBrush}"/>
-<TextBlock Text="Info" Foreground="{DynamicResource InfoBrush}"/>
+## 🚀 Getting Started
+```bash
+git clone https://github.com/PerryLuoLab/TechDashboard.git
+cd TechDashboard
+dotnet restore
+dotnet run --project TechDashboard.csproj
 ```
 
-### Key Theme Resources
+## 🛠 Configuration
+- Add theme: create XAML + update ThemeConstants
+- Add language: create resx + update LanguageConstants
+- Add page: extend PageConstants + add localization keys
 
-| Resource Key | Description |
-|-------------|-------------|
-| `WindowBackgroundBrush` | Main window background |
-| `NavBackgroundBrush` | Navigation panel background |
-| `CardBackgroundBrush` | Dashboard card background |
-| `TextBrush` | Primary text color |
-| `TextSecondaryBrush` | Secondary text color |
-| `AccentBrush` | Accent/highlight color |
-| `BorderBrush` | Border colors |
-| `SuccessBrush` ✨ | Success status color |
-| `ErrorBrush` ✨ | Error status color |
-| `WarningBrush` ✨ | Warning status color |
-| `InfoBrush` ✨ | Info status color |
+## 📐 Navigation Width Logic (v1.3)
+1. Measure all navigation labels with FormattedText
+2. Longest label width + icon + spacing + paddings + margins + ExpansionExtraBuffer (=6px)
+3. Apply as MaxWidth and animated target width when expanded
 
-### Adding a New Theme
-
-1. Create a new XAML file in `Themes/` folder
-2. Define color resources (including status colors)
-3. Register theme in `Core/Constants/ThemeConstants.cs`
-4. Add toggle button in `MainWindow.xaml` Settings page
-
-## 🌍 Adding New Languages
-
-### Step-by-Step Guide
-
-1. **Create language resource file**
-   - Copy `Strings.resx` from `Resources/` folder
-   - Rename to match language code (e.g., `Strings.fr-FR.resx`)
-
-2. **Translate string resources**
-   - Open `.resx` file in Visual Studio
-   - Translate all string values
-
-3. **Register in code**
-   - Update `Core/Constants/LanguageConstants.cs` to add new language code
-   - Add language selector button in `MainWindow.xaml`
-
-## 🔧 Advanced Features
-
-### Navigation Panel Behaviors
-
-| Action | Behavior |
-|--------|----------|
-| Click toggle button | Smooth expand/collapse animation |
-| Drag panel edge | Resize to custom width |
-| Double-click empty area | Quick expand/collapse |
-| Mouse hover edge | Show resize cursor |
-
-### Using Constants Classes ✨ v1.1
-
-```csharp
-using TechDashboard.Core.Constants;  // ✨ v1.2 Updated namespace
-
-// Theme constants
-string theme = ThemeConstants.ThemeNames.Dark;
-string key = ThemeConstants.ResourceKeys.SuccessBrush;
-
-// Language constants
-string lang = LanguageConstants.CultureCodes.SimplifiedChinese;
-string display = LanguageConstants.GetDisplayName(lang);
-
-// Navigation constants
-double width = NavigationConstants.CollapsedWidth;
-int duration = NavigationConstants.AnimationDurationMs;
-```
+## 🧪 Testing Ideas
+- Unit test PageConstants.GetStatusKey
+- Theme load fallback scenario
+- Localization switching retains navigation width recalculation
 
 ## 🐛 Troubleshooting
-
-### XAML Designer Issues (Design-Time Only)
-If you see WPFLocalizeExtension errors in Visual Studio XAML designer:
-
-**Don't worry!** This is a known design-time limitation:
-- ✅ Build succeeds: `dotnet build` works fine
-- ✅ Runtime works: Application runs perfectly
-- ✅ Localization works: All translations display correctly
-- ❌ Designer only: Visual Studio designer can't load the extension
-
-**Solutions**: Ignore the designer errors or use XAML code view
-
-### Theme Not Applying
-- Ensure theme file exists in `Themes/` folder
-- Verify `DynamicResource` is used (not `StaticResource`)
-
-### Language Not Changing
-- Confirm language file exists in `Resources/` folder
-- Check if language is registered in `Core/Constants/LanguageConstants.cs`
-
-## 📈 Performance Tips
-
-1. **Resource Dictionaries**: Merged dictionaries loaded once and cached
-2. **Animations**: Use `GridLengthAnimation` for hardware acceleration
-3. **Bindings**: OneWay bindings for read-only properties
-4. **Constants**: Use constant classes to avoid string allocations
+- Designer localization errors: safe to ignore (design-time limitation)
+- Theme fails: ensure dictionary path matches ThemeConstants
+- Language missing: verify culture code and resx naming
 
 ## 📝 Changelog
+### v1.3 - 2024
+- Precise dynamic navigation width (+6px buffer)
+- Removed magic page strings (PageConstants)
+- ThemeService now uses ThemeConstants
+- Architecture documentation added
+- README updated to reflect improvements
 
-### v1.2 (Latest) - 2024 ✨
-- ✅ **Structure Reorganization**: Created Core layer, consolidated infrastructure code
-- ✅ Moved Infrastructure → Core/Infrastructure/
-- ✅ Moved Converters → Core/Converters/
-- ✅ Moved Helpers → Core/Constants/ (semantic naming)
-- ✅ Moved ServiceCollectionExtensions → Core/Extensions/
-- ✅ Updated all namespace references
-- ✅ Improved code organization and maintainability
+### v1.2
+- Core layer reorganization, constants consolidation
 
-Details: [STRUCTURE_OPTIMIZATION_SUMMARY.md](STRUCTURE_OPTIMIZATION_SUMMARY.md)
+### v1.1
+- Semantic color brushes, language/theme constants
 
-### v1.1 - 2024
-- ✅ Added optimized status color brushes for all themes
-- ✅ Created `ThemeConstants.cs` and `LanguageConstants.cs`
-- ✅ Separated `BoolToVisibilityConverter` into independent file
-- ✅ Added complete XML documentation comments
-- ✅ Eliminated magic strings, improved type safety
-
-Details: [V1.1_UPDATE_NOTES.md](V1.1_UPDATE_NOTES.md)
-
-### v1.0 - 2024
+### v1.0
 - Initial release
 
 ## 🤝 Contributing
-
-Contributions are welcome! Please fork the repository and submit a Pull Request.
+Fork + PR. Keep new identifiers in constants classes.
 
 ## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License. See LICENSE.
 
 ## 🙏 Acknowledgments
-
-- Microsoft WPF Team
-- Material Design and GitHub Design System
-- Community contributors
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/PerryLuoLab/TechDashboard/issues)
-- **Email**: perryluox@yeah.net
-
----
+Microsoft WPF, community resources.
 
 **Made with ❤️ using .NET 8 and WPF**

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using TechDashboard.Services.Interfaces;
+using TechDashboard.Core.Constants;
 
 namespace TechDashboard.Services
 {
@@ -11,8 +12,7 @@ namespace TechDashboard.Services
     public class ThemeService : IThemeService
     {
         private readonly ILocalizationService _localizationService;
-        private string _currentTheme = "Dark";
-        private readonly string[] _availableThemes = { "Dark", "Light", "LightBlue" };
+        private string _currentTheme = ThemeConstants.DefaultTheme;
 
         public ThemeService(ILocalizationService localizationService)
         {
@@ -37,18 +37,17 @@ namespace TechDashboard.Services
                 return;
             }
 
-            // Normalize theme name
-            string themeFileName = themeName;
-            if (!themeFileName.EndsWith("Theme", StringComparison.OrdinalIgnoreCase))
+            // Normalize theme name to one of defined constants
+            if (!ThemeConstants.GetAllThemes().Contains(themeName))
             {
-                themeFileName = themeName + "Theme";
+                System.Diagnostics.Debug.WriteLine($"Unknown theme '{themeName}', falling back to default '{ThemeConstants.DefaultTheme}'");
+                themeName = ThemeConstants.DefaultTheme;
             }
 
-            var themePath = $"Themes/{themeFileName}.xaml";
+            var themePath = ThemeConstants.GetThemeResourcePath(themeName);
 
             try
             {
-                // Remove old theme dictionaries
                 var toRemove = Application.Current.Resources.MergedDictionaries
                     .Where(d => d.Source != null && d.Source.OriginalString.Contains("Themes/"))
                     .ToList();
@@ -58,53 +57,46 @@ namespace TechDashboard.Services
                     Application.Current.Resources.MergedDictionaries.Remove(dict);
                 }
 
-                // Add new theme
                 var newTheme = new ResourceDictionary { Source = new Uri(themePath, UriKind.Relative) };
                 Application.Current.Resources.MergedDictionaries.Add(newTheme);
 
                 _currentTheme = themeName;
-                
-                System.Diagnostics.Debug.WriteLine($"? Theme changed to: {themeName}");
+
+                System.Diagnostics.Debug.WriteLine($"[ThemeService] Theme changed to: {themeName}");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"? Theme change failed: {ex.Message}");
-                
-                // Fallback to default theme
+                System.Diagnostics.Debug.WriteLine($"[ThemeService] Theme change failed: {ex.Message}");
+                // Fallback
                 try
                 {
-                    var defaultDict = new ResourceDictionary { Source = new Uri("Themes/DarkTheme.xaml", UriKind.Relative) };
+                    var fallbackPath = ThemeConstants.GetThemeResourcePath(ThemeConstants.DefaultTheme);
+                    var defaultDict = new ResourceDictionary { Source = new Uri(fallbackPath, UriKind.Relative) };
                     Application.Current.Resources.MergedDictionaries.Add(defaultDict);
-                    _currentTheme = "Dark";
+                    _currentTheme = ThemeConstants.DefaultTheme;
                 }
                 catch (Exception fallbackEx)
                 {
-                    System.Diagnostics.Debug.WriteLine($"? Fallback theme failed: {fallbackEx.Message}");
+                    System.Diagnostics.Debug.WriteLine($"[ThemeService] Fallback theme failed: {fallbackEx.Message}");
                 }
             }
         }
 
         /// <inheritdoc/>
-        public string[] GetAvailableThemes()
-        {
-            return _availableThemes;
-        }
+        public string[] GetAvailableThemes() => ThemeConstants.GetAllThemes();
 
         /// <inheritdoc/>
         public string GetThemeDisplayName(string themeName)
         {
             var themeKey = themeName switch
             {
-                "Dark" => "Status_Theme_Dark",
-                "Light" => "Status_Theme_Light",
-                "LightBlue" => "Status_Theme_LightBlue",
-                "BlueTech" => "Status_Theme_BlueTech",
+                var t when t == ThemeConstants.ThemeNames.Dark => "Status_Theme_Dark",
+                var t when t == ThemeConstants.ThemeNames.Light => "Status_Theme_Light",
+                var t when t == ThemeConstants.ThemeNames.LightBlue => "Status_Theme_LightBlue",
+                var t when t == ThemeConstants.ThemeNames.BlueTech => "Status_Theme_BlueTech",
                 _ => null
             };
-
-            return themeKey != null 
-                ? _localizationService.GetString(themeKey) 
-                : themeName;
+            return themeKey != null ? _localizationService.GetString(themeKey) : themeName;
         }
     }
 }

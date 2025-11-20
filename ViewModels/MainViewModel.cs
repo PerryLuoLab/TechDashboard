@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using TechDashboard.Core.Infrastructure;
 using TechDashboard.Services.Interfaces;
+using TechDashboard.Core.Constants;
 
 namespace TechDashboard.ViewModels
 {
@@ -10,17 +11,17 @@ namespace TechDashboard.ViewModels
         private readonly IThemeService _themeService;
 
         private bool _isNavExpanded = true;
-        private string _currentTheme = "Light";
-        private string _currentLanguage = "en-US";
-        private string _currentPage = "Overview";
-        private double _navWidth = 260;
+        private string _currentTheme = ThemeConstants.DefaultTheme;
+        private string _currentLanguage = LanguageConstants.DefaultLanguage;
+        private string _currentPage = PageConstants.Overview;
+        private double _navWidth = NavigationConstants.DefaultExpandedWidth;
 
         public MainViewModel(ILocalizationService localizationService, IThemeService themeService)
         {
             _localizationService = localizationService ?? throw new System.ArgumentNullException(nameof(localizationService));
             _themeService = themeService ?? throw new System.ArgumentNullException(nameof(themeService));
 
-            // Initialize with current culture
+            // Initialize with current culture & theme from services
             _currentLanguage = _localizationService.CurrentCulture.Name;
             _currentTheme = _themeService.CurrentTheme;
 
@@ -37,11 +38,7 @@ namespace TechDashboard.ViewModels
         public bool IsNavExpanded
         {
             get => _isNavExpanded;
-            set => SetProperty(ref _isNavExpanded, value, action: () =>
-            {
-                // [Fix 4] Removed hardcoded width logic. 
-                // The View (MainWindow.xaml.cs) drives the animation and updates NavWidth.
-            });
+            set => SetProperty(ref _isNavExpanded, value);
         }
 
         public double NavWidth
@@ -83,31 +80,16 @@ namespace TechDashboard.ViewModels
             });
         }
 
-        public bool IsOverviewPage => CurrentPage == "Overview";
-        public bool IsAnalyticsPage => CurrentPage == "Analytics";
-        public bool IsReportsPage => CurrentPage == "Reports";
-        public bool IsSettingsPage => CurrentPage == "Settings";
+        public bool IsOverviewPage => CurrentPage == PageConstants.Overview;
+        public bool IsAnalyticsPage => CurrentPage == PageConstants.Analytics;
+        public bool IsReportsPage => CurrentPage == PageConstants.Reports;
+        public bool IsSettingsPage => CurrentPage == PageConstants.Settings;
 
         public string CurrentLanguageDisplay => _localizationService.GetLanguageDisplayName(CurrentLanguage);
 
         public string CurrentThemeDisplay => _themeService.GetThemeDisplayName(CurrentTheme);
 
-        public string CurrentPageDisplay
-        {
-            get
-            {
-                var pageKey = CurrentPage switch
-                {
-                    "Overview" => "Status_Page_Overview",
-                    "Analytics" => "Status_Page_Analytics",
-                    "Reports" => "Status_Page_Reports",
-                    "Settings" => "Status_Page_Settings",
-                    _ => "Status_Page_Overview"
-                };
-
-                return _localizationService.GetString(pageKey);
-            }
-        }
+        public string CurrentPageDisplay => _localizationService.GetString(PageConstants.GetStatusKey(CurrentPage));
 
         #endregion
 
@@ -124,16 +106,18 @@ namespace TechDashboard.ViewModels
 
         #region Methods
 
-        private void ToggleNavigation()
-        {
-            IsNavExpanded = !IsNavExpanded;
-        }
+        private void ToggleNavigation() => IsNavExpanded = !IsNavExpanded;
 
         private void NavigateToPage(string? pageName)
         {
             if (!string.IsNullOrEmpty(pageName))
             {
-                CurrentPage = pageName;
+                // Accept only known pages
+                var known = new[] { PageConstants.Overview, PageConstants.Analytics, PageConstants.Reports, PageConstants.Settings };
+                if (System.Array.IndexOf(known, pageName) >= 0)
+                {
+                    CurrentPage = pageName;
+                }
             }
         }
 
@@ -153,7 +137,6 @@ namespace TechDashboard.ViewModels
                 CurrentLanguage = languageCode;
                 _localizationService.ChangeLanguage(languageCode);
 
-                // Force UI update
                 System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
                     foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
@@ -166,31 +149,18 @@ namespace TechDashboard.ViewModels
 
         private void QuickToggleTheme()
         {
-            var nextTheme = CurrentTheme switch
-            {
-                "Dark" => "Light",
-                "Light" => "LightBlue",
-                "LightBlue" => "BlueTech",
-                "BlueTech" => "Dark",
-                _ => "Dark"
-            };
-
+            var sequence = new[] { ThemeConstants.ThemeNames.Dark, ThemeConstants.ThemeNames.Light, ThemeConstants.ThemeNames.LightBlue, ThemeConstants.ThemeNames.BlueTech };
+            int idx = System.Array.IndexOf(sequence, CurrentTheme);
+            var nextTheme = sequence[(idx + 1 + sequence.Length) % sequence.Length];
             ChangeTheme(nextTheme);
         }
 
         private void QuickToggleLanguage()
         {
-            var nextLanguage = CurrentLanguage switch
-            {
-                "en-US" => "zh-CN",
-                "zh-CN" => "zh-TW",
-                "zh-TW" => "ko-KR",
-                "ko-KR" => "ja-JP",
-                "ja-JP" => "en-US",
-                _ => "en-US"
-            };
-
-            ChangeLanguage(nextLanguage);
+            var langs = LanguageConstants.GetAllCultureCodes();
+            int idx = System.Array.IndexOf(langs, CurrentLanguage);
+            var nextLang = langs[(idx + 1 + langs.Length) % langs.Length];
+            ChangeLanguage(nextLang);
         }
 
         #endregion

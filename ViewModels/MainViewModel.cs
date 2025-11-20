@@ -149,7 +149,7 @@ namespace TechDashboard.ViewModels
 
         private void QuickToggleTheme()
         {
-            var sequence = new[] { ThemeConstants.ThemeNames.Dark, ThemeConstants.ThemeNames.Light, ThemeConstants.ThemeNames.LightBlue, ThemeConstants.ThemeNames.BlueTech };
+            var sequence = ThemeConstants.OrderedThemes;
             int idx = System.Array.IndexOf(sequence, CurrentTheme);
             var nextTheme = sequence[(idx + 1 + sequence.Length) % sequence.Length];
             ChangeTheme(nextTheme);

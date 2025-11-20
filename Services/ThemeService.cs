@@ -38,7 +38,7 @@ namespace TechDashboard.Services
             }
 
             // Normalize theme name to one of defined constants
-            if (!ThemeConstants.GetAllThemes().Contains(themeName))
+            if (!ThemeConstants.IsValidTheme(themeName))
             {
                 System.Diagnostics.Debug.WriteLine($"Unknown theme '{themeName}', falling back to default '{ThemeConstants.DefaultTheme}'");
                 themeName = ThemeConstants.DefaultTheme;
@@ -83,20 +83,16 @@ namespace TechDashboard.Services
         }
 
         /// <inheritdoc/>
-        public string[] GetAvailableThemes() => ThemeConstants.GetAllThemes();
+        public string[] GetAvailableThemes() => ThemeConstants.OrderedThemes;
 
         /// <inheritdoc/>
         public string GetThemeDisplayName(string themeName)
         {
-            var themeKey = themeName switch
+            if (ThemeConstants.ThemeDisplayLocalizationKeys.TryGetValue(themeName, out var key))
             {
-                var t when t == ThemeConstants.ThemeNames.Dark => "Status_Theme_Dark",
-                var t when t == ThemeConstants.ThemeNames.Light => "Status_Theme_Light",
-                var t when t == ThemeConstants.ThemeNames.LightBlue => "Status_Theme_LightBlue",
-                var t when t == ThemeConstants.ThemeNames.BlueTech => "Status_Theme_BlueTech",
-                _ => null
-            };
-            return themeKey != null ? _localizationService.GetString(themeKey) : themeName;
+                return _localizationService.GetString(key);
+            }
+            return themeName;
         }
     }
 }

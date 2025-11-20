@@ -6,6 +6,11 @@
     public static class LanguageConstants
     {
         /// <summary>
+        /// Default language to use when no preference is set
+        /// </summary>
+        public const string DefaultLanguage = CultureCodes.SimplifiedChinese;
+
+        /// <summary>
         /// Available language culture codes
         /// </summary>
         public static class CultureCodes
@@ -67,10 +72,7 @@
             public const string Japanese = "日本語";
         }
 
-        /// <summary>
-        /// Default language to use when no preference is set
-        /// </summary>
-        public const string DefaultLanguage = CultureCodes.English;
+
 
         /// <summary>
         /// Gets the display name for a given culture code

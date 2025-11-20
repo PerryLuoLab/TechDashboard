@@ -3,6 +3,7 @@ using TechDashboard.Options;
 using TechDashboard.Services;
 using TechDashboard.Services.Interfaces;
 using TechDashboard.ViewModels;
+using TechDashboard.Core.Constants; // added for LanguageConstants
 
 namespace TechDashboard.Core.Extensions
 {
@@ -24,7 +25,8 @@ namespace TechDashboard.Core.Extensions
             {
                 options.AssemblyName = "TechDashboard";
                 options.DictionaryName = "Strings";
-                options.DefaultCulture = "zh-CN";
+                // Use centralized constant instead of hard-coded culture
+                options.DefaultCulture = LanguageConstants.DefaultLanguage;
                 options.AvailableCultures = new[] { "en-US", "zh-CN", "zh-TW", "ko-KR", "ja-JP" };
             });
 

@@ -5,6 +5,13 @@ namespace TechDashboard.Core.Constants
     /// </summary>
     public static class ThemeConstants
     {
+
+        /// <summary>
+        /// Default theme to use when no preference is set
+        /// </summary>
+        public const string DefaultTheme = ThemeNames.BlueTech;
+
+
         /// <summary>
         /// Available theme names
         /// </summary>
@@ -106,10 +113,40 @@ namespace TechDashboard.Core.Constants
             public const string IconBoxStyle = "IconBoxStyle";
         }
 
+
+
         /// <summary>
-        /// Default theme to use when no preference is set
+        /// Ordered theme sequence for UI toggling (single source of truth)
         /// </summary>
-        public const string DefaultTheme = ThemeNames.Light;
+        public static readonly string[] OrderedThemes =
+        {
+            ThemeNames.Dark,
+            ThemeNames.Light,
+            ThemeNames.LightBlue,
+            ThemeNames.BlueTech
+        };
+
+        /// <summary>
+        /// HashSet for fast theme validation lookups.
+        /// </summary>
+        public static readonly System.Collections.Generic.HashSet<string> AllThemesSet = new System.Collections.Generic.HashSet<string>(OrderedThemes);
+
+        /// <summary>
+        /// Returns true if themeName is a defined theme.
+        /// </summary>
+        public static bool IsValidTheme(string? themeName) => themeName != null && AllThemesSet.Contains(themeName);
+
+        /// <summary>
+        /// Localization resource keys for theme display names
+        /// </summary>
+        public static readonly System.Collections.Generic.Dictionary<string,string> ThemeDisplayLocalizationKeys =
+            new System.Collections.Generic.Dictionary<string,string>
+            {
+                { ThemeNames.Dark, "Status_Theme_Dark" },
+                { ThemeNames.Light, "Status_Theme_Light" },
+                { ThemeNames.LightBlue, "Status_Theme_LightBlue" },
+                { ThemeNames.BlueTech, "Status_Theme_BlueTech" }
+            };
 
         /// <summary>
         /// Gets the resource path for a given theme name
@@ -132,15 +169,6 @@ namespace TechDashboard.Core.Constants
         /// Gets all available theme names
         /// </summary>
         /// <returns>Array of theme names</returns>
-        public static string[] GetAllThemes()
-        {
-            return new[]
-            {
-                ThemeNames.Dark,
-                ThemeNames.Light,
-                ThemeNames.LightBlue,
-                ThemeNames.BlueTech
-            };
-        }
+        public static string[] GetAllThemes() => OrderedThemes;
     }
 }

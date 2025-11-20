@@ -8,7 +8,6 @@
                 <!-- Default theme: Light -->
                 <ResourceDictionary Source="Themes/LightTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
             <!-- Value Converters -->
             <converters:ThemeConverter x:Key="ThemeConverter"/>
             <converters:LanguageConverter x:Key="LanguageConverter"/>

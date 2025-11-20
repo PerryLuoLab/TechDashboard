@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Media.Imaging;
 using TechDashboard.Core.Constants;
 using TechDashboard.Core.Infrastructure;
 using TechDashboard.Services.Interfaces;
@@ -21,12 +21,11 @@ namespace TechDashboard
         // Services
         private readonly ILocalizationService _localizationService;
 
-        // Drag state
-        private bool _isDragging = false;
-        private Point _dragStartPoint;
-        private double _dragStartWidth;
+        // Animation state
         private bool _isAnimating = false;
         private double _expandedNavWidth = NavigationConstants.DefaultExpandedWidth;
+        private bool _isCustomMaximized = false;
+        private Rect _restoreBounds;
 
         public MainWindow(MainViewModel viewModel, ILocalizationService localizationService)
         {
@@ -56,20 +55,15 @@ namespace TechDashboard
                     UpdateToggleIcon(vm.IsNavExpanded);
                 }
 
+                // Keep double-click toggle support (no drag resize)
                 NavPanel.PreviewMouseLeftButtonDown += NavPanel_PreviewMouseLeftButtonDown;
                 NavPanel.MouseLeftButtonDown += NavPanel_MouseLeftButtonDown;
-                NavPanel.MouseMove += NavPanel_MouseMove;
-                NavPanel.MouseLeftButtonUp += NavPanel_MouseLeftButtonUp;
-                NavPanel.MouseLeave += NavPanel_MouseLeave;
-
-                this.MouseMove += MainWindow_MouseMove;
-                this.MouseLeftButtonUp += MainWindow_MouseLeftButtonUp;
 
                 SetupMenuSubmenuHandlers();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"OnLoaded error: {ex.Message}");
+                Debug.WriteLine($"OnLoaded error: {ex.Message}");
             }
         }
 
@@ -82,12 +76,6 @@ namespace TechDashboard
 
             NavPanel.PreviewMouseLeftButtonDown -= NavPanel_PreviewMouseLeftButtonDown;
             NavPanel.MouseLeftButtonDown -= NavPanel_MouseLeftButtonDown;
-            NavPanel.MouseMove -= NavPanel_MouseMove;
-            NavPanel.MouseLeftButtonUp -= NavPanel_MouseLeftButtonUp;
-            NavPanel.MouseLeave -= NavPanel_MouseLeave;
-
-            this.MouseMove -= MainWindow_MouseMove;
-            this.MouseLeftButtonUp -= MainWindow_MouseLeftButtonUp;
         }
 
         #region Window Controls
@@ -112,14 +100,25 @@ namespace TechDashboard
 
         private void MaximizeRestore()
         {
-            if (WindowState == WindowState.Maximized)
+            if (_isCustomMaximized)
             {
-                WindowState = WindowState.Normal;
+                Left = _restoreBounds.Left;
+                Top = _restoreBounds.Top;
+                Width = _restoreBounds.Width;
+                Height = _restoreBounds.Height;
+                _isCustomMaximized = false;
                 MaximizeIcon.Text = IconConstants.Common.ChromeMaximize;
             }
             else
             {
-                WindowState = WindowState.Maximized;
+                _restoreBounds = new Rect(Left, Top, Width, Height);
+
+                var wa = SystemParameters.WorkArea;
+                Left = wa.Left;
+                Top = wa.Top;
+                Width = wa.Width;
+                Height = wa.Height;
+                _isCustomMaximized = true;
                 MaximizeIcon.Text = IconConstants.Common.ChromeRestore;
             }
         }
@@ -184,47 +183,38 @@ namespace TechDashboard
             try
             {
                 double maxContentWidth = 0;
-                const double iconWidth = 16; // icon glyph visual width assumption
-                const double iconTextSpacing = 12; // spacing between icon and text
-                const double horizontalButtonPadding = 12; // NavButtonStyle Padding left/right
-                const double containerSideMargin = 8; // StackPanel outer margin left/right
+                const double iconWidth = 16;
+                const double iconTextSpacing = 12;
+                const double horizontalButtonPadding = 12;
+                const double containerSideMargin = 8;
 
                 var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
                 var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
                 var textBrush = Application.Current.TryFindResource("TextBrush") as SolidColorBrush ?? Brushes.White;
                 var culture = CultureInfo.CurrentUICulture;
 
-                // Navigation related localization keys that show in expanded mode
                 var navTexts = new[]
                 {
                     _localizationService.GetString("Nav_Overview"),
                     _localizationService.GetString("Nav_Analytics"),
                     _localizationService.GetString("Nav_Reports"),
                     _localizationService.GetString("Nav_Settings"),
-                    _localizationService.GetString("Nav_Collapse"), // bottom toggle when expanded
-                    _localizationService.GetString("Nav_Expand") // used only collapsed tooltip, kept for completeness
+                    _localizationService.GetString("Nav_Collapse"),
+                    _localizationService.GetString("Nav_Expand")
                 };
 
                 foreach (var text in navTexts.Where(t => !string.IsNullOrWhiteSpace(t)))
                 {
-                    // Font size used for nav labels (see XAML TextBlocks inside buttons)
-                    double fontSize = 14; // label text size (explicit 14 in measurement even though some show 16 icon)
+                    double fontSize = 14;
                     var ft = new FormattedText(text, culture, FlowDirection.LeftToRight, typeface, fontSize, textBrush, dpi);
                     double buttonTextWidth = ft.Width;
-
-                    // Content width: icon + spacing + text
                     double contentWidth = iconWidth + iconTextSpacing + buttonTextWidth;
                     maxContentWidth = Math.Max(maxContentWidth, contentWidth);
                 }
 
-                // Total desired width: outer margin + horizontal padding + max content + horizontal padding + outer margin + extra buffer
                 double desired = containerSideMargin + horizontalButtonPadding + maxContentWidth + horizontalButtonPadding + containerSideMargin + NavigationConstants.ExpansionExtraBuffer;
-
-                // Do not enforce a large minimum; keep at least enough to show something but cap by max.
-                // Still respect CollapsedWidth when extremely small (e.g., very short strings) so animation feels natural.
-                double logicalMin = Math.Max(NavigationConstants.CollapsedWidth + 20, 140); // safeguard minimal pleasant width
+                double logicalMin = Math.Max(NavigationConstants.CollapsedWidth + 20, 140);
                 _expandedNavWidth = Math.Max(logicalMin, Math.Min(desired, NavigationConstants.MaxExpandedWidth));
-
                 NavColumn.MaxWidth = _expandedNavWidth;
 
                 Debug.WriteLine($"[CalculateOptimalNavWidth] Longest content width={maxContentWidth:F1}, desired={desired:F1}, final={_expandedNavWidth:F1}");
@@ -239,65 +229,29 @@ namespace TechDashboard
 
         #endregion
 
-        #region Drag Functionality
+        #region NavPanel Toggle (Double-Click Only)
 
         private void NavPanel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var pos = e.GetPosition(NavPanel);
-            
-            // Only in drag zone at right edge (5px), prevent event bubbling
-            if (pos.X >= NavPanel.ActualWidth - NavigationConstants.DragZoneWidth)
-            {
-                e.Handled = true;
-                return;
-            }
-
-            // Handle double-click early (Preview) so inner controls like ScrollViewer cannot swallow it
             if (e.ClickCount == 2)
             {
                 var originalSource = e.OriginalSource as DependencyObject;
-                var isButton = IsChildOfButton(originalSource);
-
-                if (!isButton)
+                if (!IsChildOfButton(originalSource) && DataContext is MainViewModel vm)
                 {
-                    if (DataContext is MainViewModel vm)
-                    {
-                        vm.ToggleNavCommand.Execute(null);
-                        e.Handled = true;
-                        return;
-                    }
+                    vm.ToggleNavCommand.Execute(null);
+                    e.Handled = true;
                 }
             }
         }
 
         private void NavPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var pos = e.GetPosition(NavPanel);
-
-            // Drag functionality: right edge 5px zone
-            if (pos.X >= NavPanel.ActualWidth - NavigationConstants.DragZoneWidth)
-            {
-                _isDragging = true;
-                _dragStartPoint = e.GetPosition(this);
-                _dragStartWidth = NavColumn.ActualWidth;
-                NavPanel.CaptureMouse();
-                Mouse.OverrideCursor = Cursors.SizeWE;
-                e.Handled = true;
-                return;
-            }
-
-            // Double-click functionality: blank area (not buttons)
             if (e.ClickCount == 2)
             {
                 var originalSource = e.OriginalSource as DependencyObject;
-                var isButton = IsChildOfButton(originalSource);
-                
-                if (!isButton)
+                if (!IsChildOfButton(originalSource) && DataContext is MainViewModel vm)
                 {
-                    if (DataContext is MainViewModel vm)
-                    {
-                        vm.ToggleNavCommand.Execute(null);
-                    }
+                    vm.ToggleNavCommand.Execute(null);
                     e.Handled = true;
                 }
             }
@@ -307,122 +261,10 @@ namespace TechDashboard
         {
             while (element != null)
             {
-                if (element is Button)
-                {
-                    return true;
-                }
+                if (element is Button) return true;
                 element = VisualTreeHelper.GetParent(element);
             }
             return false;
-        }
-
-        private void NavPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_isAnimating) return;
-
-            var pos = e.GetPosition(NavPanel);
-            UpdateCursor(pos, e.OriginalSource as DependencyObject);
-
-            if (_isDragging)
-            {
-                var currentPoint = e.GetPosition(this);
-                UpdateDragWidth(currentPoint);
-            }
-        }
-
-        private void MainWindow_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_isDragging)
-            {
-                var currentPoint = e.GetPosition(this);
-                UpdateDragWidth(currentPoint);
-            }
-        }
-
-        private void UpdateDragWidth(Point currentPoint)
-        {
-            var deltaX = currentPoint.X - _dragStartPoint.X;
-            var newWidth = _dragStartWidth + deltaX;
-
-            newWidth = Math.Max(NavigationConstants.CollapsedWidth, Math.Min(newWidth, _expandedNavWidth));
-
-            NavColumn.Width = new GridLength(newWidth);
-
-            if (DataContext is MainViewModel vm)
-            {
-                vm.NavWidth = newWidth;
-            }
-        }
-
-        private void UpdateCursor(Point pos, DependencyObject? source)
-        {
-            if (_isDragging || _isAnimating)
-                return;
-
-            // Check if hovering over drag zone at the right edge
-            if (pos.X >= NavPanel.ActualWidth - NavigationConstants.DragZoneWidth)
-            {
-                Mouse.OverrideCursor = Cursors.SizeWE;
-                return;
-            }
-
-            // Show double-arrow cursor on blank area (not buttons)
-            if (DataContext is MainViewModel vm)
-            {
-                if (!IsChildOfButton(source))
-                {
-                    Mouse.OverrideCursor = Cursors.SizeWE;
-                    return;
-                }
-            }
-
-            Mouse.OverrideCursor = null;
-        }
-
-        private void NavPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            HandleDragEnd();
-        }
-
-        private void MainWindow_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (_isDragging)
-            {
-                HandleDragEnd();
-            }
-        }
-
-        private void HandleDragEnd()
-        {
-            if (!_isDragging) return;
-
-            _isDragging = false;
-            NavPanel.ReleaseMouseCapture();
-            Mouse.OverrideCursor = null;
-
-            if (DataContext is MainViewModel vm)
-            {
-                var currentWidth = NavColumn.ActualWidth;
-
-                if (currentWidth < NavigationConstants.SnapThreshold)
-                {
-                    vm.IsNavExpanded = false;
-                    AnimateNavWidth(false);
-                }
-                else
-                {
-                    vm.IsNavExpanded = true;
-                    AnimateNavWidth(true);
-                }
-            }
-        }
-
-        private void NavPanel_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (!_isDragging && !_isAnimating)
-            {
-                Mouse.OverrideCursor = null;
-            }
         }
 
         #endregion
@@ -435,15 +277,8 @@ namespace TechDashboard
             {
                 if (e.PropertyName == nameof(MainViewModel.IsNavExpanded) && sender is MainViewModel vm)
                 {
-                    if (!_isDragging)
-                    {
-                        AnimateNavWidth(vm.IsNavExpanded);
-                        UpdateToggleIcon(vm.IsNavExpanded);
-                    }
-                    else
-                    {
-                        UpdateToggleIcon(vm.IsNavExpanded);
-                    }
+                    AnimateNavWidth(vm.IsNavExpanded);
+                    UpdateToggleIcon(vm.IsNavExpanded);
                 }
                 else if (e.PropertyName == nameof(MainViewModel.CurrentLanguage))
                 {
@@ -451,8 +286,8 @@ namespace TechDashboard
                     {
                         try
                         {
-                            this.UpdateLayout();
-                            this.InvalidateVisual();
+                            UpdateLayout();
+                            InvalidateVisual();
 
                             Dispatcher.BeginInvoke(new Action(() =>
                             {
@@ -470,7 +305,7 @@ namespace TechDashboard
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Vm_PropertyChanged error: {ex.Message}");
+                Debug.WriteLine($"Vm_PropertyChanged error: {ex.Message}");
             }
         }
 
@@ -491,7 +326,6 @@ namespace TechDashboard
             var duration = TimeSpan.FromMilliseconds(NavigationConstants.AnimationDurationMs);
 
             var storyboard = new Storyboard();
-            
             var animation = new GridLengthAnimation
             {
                 From = new GridLength(currentWidth),
@@ -502,18 +336,12 @@ namespace TechDashboard
 
             Storyboard.SetTarget(animation, NavColumn);
             Storyboard.SetTargetProperty(animation, new PropertyPath(ColumnDefinition.WidthProperty));
-            
             storyboard.Children.Add(animation);
-            
+
             storyboard.Completed += (s, e) =>
             {
                 _isAnimating = false;
-                
-                if (DataContext is MainViewModel vm)
-                {
-                    vm.NavWidth = targetWidth;
-                }
-                
+                if (DataContext is MainViewModel vm) vm.NavWidth = targetWidth;
                 NavColumn.Width = new GridLength(targetWidth);
             };
 

@@ -55,49 +55,5 @@ namespace TechDashboard
 
             base.OnExit(e);
         }
-
-        /// <summary>
-        /// Applies a theme to the application
-        /// </summary>
-        /// <param name="themeName">Theme name</param>
-        [Obsolete("Use IThemeService instead")]
-        public static void ApplyTheme(string themeName)
-        {
-            var themeService = Services?.GetService<IThemeService>();
-            themeService?.ApplyTheme(themeName);
-        }
-
-        /// <summary>
-        /// Changes the application language
-        /// </summary>
-        /// <param name="languageCode">Language code</param>
-        [Obsolete("Use ILocalizationService instead")]
-        public static void ApplyLanguage(string languageCode)
-        {
-            if (Services == null) return;
-
-            try
-            {
-                var localizationService = Services.GetRequiredService<ILocalizationService>();
-                localizationService.ChangeLanguage(languageCode);
-
-                var newCulture = new CultureInfo(languageCode);
-
-                // Force UI update
-                Current.Dispatcher.Invoke(() =>
-                {
-                    foreach (Window window in Current.Windows)
-                    {
-                        window.Language = System.Windows.Markup.XmlLanguage.GetLanguage(newCulture.IetfLanguageTag);
-                    }
-                });
-
-                System.Diagnostics.Debug.WriteLine($"Language changed to: {languageCode}");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error changing language: {ex.Message}");
-            }
-        }
     }
 }

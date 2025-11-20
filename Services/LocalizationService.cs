@@ -91,6 +91,7 @@ namespace TechDashboard.Services
                 {
                     _logger.LogWarning("Culture {Culture} not in available list", cultureCode);
                 }
+                
                 LocalizeDictionary.Instance.Culture = culture;
                 _logger.LogInformation("Language changed to {CultureCode}", cultureCode);
             }
@@ -109,7 +110,10 @@ namespace TechDashboard.Services
             return _options.AvailableCultures
                 .Select(code =>
                 {
-                    try { return new CultureInfo(code); }
+                    try
+                    {
+                        return new CultureInfo(code);
+                    }
                     catch
                     {
                         _logger.LogWarning("Invalid culture code {Code}", code);

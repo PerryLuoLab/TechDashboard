@@ -303,5 +303,19 @@ namespace TechDashboard
         }
 
         #endregion
+
+        private void IconPickerButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dlgObj = App.Services.GetService(typeof(TechDashboard.Views.IconPickerDialog));
+                var dlg = dlgObj as TechDashboard.Views.IconPickerDialog;
+                dlg?.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to open IconPicker dialog");
+            }
+        }
     }
 }

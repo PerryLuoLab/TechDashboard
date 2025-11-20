@@ -60,6 +60,9 @@ namespace TechDashboard.Core.Extensions
 
             services.AddSingleton<MainWindow>();
             services.AddSingleton<Core.Services.UserPreferencesService>();
+            services.AddTransient<ViewModels.IconPickerViewModel>();
+            services.AddTransient<Views.IconPickerDialog>();
+            services.AddSingleton<TechDashboard.Services.Interfaces.INavLayoutService, TechDashboard.Services.NavLayoutService>();
 
             return services;
         }

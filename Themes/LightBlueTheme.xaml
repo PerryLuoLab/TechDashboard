@@ -208,18 +208,9 @@
 
     <!-- Toolbar Button Style -->
     <Style x:Key="ToolbarButtonStyle" TargetType="Button">
-        <Setter Property="Background">
-            <Setter.Value>
-                <SolidColorBrush Color="#F0F8FF" Opacity="0.6"/>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush">
-            <Setter.Value>
-                <SolidColorBrush Color="#81D4FA" Opacity="0.5"/>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Width" Value="34"/>
         <Setter Property="Height" Value="34"/>
         <Setter Property="Padding" Value="0"/>
@@ -229,25 +220,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" 
-                            CornerRadius="5" BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="1" SnapsToDevicePixels="True">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" BorderBrush="Transparent" BorderThickness="0" Padding="1" SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background">
-                                <Setter.Value>
-                                    <SolidColorBrush Color="#B3E5FC" Opacity="0.8"/>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
-                            <Setter TargetName="border" Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect Color="#0288D1" BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
-                                </Setter.Value>
-                            </Setter>
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource HoverBrush}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentBrush}"/>

@@ -221,6 +221,14 @@
                                            FontFamily="{x:Static icons:IconConstants.DefaultFontFamily}" 
                                            FontSize="16"/>
                             </Button>
+                            <Button Style="{StaticResource ToolbarButtonStyle}" 
+                                    ToolTip="Icons"
+                                    Margin="0,0,5,0"
+                                    Click="IconPickerButton_Click">
+                                <TextBlock Text="{x:Static icons:IconConstants+Tools.Code}" 
+                                           FontFamily="{x:Static icons:IconConstants.DefaultFontFamily}" 
+                                           FontSize="16"/>
+                            </Button>
                         </StackPanel>
                     </Grid>
 

@@ -5,8 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- Default theme: Light -->
-                <ResourceDictionary Source="Themes/LightTheme.xaml"/>
+                <!-- Theme applied at startup via ThemeService (ThemeConstants.DefaultTheme) -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Value Converters -->
             <converters:ThemeConverter x:Key="ThemeConverter"/>

@@ -2,8 +2,9 @@ using System;
 using System.Globalization;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using TechDashboard.Core.Extensions;  // ? 更新引用
+using TechDashboard.Core.Extensions;
 using TechDashboard.Services.Interfaces;
+using TechDashboard.Core.Constants; // added for ThemeConstants
 
 namespace TechDashboard
 {
@@ -30,9 +31,14 @@ namespace TechDashboard
 
             // Initialize localization service (will set default culture)
             var localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
+            var themeService = _serviceProvider.GetRequiredService<IThemeService>();
 
-            System.Diagnostics.Debug.WriteLine("? Application services initialized");
-            System.Diagnostics.Debug.WriteLine($"  Localization: {localizationService.CurrentCulture.Name}");
+            // Apply default theme from single source of truth (ThemeConstants.DefaultTheme)
+            themeService.ApplyTheme(ThemeConstants.DefaultTheme);
+
+            System.Diagnostics.Debug.WriteLine("Application services initialized");
+            System.Diagnostics.Debug.WriteLine($"Localization: {localizationService.CurrentCulture.Name}");
+            System.Diagnostics.Debug.WriteLine($"Theme: {themeService.CurrentTheme}");
 
             // Create and show MainWindow using DI
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
@@ -86,11 +92,11 @@ namespace TechDashboard
                     }
                 });
 
-                System.Diagnostics.Debug.WriteLine($"? Language changed to: {languageCode}");
+                System.Diagnostics.Debug.WriteLine($"Language changed to: {languageCode}");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"? Error changing language: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error changing language: {ex.Message}");
             }
         }
     }

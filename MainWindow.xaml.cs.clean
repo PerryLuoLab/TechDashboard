@@ -184,54 +184,43 @@ namespace TechDashboard
             try
             {
                 double maxContentWidth = 0;
-                const double iconWidth = 16; // icon glyph visual width assumption
-                const double iconTextSpacing = 12; // spacing between icon and text
-                const double horizontalButtonPadding = 12; // NavButtonStyle Padding left/right
-                const double containerSideMargin = 8; // StackPanel outer margin left/right
+                const double iconWidth = 16;
+                const double iconTextSpacing = 12;
+                const double buttonPadding = 12;
+                const double stackPanelMargin = 8;
 
                 var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
                 var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
                 var textBrush = Application.Current.TryFindResource("TextBrush") as SolidColorBrush ?? Brushes.White;
-                var culture = CultureInfo.CurrentUICulture;
+                var culture = System.Globalization.CultureInfo.CurrentUICulture;
 
-                // Navigation related localization keys that show in expanded mode
                 var navTexts = new[]
                 {
                     _localizationService.GetString("Nav_Overview"),
                     _localizationService.GetString("Nav_Analytics"),
                     _localizationService.GetString("Nav_Reports"),
                     _localizationService.GetString("Nav_Settings"),
-                    _localizationService.GetString("Nav_Collapse"), // bottom toggle when expanded
-                    _localizationService.GetString("Nav_Expand") // used only collapsed tooltip, kept for completeness
+                    _localizationService.GetString("Nav_Collapse"),
+                    _localizationService.GetString("Nav_Expand")
                 };
 
-                foreach (var text in navTexts.Where(t => !string.IsNullOrWhiteSpace(t)))
+                foreach (var text in navTexts.Where(t => !string.IsNullOrEmpty(t)))
                 {
-                    // Font size used for nav labels (see XAML TextBlocks inside buttons)
-                    double fontSize = 14; // label text size (explicit 14 in measurement even though some show 16 icon)
-                    var ft = new FormattedText(text, culture, FlowDirection.LeftToRight, typeface, fontSize, textBrush, dpi);
-                    double buttonTextWidth = ft.Width;
-
-                    // Content width: icon + spacing + text
-                    double contentWidth = iconWidth + iconTextSpacing + buttonTextWidth;
-                    maxContentWidth = Math.Max(maxContentWidth, contentWidth);
+                    var textWidth = new FormattedText(text, culture, FlowDirection.LeftToRight, typeface, 14, textBrush, dpi).Width;
+                    var buttonContentWidth = iconWidth + iconTextSpacing + textWidth;
+                    maxContentWidth = Math.Max(maxContentWidth, buttonContentWidth);
                 }
 
-                // Total desired width: outer margin + horizontal padding + max content + horizontal padding + outer margin + extra buffer
-                double desired = containerSideMargin + horizontalButtonPadding + maxContentWidth + horizontalButtonPadding + containerSideMargin + NavigationConstants.ExpansionExtraBuffer;
-
-                // Do not enforce a large minimum; keep at least enough to show something but cap by max.
-                // Still respect CollapsedWidth when extremely small (e.g., very short strings) so animation feels natural.
-                double logicalMin = Math.Max(NavigationConstants.CollapsedWidth + 20, 140); // safeguard minimal pleasant width
-                _expandedNavWidth = Math.Max(logicalMin, Math.Min(desired, NavigationConstants.MaxExpandedWidth));
+                _expandedNavWidth = stackPanelMargin + buttonPadding + maxContentWidth + buttonPadding + stackPanelMargin;
+                _expandedNavWidth = Math.Max(NavigationConstants.MinExpandedWidth, Math.Min(_expandedNavWidth, NavigationConstants.MaxExpandedWidth));
 
                 NavColumn.MaxWidth = _expandedNavWidth;
-
-                Debug.WriteLine($"[CalculateOptimalNavWidth] Longest content width={maxContentWidth:F1}, desired={desired:F1}, final={_expandedNavWidth:F1}");
+                
+                System.Diagnostics.Debug.WriteLine($"[CalculateOptimalNavWidth] Calculated width: {_expandedNavWidth}px");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"CalculateOptimalNavWidth error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"CalculateOptimalNavWidth error: {ex.Message}");
                 _expandedNavWidth = NavigationConstants.DefaultExpandedWidth;
                 NavColumn.MaxWidth = _expandedNavWidth;
             }
@@ -518,6 +507,19 @@ namespace TechDashboard
             };
 
             storyboard.Begin();
+        }
+
+        private bool IsChildOf(DependencyObject? child, Type parentType)
+        {
+            while (child != null)
+            {
+                if (child.GetType() == parentType || child.GetType().IsSubclassOf(parentType))
+                {
+                    return true;
+                }
+                child = VisualTreeHelper.GetParent(child);
+            }
+            return false;
         }
 
         #endregion

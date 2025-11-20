@@ -37,6 +37,7 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 ### 🎨 Modern UI/UX
 - **Three Premium Themes**: Dark (Gray-Black), Light, and Blue Tech - all carefully optimized
 - **Semantic Color System** ✨ v1.1: Customized status colors (Success, Error, Warning, Info) for each theme, ensuring optimal contrast and readability
+- **Unified Icon System** ✨ v1.3: Centralized icon management with 200+ icons, type-safe constants
 - **Smooth Animations**: All UI transitions animated with easing functions
 - **Responsive Layout**: Adaptive design for various screen sizes
 - **Gradient Effects**: Beautiful gradients and shadows throughout
@@ -62,6 +63,7 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 - **Theme Management**: Dynamic theme switching with merged dictionaries
 - **Type-Safe Resources**: Strongly-typed access to localized strings
 - **Constants Management** ✨ v1.1: Centralized constant classes eliminate magic strings
+- **Icon System** ✨ v1.3: Unified icon management with `IconConstants`, eliminating hardcoded Unicode characters
 - **Complete Documentation** ✨ v1.1: All public APIs have XML documentation comments
 
 ## 📋 Requirements
@@ -115,12 +117,14 @@ TechDashboard/
 │   ├── Constants/                           # Constant definitions
 │   │   ├── NavigationConstants.cs          # Navigation constants
 │   │   ├── ThemeConstants.cs               # Theme constants ✨ v1.1
-│   │   └── LanguageConstants.cs            # Language constants ✨ v1.1
+│   │   ├── LanguageConstants.cs            # Language constants ✨ v1.1
+│   │   └── IconConstants.cs                # Icon constants ✨ v1.3
 │   │
 │   ├── Converters/                          # Value converters
 │   │   ├── ThemeConverter.cs               # Theme converter
 │   │   ├── LanguageConverter.cs            # Language converter
-│   │   └── BoolToVisibilityConverter.cs    # Visibility converter ✨ v1.1
+│   │   ├── BoolToVisibilityConverter.cs    # Visibility converter ✨ v1.1
+│   │   └── IconConverter.cs                # Icon converter ✨ v1.3
 │   │
 │   └── Extensions/                          # Extension methods
 │       └── ServiceCollectionExtensions.cs  # DI service registration ✨ v1.2

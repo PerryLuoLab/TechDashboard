@@ -14,6 +14,7 @@
             <converters:LanguageConverter x:Key="LanguageConverter"/>
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+            <converters:IconConverter x:Key="IconConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

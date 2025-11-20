@@ -77,5 +77,11 @@ namespace TechDashboard.Core.Constants
         /// Determines when animation has reached its target within acceptable precision.
         /// </summary>
         public const double WidthTolerance = 1.0;
+
+        /// <summary>
+        /// Extra buffer (in pixels) added to the computed max item width for expanded navigation.
+        /// Ensures the longest item plus icon & spacing does not touch the edge. Requirement: +6px.
+        /// </summary>
+        public const double ExpansionExtraBuffer = 6.0;
     }
 }

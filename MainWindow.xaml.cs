@@ -13,6 +13,7 @@ using TechDashboard.Core.Constants;
 using TechDashboard.Core.Infrastructure;
 using TechDashboard.Services.Interfaces;
 using TechDashboard.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace TechDashboard
 {
@@ -20,6 +21,8 @@ namespace TechDashboard
     {
         // Services
         private readonly ILocalizationService _localizationService;
+        private readonly ILogger<MainWindow> _logger;
+        private readonly INavLayoutService _navLayoutService;
 
         // Animation state
         private bool _isAnimating = false;
@@ -27,11 +30,13 @@ namespace TechDashboard
         private bool _isCustomMaximized = false;
         private Rect _restoreBounds;
 
-        public MainWindow(MainViewModel viewModel, ILocalizationService localizationService)
+        public MainWindow(MainViewModel viewModel, ILocalizationService localizationService, ILogger<MainWindow> logger, INavLayoutService navLayoutService)
         {
             InitializeComponent();
 
             _localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _navLayoutService = navLayoutService ?? throw new ArgumentNullException(nameof(navLayoutService));
             DataContext = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
 
             Loaded += OnLoaded;
@@ -44,7 +49,8 @@ namespace TechDashboard
             {
                 if (DataContext is MainViewModel vm)
                 {
-                    CalculateOptimalNavWidth();
+                    _expandedNavWidth = _navLayoutService.CalculateOptimalNavWidth(this);
+                    NavColumn.MaxWidth = _expandedNavWidth;
 
                     vm.PropertyChanged += Vm_PropertyChanged;
 
@@ -60,10 +66,11 @@ namespace TechDashboard
                 NavPanel.MouseLeftButtonDown += NavPanel_MouseLeftButtonDown;
 
                 SetupMenuSubmenuHandlers();
+                _logger.LogInformation("MainWindow loaded");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"OnLoaded error: {ex.Message}");
+                _logger.LogError(ex, "Error during MainWindow.OnLoaded");
             }
         }
 
@@ -76,6 +83,7 @@ namespace TechDashboard
 
             NavPanel.PreviewMouseLeftButtonDown -= NavPanel_PreviewMouseLeftButtonDown;
             NavPanel.MouseLeftButtonDown -= NavPanel_MouseLeftButtonDown;
+            _logger.LogInformation("MainWindow unloaded");
         }
 
         #region Window Controls
@@ -88,7 +96,7 @@ namespace TechDashboard
             }
             else
             {
-                try { DragMove(); } catch { }
+                try { DragMove(); } catch (Exception ex) { _logger.LogDebug(ex, "DragMove failed"); }
             }
         }
 
@@ -108,18 +116,17 @@ namespace TechDashboard
                 Height = _restoreBounds.Height;
                 _isCustomMaximized = false;
                 MaximizeIcon.Text = IconConstants.Common.ChromeMaximize;
+                _logger.LogDebug("Window restored");
             }
             else
             {
                 _restoreBounds = new Rect(Left, Top, Width, Height);
 
                 var wa = SystemParameters.WorkArea;
-                Left = wa.Left;
-                Top = wa.Top;
-                Width = wa.Width;
-                Height = wa.Height;
+                Left = wa.Left; Top = wa.Top; Width = wa.Width; Height = wa.Height;
                 _isCustomMaximized = true;
                 MaximizeIcon.Text = IconConstants.Common.ChromeRestore;
+                _logger.LogDebug("Window maximized to work area");
             }
         }
 
@@ -161,70 +168,11 @@ namespace TechDashboard
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is T result)
-                {
-                    return result;
-                }
+                if (child is T result) return result;
                 var childOfChild = FindVisualChild<T>(child);
-                if (childOfChild != null)
-                {
-                    return childOfChild;
-                }
+                if (childOfChild != null) return childOfChild;
             }
             return null;
-        }
-
-        #endregion
-
-        #region Navigation Width Calculation
-
-        private void CalculateOptimalNavWidth()
-        {
-            try
-            {
-                double maxContentWidth = 0;
-                const double iconWidth = 16;
-                const double iconTextSpacing = 12;
-                const double horizontalButtonPadding = 12;
-                const double containerSideMargin = 8;
-
-                var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-                var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
-                var textBrush = Application.Current.TryFindResource("TextBrush") as SolidColorBrush ?? Brushes.White;
-                var culture = CultureInfo.CurrentUICulture;
-
-                var navTexts = new[]
-                {
-                    _localizationService.GetString("Nav_Overview"),
-                    _localizationService.GetString("Nav_Analytics"),
-                    _localizationService.GetString("Nav_Reports"),
-                    _localizationService.GetString("Nav_Settings"),
-                    _localizationService.GetString("Nav_Collapse"),
-                    _localizationService.GetString("Nav_Expand")
-                };
-
-                foreach (var text in navTexts.Where(t => !string.IsNullOrWhiteSpace(t)))
-                {
-                    double fontSize = 14;
-                    var ft = new FormattedText(text, culture, FlowDirection.LeftToRight, typeface, fontSize, textBrush, dpi);
-                    double buttonTextWidth = ft.Width;
-                    double contentWidth = iconWidth + iconTextSpacing + buttonTextWidth;
-                    maxContentWidth = Math.Max(maxContentWidth, contentWidth);
-                }
-
-                double desired = containerSideMargin + horizontalButtonPadding + maxContentWidth + horizontalButtonPadding + containerSideMargin + NavigationConstants.ExpansionExtraBuffer;
-                double logicalMin = Math.Max(NavigationConstants.CollapsedWidth + 20, 140);
-                _expandedNavWidth = Math.Max(logicalMin, Math.Min(desired, NavigationConstants.MaxExpandedWidth));
-                NavColumn.MaxWidth = _expandedNavWidth;
-
-                Debug.WriteLine($"[CalculateOptimalNavWidth] Longest content width={maxContentWidth:F1}, desired={desired:F1}, final={_expandedNavWidth:F1}");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"CalculateOptimalNavWidth error: {ex.Message}");
-                _expandedNavWidth = NavigationConstants.DefaultExpandedWidth;
-                NavColumn.MaxWidth = _expandedNavWidth;
-            }
         }
 
         #endregion
@@ -240,6 +188,7 @@ namespace TechDashboard
                 {
                     vm.ToggleNavCommand.Execute(null);
                     e.Handled = true;
+                    _logger.LogDebug("Navigation toggled via preview double-click");
                 }
             }
         }
@@ -253,6 +202,7 @@ namespace TechDashboard
                 {
                     vm.ToggleNavCommand.Execute(null);
                     e.Handled = true;
+                    _logger.LogDebug("Navigation toggled via double-click");
                 }
             }
         }
@@ -279,9 +229,11 @@ namespace TechDashboard
                 {
                     AnimateNavWidth(vm.IsNavExpanded);
                     UpdateToggleIcon(vm.IsNavExpanded);
+                    _logger.LogInformation("Navigation expanded state changed: {Expanded}", vm.IsNavExpanded);
                 }
                 else if (e.PropertyName == nameof(MainViewModel.CurrentLanguage))
                 {
+                    _logger.LogInformation("Language changed to {Language}", (sender as MainViewModel)?.CurrentLanguage);
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         try
@@ -291,7 +243,8 @@ namespace TechDashboard
 
                             Dispatcher.BeginInvoke(new Action(() =>
                             {
-                                CalculateOptimalNavWidth();
+                                _expandedNavWidth = _navLayoutService.CalculateOptimalNavWidth(this);
+                                NavColumn.MaxWidth = _expandedNavWidth;
                                 if (sender is MainViewModel viewModel && viewModel.IsNavExpanded)
                                 {
                                     NavColumn.Width = new GridLength(_expandedNavWidth);
@@ -299,13 +252,13 @@ namespace TechDashboard
                                 }
                             }), System.Windows.Threading.DispatcherPriority.Loaded);
                         }
-                        catch (Exception) { }
+                        catch (Exception innerEx) { _logger.LogError(innerEx, "Error updating layout after language change"); }
                     }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Vm_PropertyChanged error: {ex.Message}");
+                _logger.LogError(ex, "Vm_PropertyChanged handler failed");
             }
         }
 
@@ -343,6 +296,7 @@ namespace TechDashboard
                 _isAnimating = false;
                 if (DataContext is MainViewModel vm) vm.NavWidth = targetWidth;
                 NavColumn.Width = new GridLength(targetWidth);
+                _logger.LogDebug("Navigation width animation complete. Expanded={Expanded} Width={Width}", expanded, targetWidth);
             };
 
             storyboard.Begin();

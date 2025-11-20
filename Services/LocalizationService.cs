@@ -6,6 +6,7 @@ using TechDashboard.Options;
 using TechDashboard.Services.Interfaces;
 using WPFLocalizeExtension.Engine;
 using TechDashboard.Core.Constants;
+using Microsoft.Extensions.Logging;
 
 namespace TechDashboard.Services
 {
@@ -15,14 +16,17 @@ namespace TechDashboard.Services
     public class LocalizationService : ILocalizationService
     {
         private readonly LocalizationOptions _options;
+        private readonly ILogger<LocalizationService> _logger;
 
-        public LocalizationService(IOptions<LocalizationOptions> options)
+        public LocalizationService(IOptions<LocalizationOptions> options, ILogger<LocalizationService> logger)
         {
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
-            
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             // Initialize LocalizeDictionary with default culture
             LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
             LocalizeDictionary.Instance.Culture = new CultureInfo(_options.DefaultCulture);
+            _logger.LogInformation("Localization initialized with culture {Culture}", _options.DefaultCulture);
         }
 
         /// <inheritdoc/>
@@ -34,6 +38,7 @@ namespace TechDashboard.Services
                 if (value != null)
                 {
                     LocalizeDictionary.Instance.Culture = value;
+                    _logger.LogDebug("Current culture set to {Culture}", value.Name);
                 }
             }
         }
@@ -54,7 +59,7 @@ namespace TechDashboard.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error getting localized string for key '{key}': {ex.Message}");
+                _logger.LogError(ex, "Error retrieving localized string for key {Key}", key);
                 return key;
             }
         }
@@ -69,7 +74,7 @@ namespace TechDashboard.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error formatting localized string for key '{key}': {ex.Message}");
+                _logger.LogError(ex, "Error formatting localized string for key {Key}", key);
                 return key;
             }
         }
@@ -84,16 +89,14 @@ namespace TechDashboard.Services
                 // Validate that the culture is supported
                 if (!_options.AvailableCultures.Contains(cultureCode))
                 {
-                    System.Diagnostics.Debug.WriteLine($"Warning: Culture '{cultureCode}' is not in the list of available cultures.");
+                    _logger.LogWarning("Culture {Culture} not in available list", cultureCode);
                 }
-                
                 LocalizeDictionary.Instance.Culture = culture;
-                
-                System.Diagnostics.Debug.WriteLine($"Language changed to: {cultureCode}");
+                _logger.LogInformation("Language changed to {CultureCode}", cultureCode);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Failed to change language to {cultureCode}: {ex.Message}");
+                _logger.LogError(ex, "Failed to change language to {CultureCode}, applying fallback {Fallback}", cultureCode, _options.DefaultCulture);
                 
                 // Fallback to default culture
                 LocalizeDictionary.Instance.Culture = new CultureInfo(_options.DefaultCulture);
@@ -106,13 +109,10 @@ namespace TechDashboard.Services
             return _options.AvailableCultures
                 .Select(code =>
                 {
-                    try
-                    {
-                        return new CultureInfo(code);
-                    }
+                    try { return new CultureInfo(code); }
                     catch
                     {
-                        System.Diagnostics.Debug.WriteLine($"Warning: Invalid culture code '{code}'");
+                        _logger.LogWarning("Invalid culture code {Code}", code);
                         return null;
                     }
                 })

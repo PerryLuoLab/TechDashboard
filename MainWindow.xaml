@@ -707,6 +707,10 @@
                                    VerticalAlignment="Center" Margin="0,0,4,0"/>
                         <TextBlock Text="{Binding CurrentLanguageDisplay}" FontSize="11" 
                                    Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
+                                   VerticalAlignment="Center" Margin="0,0,16,0"/>
+
+                        <TextBlock Text="{Binding SaveStatus}" FontSize="11"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </Grid>

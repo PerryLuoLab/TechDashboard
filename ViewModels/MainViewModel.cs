@@ -2,6 +2,8 @@ using System.Windows.Input;
 using TechDashboard.Core.Infrastructure;
 using TechDashboard.Services.Interfaces;
 using TechDashboard.Core.Constants;
+using TechDashboard.Core.Services;
+using System.Threading.Tasks;
 
 namespace TechDashboard.ViewModels
 {
@@ -9,21 +11,25 @@ namespace TechDashboard.ViewModels
     {
         private readonly ILocalizationService _localizationService;
         private readonly IThemeService _themeService;
+        private readonly UserPreferencesService? _prefsService;
 
         private bool _isNavExpanded = true;
         private string _currentTheme = ThemeConstants.DefaultTheme;
         private string _currentLanguage = LanguageConstants.DefaultLanguage;
         private string _currentPage = PageConstants.Overview;
         private double _navWidth = NavigationConstants.DefaultExpandedWidth;
+        private string _saveStatus = string.Empty;
 
-        public MainViewModel(ILocalizationService localizationService, IThemeService themeService)
+        public MainViewModel(ILocalizationService localizationService, IThemeService themeService, UserPreferencesService? prefsService = null)
         {
             _localizationService = localizationService ?? throw new System.ArgumentNullException(nameof(localizationService));
             _themeService = themeService ?? throw new System.ArgumentNullException(nameof(themeService));
+            _prefsService = prefsService;
 
             // Initialize with current culture & theme from services
             _currentLanguage = _localizationService.CurrentCulture.Name;
             _currentTheme = _themeService.CurrentTheme;
+            _saveStatus = _localizationService.GetString("Status_Ready");
 
             ToggleNavCommand = new RelayCommand(_ => ToggleNavigation());
             NavigateCommand = new RelayCommand(param => NavigateToPage(param?.ToString()));
@@ -38,7 +44,14 @@ namespace TechDashboard.ViewModels
         public bool IsNavExpanded
         {
             get => _isNavExpanded;
-            set => SetProperty(ref _isNavExpanded, value);
+            set
+            {
+                if (_isNavExpanded != value)
+                {
+                    SetProperty(ref _isNavExpanded, value);
+                    PersistAsync();
+                }
+            }
         }
 
         public double NavWidth
@@ -78,6 +91,12 @@ namespace TechDashboard.ViewModels
                 RaisePropertyChanged(nameof(IsSettingsPage));
                 RaisePropertyChanged(nameof(CurrentPageDisplay));
             });
+        }
+
+        public string SaveStatus
+        {
+            get => _saveStatus;
+            private set => SetProperty(ref _saveStatus, value);
         }
 
         public bool IsOverviewPage => CurrentPage == PageConstants.Overview;
@@ -127,6 +146,7 @@ namespace TechDashboard.ViewModels
             {
                 CurrentTheme = themeName;
                 _themeService.ApplyTheme(themeName);
+                PersistAsync();
             }
         }
 
@@ -144,7 +164,16 @@ namespace TechDashboard.ViewModels
                         window.Language = System.Windows.Markup.XmlLanguage.GetLanguage(languageCode);
                     }
                 });
+                PersistAsync();
             }
+        }
+
+        private async void PersistAsync()
+        {
+            if (_prefsService == null) return;
+            SaveStatus = _localizationService.GetString("Status_Saving");
+            await _prefsService.SaveAsync(new UserPreferences { Theme = CurrentTheme, Language = CurrentLanguage, IsNavExpanded = IsNavExpanded });
+            SaveStatus = _localizationService.GetString("Status_Saved");
         }
 
         private void QuickToggleTheme()

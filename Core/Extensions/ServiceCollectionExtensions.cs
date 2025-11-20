@@ -3,7 +3,11 @@ using TechDashboard.Options;
 using TechDashboard.Services;
 using TechDashboard.Services.Interfaces;
 using TechDashboard.ViewModels;
-using TechDashboard.Core.Constants; // added for LanguageConstants
+using TechDashboard.Core.Constants;
+using Serilog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace TechDashboard.Core.Extensions
 {
@@ -20,25 +24,42 @@ namespace TechDashboard.Core.Extensions
         /// <returns>The service collection for method chaining.</returns>
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            // Build configuration
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
+            // Configure Serilog from configuration
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+
+            services.AddLogging(builder =>
+            {
+                builder.ClearProviders();
+                builder.AddSerilog(Log.Logger, dispose: true);
+            });
+
             // Configure localization options
             services.Configure<LocalizationOptions>(options =>
             {
                 options.AssemblyName = "TechDashboard";
                 options.DictionaryName = "Strings";
-                // Use centralized constant instead of hard-coded culture
-                options.DefaultCulture = LanguageConstants.DefaultLanguage;
-                options.AvailableCultures = new[] { "en-US", "zh-CN", "zh-TW", "ko-KR", "ja-JP" };
+                options.DefaultCulture = configuration["Localization:DefaultCulture"] ?? LanguageConstants.DefaultLanguage;
+                options.AvailableCultures = LanguageConstants.GetAllCultureCodes();
             });
 
             // Register services
             services.AddSingleton<ILocalizationService, LocalizationService>();
             services.AddSingleton<IThemeService, ThemeService>();
+            services.AddSingleton<INavLayoutService, NavLayoutService>();
 
-            // Register view models
-            services.AddTransient<MainViewModel>();
+            // View models as singletons to share the same instance across window and app
+            services.AddSingleton<MainViewModel>();
 
-            // Register views
             services.AddSingleton<MainWindow>();
+            services.AddSingleton<Core.Services.UserPreferencesService>();
 
             return services;
         }

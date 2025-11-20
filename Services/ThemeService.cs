@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using TechDashboard.Services.Interfaces;
 using TechDashboard.Core.Constants;
+using Microsoft.Extensions.Logging;
 
 namespace TechDashboard.Services
 {
@@ -12,11 +13,13 @@ namespace TechDashboard.Services
     public class ThemeService : IThemeService
     {
         private readonly ILocalizationService _localizationService;
+        private readonly ILogger<ThemeService> _logger;
         private string _currentTheme = ThemeConstants.DefaultTheme;
 
-        public ThemeService(ILocalizationService localizationService)
+        public ThemeService(ILocalizationService localizationService, ILogger<ThemeService> logger)
         {
             _localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <inheritdoc/>
@@ -27,20 +30,20 @@ namespace TechDashboard.Services
         {
             if (Application.Current == null)
             {
-                System.Diagnostics.Debug.WriteLine("Cannot apply theme: Application.Current is null");
+                _logger.LogWarning("Cannot apply theme: Application.Current is null");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(themeName))
             {
-                System.Diagnostics.Debug.WriteLine("Cannot apply theme: Theme name is null or empty");
+                _logger.LogWarning("Cannot apply theme: theme name was empty");
                 return;
             }
 
             // Normalize theme name to one of defined constants
             if (!ThemeConstants.IsValidTheme(themeName))
             {
-                System.Diagnostics.Debug.WriteLine($"Unknown theme '{themeName}', falling back to default '{ThemeConstants.DefaultTheme}'");
+                _logger.LogWarning("Unknown theme '{Theme}', falling back to default '{Default}'", themeName, ThemeConstants.DefaultTheme);
                 themeName = ThemeConstants.DefaultTheme;
             }
 
@@ -62,11 +65,11 @@ namespace TechDashboard.Services
 
                 _currentTheme = themeName;
 
-                System.Diagnostics.Debug.WriteLine($"[ThemeService] Theme changed to: {themeName}");
+                _logger.LogInformation("Theme changed to {Theme}", themeName);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[ThemeService] Theme change failed: {ex.Message}");
+                _logger.LogError(ex, "Theme change failed for {Theme}", themeName);
                 // Fallback
                 try
                 {
@@ -74,10 +77,11 @@ namespace TechDashboard.Services
                     var defaultDict = new ResourceDictionary { Source = new Uri(fallbackPath, UriKind.Relative) };
                     Application.Current.Resources.MergedDictionaries.Add(defaultDict);
                     _currentTheme = ThemeConstants.DefaultTheme;
+                    _logger.LogWarning("Fallback theme applied: {Theme}", _currentTheme);
                 }
                 catch (Exception fallbackEx)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[ThemeService] Fallback theme failed: {fallbackEx.Message}");
+                    _logger.LogCritical(fallbackEx, "Fallback theme application failed");
                 }
             }
         }

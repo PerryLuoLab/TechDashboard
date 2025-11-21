@@ -169,6 +169,9 @@
   <data name="Settings_Theme_BlueTech" xml:space="preserve">
     <value>科技蓝</value>
   </data>
+  <data name="Settings_Theme_Aurora" xml:space="preserve">
+    <value>极光</value>
+  </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>语言</value>
   </data>
@@ -231,6 +234,9 @@
   </data>
   <data name="Status_Theme_BlueTech" xml:space="preserve">
     <value>科技蓝</value>
+  </data>
+  <data name="Status_Theme_Aurora" xml:space="preserve">
+    <value>极光</value>
   </data>
   <data name="Status_Page_Overview" xml:space="preserve">
     <value>概览</value>

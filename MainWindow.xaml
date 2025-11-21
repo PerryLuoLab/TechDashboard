@@ -614,6 +614,19 @@
                                             </LinearGradientBrush>
                                         </ToggleButton.Tag>
                                     </ToggleButton>
+
+                                    <ToggleButton Content="{lex:Loc Settings_Theme_Aurora}" 
+                                                  Style="{StaticResource ThemeToggleButton}"
+                                                  IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Aurora}"
+                                                  Command="{Binding ChangeThemeCommand}" CommandParameter="Aurora">
+                                        <ToggleButton.Tag>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#A855F7" Offset="0"/>
+                                                <GradientStop Color="#EC4899" Offset="0.5"/>
+                                                <GradientStop Color="#F97316" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </ToggleButton.Tag>
+                                    </ToggleButton>
                                 </WrapPanel>
 
                                 <TextBlock Text="{lex:Loc Settings_Language}" FontSize="24" 

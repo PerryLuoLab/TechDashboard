@@ -33,9 +33,14 @@ namespace TechDashboard.Core.Constants
             public const string LightBlue = "LightBlue";
 
             /// <summary>
-            /// BlueTech theme - Glassmorphism with Neon Glow (科技蓝主题 - 玻璃拟态霓虹辉光)
+            /// BlueTech theme - Glassmorphism with Neon Glow (蓝科技主题 - 玻璃形态+霓虹辉光)
             /// </summary>
             public const string BlueTech = "BlueTech";
+
+            /// <summary>
+            /// Aurora theme - Cyberpunk/Synthwave with Glow Effects (极光主题 - 赛博朋克/蒸汽波+辉光效果)
+            /// </summary>
+            public const string Aurora = "Aurora";
         }
 
         /// <summary>
@@ -59,9 +64,14 @@ namespace TechDashboard.Core.Constants
             public const string LightBlue = "Themes/LightBlueTheme.xaml";
 
             /// <summary>
-            /// BlueTech theme resource dictionary path (科技蓝主题 - 玻璃拟态)
+            /// BlueTech theme resource dictionary path (蓝科技主题 - 玻璃形态)
             /// </summary>
             public const string BlueTech = "Themes/BlueTechTheme.xaml";
+
+            /// <summary>
+            /// Aurora theme resource dictionary path (极光主题 - 赛博朋克)
+            /// </summary>
+            public const string Aurora = "Themes/AuroraTheme.xaml";
         }
 
         /// <summary>
@@ -123,7 +133,8 @@ namespace TechDashboard.Core.Constants
             ThemeNames.Dark,
             ThemeNames.Light,
             ThemeNames.LightBlue,
-            ThemeNames.BlueTech
+            ThemeNames.BlueTech,
+            ThemeNames.Aurora
         };
 
         /// <summary>
@@ -145,7 +156,8 @@ namespace TechDashboard.Core.Constants
                 { ThemeNames.Dark, "Status_Theme_Dark" },
                 { ThemeNames.Light, "Status_Theme_Light" },
                 { ThemeNames.LightBlue, "Status_Theme_LightBlue" },
-                { ThemeNames.BlueTech, "Status_Theme_BlueTech" }
+                { ThemeNames.BlueTech, "Status_Theme_BlueTech" },
+                { ThemeNames.Aurora, "Status_Theme_Aurora" }
             };
 
         /// <summary>
@@ -161,6 +173,7 @@ namespace TechDashboard.Core.Constants
                 ThemeNames.Light => ThemeResourcePaths.Light,
                 ThemeNames.LightBlue => ThemeResourcePaths.LightBlue,
                 ThemeNames.BlueTech => ThemeResourcePaths.BlueTech,
+                ThemeNames.Aurora => ThemeResourcePaths.Aurora,
                 _ => ThemeResourcePaths.Light
             };
         }

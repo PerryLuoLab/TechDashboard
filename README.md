@@ -18,9 +18,10 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
   <img src="Assets/theme-dark.png" alt="Dark Theme" width="45%">
   <img src="Assets/theme-light.png" alt="Light Theme" width="45%">
   <img src="Assets/theme-bluetech.png" alt="Blue Tech Theme" width="45%">
+  <img src="Assets/theme-aurora.png" alt="Aurora Theme" width="45%">
 </div>
 
-*Three premium themes: Dark (Gray-Black), Light, and Blue Tech*
+*Four premium themes: Dark (Gray-Black), Light, Blue Tech, and Aurora (Cyberpunk/Synthwave)*
 
 ### Language Support
 ![Language Support](Assets/language-support.png)
@@ -35,7 +36,13 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 ## ✨ Features
 
 ### 🎨 Modern UI/UX
-- **Three Premium Themes**: Dark (Gray-Black), Light, and Blue Tech - all carefully optimized
+- **Four Premium Themes**: Dark (Gray-Black), Light, Blue Tech, and Aurora (Cyberpunk/Synthwave) - all carefully optimized
+- **Aurora Theme Features** ✨ NEW:
+  - Cyberpunk/Synthwave aesthetic with deep purple and cyan gradients
+  - Colored glow shadows (purple/pink) instead of traditional black shadows
+  - Micro-interaction animations: scale on hover (buttons), translate on hover (cards)
+  - Breathing animation on icon boxes with pulsating glow effect
+  - Modern glassmorphism with enhanced depth and layering
 - **Semantic Color System** ✨ v1.1: Customized status colors (Success, Error, Warning, Info) for each theme
 - **Unified Icon System** ✨ v1.3: Centralized icon management with grouped constants
 - **Smooth Animations**: Eased transitions (navigation width, hover effects)
@@ -96,6 +103,18 @@ dotnet run --project TechDashboard.csproj
 - Add language: create resx + update LanguageConstants
 - Add page: extend PageConstants + add localization keys
 
+## 🎨 Aurora Theme Details
+The Aurora theme brings a modern cyberpunk/synthwave aesthetic with:
+- **Color Palette**: Deep dark backgrounds (#0D0221) with high-saturation purple (#A855F7) and cyan (#06B6D4) accents
+- **Glow Effects**: Colored drop shadows (purple/pink) create neon-like glowing effects
+- **Micro-interactions**:
+  - Buttons scale to 1.05x on hover with smooth easing (150ms)
+  - Navigation items slide 3px to the right on hover
+  - Dashboard cards lift up 5px on hover with storyboard animations
+  - Icon boxes have breathing glow animation (2s cycle, sine easing)
+- **Typography**: Enhanced text rendering with purple secondary text (#A78BFA)
+- **Best for**: Dark mode enthusiasts, creative professionals, modern tech applications
+
 ## 📐 Navigation Width Logic (v1.3)
 1. Measure all navigation labels with FormattedText
 2. Longest label width + icon + spacing + paddings + margins + ExpansionExtraBuffer (=6px)
@@ -112,6 +131,15 @@ dotnet run --project TechDashboard.csproj
 - Language missing: verify culture code and resx naming
 
 ## 📝 Changelog
+### v1.4 - 2024
+- **Aurora Theme Added**: New cyberpunk/synthwave theme with micro-interactions
+  - Colored glow shadows (purple/pink) for depth and modern feel
+  - Scale animations on buttons (1.05x on hover)
+  - Translate animations on cards (lift up 5px on hover)
+  - Breathing glow animation on icon boxes
+  - Deep purple to cyan gradient backgrounds
+- Aurora theme localized in all 5 languages
+
 ### v1.3 - 2024
 - Precise dynamic navigation width (+6px buffer)
 - Removed magic page strings (PageConstants)

@@ -31,6 +31,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- Header -->
             <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" 
                     BorderBrush="{DynamicResource BorderBrush}" 
                     BorderThickness="0,0,0,1" 
@@ -168,10 +169,7 @@
                             </MenuItem>
                         </Menu>
 
-                        <Border Grid.Row="1" 
-                                Height="2" 
-                                Background="{DynamicResource BorderBrush}" 
-                                Margin="0,2"/>
+                        <Border Grid.Row="1" Height="2" Background="{DynamicResource BorderBrush}" Margin="0,2"/>
 
                         <StackPanel Grid.Row="2" 
                                     Orientation="Horizontal" 
@@ -284,12 +282,14 @@
                 </Grid>
             </Border>
 
+            <!-- Body -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="NavColumn" Width="260" MinWidth="60" MaxWidth="350"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Navigation -->
                 <Border x:Name="NavPanel" Grid.Column="0" 
                         Background="{DynamicResource NavBackgroundBrush}" 
                         BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0"
@@ -304,6 +304,7 @@
                         <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <StackPanel Margin="8">
                                 <StackPanel>
+                                    <!-- Nav Items (unchanged) -->
                                     <Button Command="{Binding NavigateCommand}" CommandParameter="Overview"
                                             Margin="0,8,0,4" Height="44">
                                         <Button.Style>
@@ -325,7 +326,6 @@
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                                        ToolTip="{lex:Loc Nav_Overview}"/>
-
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                                                         Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{x:Static icons:IconConstants+Common.Home}" 
@@ -336,7 +336,6 @@
                                             </StackPanel>
                                         </Grid>
                                     </Button>
-
                                     <Button Command="{Binding NavigateCommand}" CommandParameter="Analytics"
                                             Margin="0,0,0,4" Height="44">
                                         <Button.Style>
@@ -358,7 +357,6 @@
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                                        ToolTip="{lex:Loc Nav_Analytics}"/>
-
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                                                         Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{x:Static icons:IconConstants+Common.Analytics}" 
@@ -369,7 +367,6 @@
                                             </StackPanel>
                                         </Grid>
                                     </Button>
-
                                     <Button Command="{Binding NavigateCommand}" CommandParameter="Reports"
                                             Margin="0,0,0,4" Height="44">
                                         <Button.Style>
@@ -391,7 +388,6 @@
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                                        ToolTip="{lex:Loc Nav_Reports}"/>
-
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                                                         Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{x:Static icons:IconConstants+Common.Document}" 
@@ -402,7 +398,6 @@
                                             </StackPanel>
                                         </Grid>
                                     </Button>
-
                                     <Button Command="{Binding NavigateCommand}" CommandParameter="Settings"
                                             Margin="0,0,0,4" Height="44">
                                         <Button.Style>
@@ -424,7 +419,6 @@
                                                        HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        Visibility="{Binding IsNavExpanded, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                                        ToolTip="{lex:Loc Nav_Settings}"/>
-
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                                                         Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <TextBlock Text="{x:Static icons:IconConstants+Common.Settings}" 
@@ -450,7 +444,6 @@
                                                HorizontalAlignment="Center" VerticalAlignment="Center"
                                                ToolTip="{lex:Loc Nav_Expand}"/>
                                 </Grid>
-
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                                             Visibility="{Binding IsNavExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <TextBlock Text="{x:Static icons:IconConstants+Navigation.ChevronLeft}" 
@@ -463,15 +456,17 @@
                         </Button>
                     </Grid>
                 </Border>
+
+                <!-- Pages -->
                 <Grid Grid.Column="1">
+                    <!-- Overview Page (unchanged) -->
                     <Grid Visibility="{Binding IsOverviewPage, Converter={StaticResource BoolToVisibilityConverter}}" Margin="24">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-
                         <WrapPanel Orientation="Horizontal" Margin="0,0,0,20">
-                            <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
+                            <Border Style="{StaticResource DashboardCard}" Width="260">
                                 <StackPanel>
                                     <TextBlock Text="{lex:Loc Dashboard_ActiveUsers}" FontWeight="SemiBold" 
                                                Foreground="{DynamicResource TextSecondaryBrush}"/>
@@ -481,8 +476,7 @@
                                                Foreground="{DynamicResource SuccessBrush}"/>
                                 </StackPanel>
                             </Border>
-
-                            <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,16,16">
+                            <Border Style="{StaticResource DashboardCard}" Width="260">
                                 <StackPanel>
                                     <TextBlock Text="{lex:Loc Dashboard_CPULoad}" FontWeight="SemiBold" 
                                                Foreground="{DynamicResource TextSecondaryBrush}"/>
@@ -494,8 +488,7 @@
                                                  BorderThickness="0"/>
                                 </StackPanel>
                             </Border>
-
-                            <Border Style="{StaticResource DashboardCard}" Width="260" Margin="0,0,0,16">
+                            <Border Style="{StaticResource DashboardCard}" Width="260">
                                 <StackPanel>
                                     <TextBlock Text="{lex:Loc Dashboard_Errors24h}" FontWeight="SemiBold" 
                                                Foreground="{DynamicResource TextSecondaryBrush}"/>
@@ -506,17 +499,14 @@
                                 </StackPanel>
                             </Border>
                         </WrapPanel>
-
-                        <Border Grid.Row="1" Style="{StaticResource DashboardCard}" Padding="20">
+                        <Border Grid.Row="1" Style="{StaticResource DashboardCard}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-
                                 <TextBlock Text="{lex:Loc Dashboard_Performance}" FontSize="18" 
                                            FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
-
                                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                     <StackPanel>
                                         <StackPanel Margin="0,0,0,16">
@@ -527,7 +517,6 @@
                                                          Foreground="{DynamicResource ProgressGradientBrush}"
                                                          BorderThickness="0"/>
                                         </StackPanel>
-
                                         <StackPanel Margin="0,0,0,16">
                                             <TextBlock Text="{lex:Loc Dashboard_DiskIO}" FontSize="12" 
                                                        Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
@@ -536,7 +525,6 @@
                                                          Foreground="{DynamicResource ProgressGradientBrush}"
                                                          BorderThickness="0"/>
                                         </StackPanel>
-
                                         <StackPanel>
                                             <TextBlock Text="{lex:Loc Dashboard_NetworkTraffic}" FontSize="12" 
                                                        Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,6"/>
@@ -551,16 +539,15 @@
                         </Border>
                     </Grid>
 
-                    <Grid Visibility="{Binding IsSettingsPage, Converter={StaticResource BoolToVisibilityConverter}}" 
-                          Margin="24" Background="{DynamicResource NavBackgroundBrush}">
+                    <!-- Settings Page -->
+                    <Border Visibility="{Binding IsSettingsPage, Converter={StaticResource BoolToVisibilityConverter}}" 
+                            Style="{StaticResource DashboardCard}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                                 <TextBlock Text="{lex:Loc Settings_Appearance}" FontSize="24" 
                                            FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
-
                                 <TextBlock Text="{lex:Loc Settings_ChooseTheme}" FontSize="14" 
                                            Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
-
                                 <WrapPanel Margin="0,0,0,32">
                                     <ToggleButton Content="{lex:Loc Settings_Theme_Dark}" 
                                                   Style="{StaticResource ThemeToggleButton}"
@@ -573,7 +560,6 @@
                                             </LinearGradientBrush>
                                         </ToggleButton.Tag>
                                     </ToggleButton>
-
                                     <ToggleButton Content="{lex:Loc Settings_Theme_Light}" 
                                                   Style="{StaticResource ThemeToggleButton}"
                                                   IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Light}"
@@ -585,7 +571,6 @@
                                             </LinearGradientBrush>
                                         </ToggleButton.Tag>
                                     </ToggleButton>
-
                                     <ToggleButton Content="{lex:Loc Settings_Theme_LightBlue}" 
                                                   Style="{StaticResource ThemeToggleButton}"
                                                   IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=LightBlue}"
@@ -599,7 +584,6 @@
                                             </LinearGradientBrush>
                                         </ToggleButton.Tag>
                                     </ToggleButton>
-
                                     <ToggleButton Content="{lex:Loc Settings_Theme_BlueTech}" 
                                                   Style="{StaticResource ThemeToggleButton}"
                                                   IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=BlueTech}"
@@ -614,48 +598,39 @@
                                             </LinearGradientBrush>
                                         </ToggleButton.Tag>
                                     </ToggleButton>
-
                                     <ToggleButton Content="{lex:Loc Settings_Theme_Aurora}" 
                                                   Style="{StaticResource ThemeToggleButton}"
                                                   IsChecked="{Binding CurrentTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Aurora}"
                                                   Command="{Binding ChangeThemeCommand}" CommandParameter="Aurora">
                                         <ToggleButton.Tag>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                <GradientStop Color="#A855F7" Offset="0"/>
-                                                <GradientStop Color="#EC4899" Offset="0.5"/>
-                                                <GradientStop Color="#F97316" Offset="1"/>
+                                                <GradientStop Color="#8B5CF6" Offset="0"/>
+                                                <GradientStop Color="#06B6D4" Offset="1"/>
                                             </LinearGradientBrush>
                                         </ToggleButton.Tag>
                                     </ToggleButton>
                                 </WrapPanel>
-
                                 <TextBlock Text="{lex:Loc Settings_Language}" FontSize="24" 
                                            FontWeight="Bold" Foreground="{DynamicResource TextBrush}" Margin="0,16,0,16"/>
-
                                 <TextBlock Text="{lex:Loc Settings_ChooseLanguage}" FontSize="14" 
                                            Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,12"/>
-
                                 <WrapPanel>
                                     <ToggleButton Content="{lex:Loc Settings_Lang_English}" 
                                                   Style="{StaticResource LanguageToggleButton}"
                                                   IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=en-US}"
                                                   Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
-
                                     <ToggleButton Content="{lex:Loc Settings_Lang_Chinese}" 
                                                   Style="{StaticResource LanguageToggleButton}"
                                                   IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=zh-CN}"
                                                   Command="{Binding ChangeLanguageCommand}" CommandParameter="zh-CN"/>
-
                                     <ToggleButton Content="{lex:Loc Settings_Lang_Korean}" 
                                                   Style="{StaticResource LanguageToggleButton}"
                                                   IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ko-KR}"
                                                   Command="{Binding ChangeLanguageCommand}" CommandParameter="ko-KR"/>
-
                                     <ToggleButton Content="{lex:Loc Settings_Lang_Japanese}" 
                                                   Style="{StaticResource LanguageToggleButton}"
                                                   IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=ja-JP}"
                                                   Command="{Binding ChangeLanguageCommand}" CommandParameter="ja-JP"/>
-
                                     <ToggleButton Content="{lex:Loc Settings_Lang_TraditionalChinese}" 
                                                   Style="{StaticResource LanguageToggleButton}"
                                                   IsChecked="{Binding CurrentLanguage, Converter={StaticResource LanguageConverter}, ConverterParameter=zh-TW}"
@@ -663,10 +638,11 @@
                                 </WrapPanel>
                             </StackPanel>
                         </ScrollViewer>
-                    </Grid>
+                    </Border>
 
-                    <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVisibilityConverter}}" Margin="24">
-                        <Border Style="{StaticResource DashboardCard}" Padding="20">
+                    <!-- Analytics Page -->
+                    <Grid Visibility="{Binding IsAnalyticsPage, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Border Style="{StaticResource DashboardCard}">
                             <StackPanel>
                                 <TextBlock Text="{lex:Loc Analytics_Title}" FontSize="24" 
                                            Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
@@ -676,8 +652,9 @@
                         </Border>
                     </Grid>
 
-                    <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVisibilityConverter}}" Margin="24">
-                        <Border Style="{StaticResource DashboardCard}" Padding="20">
+                    <!-- Reports Page -->
+                    <Grid Visibility="{Binding IsReportsPage, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Border Style="{StaticResource DashboardCard}">
                             <StackPanel>
                                 <TextBlock Text="{lex:Loc Reports_Title}" FontSize="24" 
                                            Foreground="{DynamicResource TextBrush}" Margin="0,0,0,16"/>
@@ -689,6 +666,7 @@
                 </Grid>
             </Grid>
 
+            <!-- Footer -->
             <Border Grid.Row="2" Background="{DynamicResource HeaderBackgroundBrush}" 
                     BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" 
                     Height="24"
@@ -698,7 +676,6 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
                     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="8,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="{x:Static icons:IconConstants+Common.CheckMark}" 
                                    FontFamily="{x:Static icons:IconConstants.DefaultFontFamily}" 
@@ -707,7 +684,6 @@
                         <TextBlock Text="{lex:Loc Status_Ready}" FontSize="11" 
                                    Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
                     </StackPanel>
-
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,8,0">
                         <TextBlock Text="{lex:Loc Status_CurrentPage}" FontSize="11" 
                                    Foreground="{DynamicResource TextSecondaryBrush}" 
@@ -715,21 +691,18 @@
                         <TextBlock Text="{Binding CurrentPageDisplay}" FontSize="11" 
                                    Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
                                    VerticalAlignment="Center" Margin="0,0,16,0"/>
-
                         <TextBlock Text="{lex:Loc Status_Theme}" FontSize="11" 
                                    Foreground="{DynamicResource TextSecondaryBrush}" 
                                    VerticalAlignment="Center" Margin="0,0,4,0"/>
                         <TextBlock Text="{Binding CurrentThemeDisplay}" FontSize="11" 
                                    Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
                                    VerticalAlignment="Center" Margin="0,0,16,0"/>
-
                         <TextBlock Text="{lex:Loc Status_Language}" FontSize="11" 
                                    Foreground="{DynamicResource TextSecondaryBrush}" 
                                    VerticalAlignment="Center" Margin="0,0,4,0"/>
                         <TextBlock Text="{Binding CurrentLanguageDisplay}" FontSize="11" 
                                    Foreground="{DynamicResource AccentBrush}" FontWeight="SemiBold" 
                                    VerticalAlignment="Center" Margin="0,0,16,0"/>
-
                         <TextBlock Text="{Binding SaveStatus}" FontSize="11"
                                    Foreground="{DynamicResource TextSecondaryBrush}"
                                    VerticalAlignment="Center"/>

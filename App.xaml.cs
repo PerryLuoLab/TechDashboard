@@ -55,15 +55,19 @@ namespace TechDashboard
 
             logger.LogInformation("Application services initialized. Culture={Culture} Theme={Theme}", localizationService.CurrentCulture.Name, themeService.CurrentTheme);
 
-            // Create and show MainWindow using DI
+            // Create and show MainWindow using DI (this will construct MainViewModel and capture current theme BEFORE prefs load)
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
 
+            // Load user preferences and re-apply theme/language. Need to sync ViewModel properties manually.
             var prefsService = _serviceProvider.GetRequiredService<TechDashboard.Core.Services.UserPreferencesService>();
             var prefs = prefsService.Load();
             themeService.ApplyTheme(prefs.Theme);
             localizationService.ChangeLanguage(prefs.Language);
             var vm = _serviceProvider.GetRequiredService<ViewModels.MainViewModel>();
+            // Sync ViewModel theme & language so toggle buttons reflect the actually applied theme/language
+            vm.CurrentTheme = themeService.CurrentTheme; // fixes mismatch: UI selected BlueTech but Aurora shown
+            vm.CurrentLanguage = localizationService.CurrentCulture.Name;
             vm.IsNavExpanded = prefs.IsNavExpanded;
             logger.LogInformation("Loaded user preferences Theme={Theme} Language={Language} IsNavExpanded={IsNav}", prefs.Theme, prefs.Language, prefs.IsNavExpanded);
         }

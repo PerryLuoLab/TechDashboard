@@ -348,7 +348,8 @@
     <Style x:Key="DashboardCard" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
         <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Padding" Value="18"/>
+        <Setter Property="Margin" Value="18"/>
         <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush">

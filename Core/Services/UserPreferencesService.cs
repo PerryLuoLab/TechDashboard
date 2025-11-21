@@ -61,38 +61,51 @@ namespace TechDashboard.Core.Services
             return new UserPreferences { Theme = ThemeConstants.DefaultTheme, Language = LanguageConstants.DefaultLanguage, IsNavExpanded = true };
         }
 
+        /// <summary>
+        /// Asynchronously saves user preferences. Use this during normal application runtime.
+        /// </summary>
         public async Task SaveAsync(UserPreferences prefs)
         {
-            await Task.Run(() =>
+            await Task.Run(() => SaveInternal(prefs));
+        }
+
+        /// <summary>
+        /// Synchronously saves user preferences. Use this ONLY during application exit (OnExit).
+        /// </summary>
+        public void Save(UserPreferences prefs)
+        {
+            SaveInternal(prefs);
+        }
+
+        private void SaveInternal(UserPreferences prefs)
+        {
+            try
             {
+                using var mutex = new Mutex(false, GlobalMutexName);
+                // WaitOne is blocking, safe to use in background thread or during app exit
+                if (!mutex.WaitOne(TimeSpan.FromSeconds(2)))
+                {
+                    _logger.LogWarning("Timeout waiting for preferences mutex");
+                    return;
+                }
+
                 try
                 {
-                    using var mutex = new Mutex(false, GlobalMutexName);
-                    // WaitOne is blocking, so we run this entire block on a background thread
-                    if (!mutex.WaitOne(TimeSpan.FromSeconds(2)))
+                    lock (_fileLock)
                     {
-                        _logger.LogWarning("Timeout waiting for preferences mutex");
-                        return;
+                        var tempPath = _prefsPath + ".tmp";
+                        var json = JsonSerializer.Serialize(prefs, new JsonSerializerOptions { WriteIndented = true });
+                        File.WriteAllText(tempPath, json);
+                        if (File.Exists(_prefsPath)) File.Replace(tempPath, _prefsPath, null);
+                        else File.Move(tempPath, _prefsPath);
                     }
-
-                    try
-                    {
-                        lock (_fileLock)
-                        {
-                            var tempPath = _prefsPath + ".tmp";
-                            var json = JsonSerializer.Serialize(prefs, new JsonSerializerOptions { WriteIndented = true });
-                            File.WriteAllText(tempPath, json);
-                            if (File.Exists(_prefsPath)) File.Replace(tempPath, _prefsPath, null);
-                            else File.Move(tempPath, _prefsPath);
-                        }
-                    }
-                    finally { try { mutex.ReleaseMutex(); } catch { } }
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to save user preferences");
-                }
-            });
+                finally { try { mutex.ReleaseMutex(); } catch { } }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to save user preferences");
+            }
         }
     }
 

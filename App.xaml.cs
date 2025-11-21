@@ -76,6 +76,7 @@ namespace TechDashboard
                 var localizationService = _serviceProvider.GetService<ILocalizationService>();
                 var themeService = _serviceProvider.GetService<IThemeService>();
                 var vm = _serviceProvider.GetService<ViewModels.MainViewModel>();
+
                 if (prefsService != null && localizationService != null && themeService != null && vm != null)
                 {
                     var prefs = new TechDashboard.Core.Services.UserPreferences
@@ -84,7 +85,8 @@ namespace TechDashboard
                         Language = localizationService.CurrentCulture.Name,
                         IsNavExpanded = vm.IsNavExpanded
                     };
-                    prefsService.SaveAsync(prefs).GetAwaiter().GetResult();
+                    // Use synchronous Save to avoid deadlocks during shutdown
+                    prefsService.Save(prefs);
                 }
             }
             if (_serviceProvider is IDisposable disposable)

@@ -30,7 +30,7 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 ### Navigation Panel
 ![Navigation Panel](Assets/navigation-panel.png)
 
-*Smart navigation panel with auto-width calculation and drag-to-resize*
+*Smart navigation panel with auto-width calculation and double-click to toggle*
 
 ## ✨ Features
 
@@ -48,7 +48,6 @@ A modern, feature-rich dashboard application built with .NET 8 WPF, showcasing a
 
 ### 🔄 Smart Navigation
 - Collapsible sidebar (200ms animation)
-- Drag edge to resize within calculated max
 - Double-click blank area to toggle
 - Width recalculation on culture change
 
@@ -138,4 +137,4 @@ MIT License. See LICENSE.
 ## 🙏 Acknowledgments
 Microsoft WPF, community resources.
 
-**Made with ❤️ using .NET 8 and WPF**
+**Made with ❤️ using .NET 8 and WPF****Made with ❤️ using .NET 8 and WPF**

@@ -11,6 +11,8 @@ namespace TechDashboard.Services
     public class NavLayoutService : INavLayoutService
     {
         private readonly ILocalizationService _localizationService;
+        // Cache Typeface to avoid allocation on every calculation
+        private static readonly Typeface _cachedTypeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
 
         public NavLayoutService(ILocalizationService localizationService)
         {
@@ -25,7 +27,6 @@ namespace TechDashboard.Services
             const double horizontalButtonPadding = 12;
             const double containerSideMargin = 8;
 
-            var typeface = new Typeface(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
             var dpi = VisualTreeHelper.GetDpi(visualForDpi).PixelsPerDip;
             var textBrush = Application.Current.TryFindResource(ThemeConstants.ResourceKeys.TextBrush) as SolidColorBrush ?? Brushes.White;
             var culture = CultureInfo.CurrentUICulture;
@@ -43,7 +44,8 @@ namespace TechDashboard.Services
             foreach (var text in navTexts.Where(t => !string.IsNullOrWhiteSpace(t)))
             {
                 double fontSize = 14;
-                var ft = new FormattedText(text, culture, FlowDirection.LeftToRight, typeface, fontSize, textBrush, dpi);
+                // Use cached typeface
+                var ft = new FormattedText(text, culture, FlowDirection.LeftToRight, _cachedTypeface, fontSize, textBrush, dpi);
                 double buttonTextWidth = ft.Width;
                 double contentWidth = iconWidth + iconTextSpacing + buttonTextWidth;
                 maxContentWidth = Math.Max(maxContentWidth, contentWidth);

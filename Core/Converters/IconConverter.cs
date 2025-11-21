@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using TechDashboard.Core.Constants;
+using TechDashboard.Tools;
 
 namespace TechDashboard.Core.Converters;
 
@@ -12,38 +12,15 @@ namespace TechDashboard.Core.Converters;
 public class IconConverter : IValueConverter
 {
     /// <summary>
-    /// Converts an icon name to its Unicode character
+    /// Converts an icon name to its Unicode character using cached lookup
     /// </summary>
-    /// <param name="value">Not used, can be null</param>
-    /// <param name="targetType">Target type (should be string)</param>
-    /// <param name="parameter">Icon name (e.g., "Add", "Settings", "Home")</param>
-    /// <param name="culture">Culture info</param>
-    /// <returns>Unicode character for the icon</returns>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         if (parameter is not string iconName)
             return string.Empty;
 
-        // Try to get icon from Common category
-        var commonType = typeof(IconConstants.Common);
-        var field = commonType.GetField(iconName);
-        if (field?.GetValue(null) is string icon)
-            return icon;
-
-        // Try to get icon from Navigation category
-        var navType = typeof(IconConstants.Navigation);
-        field = navType.GetField(iconName);
-        if (field?.GetValue(null) is string navIcon)
-            return navIcon;
-
-        // Try to get icon from Status category
-        var statusType = typeof(IconConstants.Status);
-        field = statusType.GetField(iconName);
-        if (field?.GetValue(null) is string statusIcon)
-            return statusIcon;
-
-        // If not found, return empty string
-        return string.Empty;
+        // Use cached helper instead of reflection for performance
+        return IconHelper.GetIcon(iconName);
     }
 
     /// <summary>

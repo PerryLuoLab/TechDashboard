@@ -63,27 +63,36 @@ namespace TechDashboard.Core.Services
 
         public async Task SaveAsync(UserPreferences prefs)
         {
-            try
+            await Task.Run(() =>
             {
-                using var mutex = new Mutex(false, GlobalMutexName);
-                mutex.WaitOne(TimeSpan.FromSeconds(2));
                 try
                 {
-                    lock (_fileLock)
+                    using var mutex = new Mutex(false, GlobalMutexName);
+                    // WaitOne is blocking, so we run this entire block on a background thread
+                    if (!mutex.WaitOne(TimeSpan.FromSeconds(2)))
                     {
-                        var tempPath = _prefsPath + ".tmp";
-                        var json = JsonSerializer.Serialize(prefs, new JsonSerializerOptions { WriteIndented = true });
-                        File.WriteAllText(tempPath, json);
-                        if (File.Exists(_prefsPath)) File.Replace(tempPath, _prefsPath, null);
-                        else File.Move(tempPath, _prefsPath);
+                        _logger.LogWarning("Timeout waiting for preferences mutex");
+                        return;
                     }
+
+                    try
+                    {
+                        lock (_fileLock)
+                        {
+                            var tempPath = _prefsPath + ".tmp";
+                            var json = JsonSerializer.Serialize(prefs, new JsonSerializerOptions { WriteIndented = true });
+                            File.WriteAllText(tempPath, json);
+                            if (File.Exists(_prefsPath)) File.Replace(tempPath, _prefsPath, null);
+                            else File.Move(tempPath, _prefsPath);
+                        }
+                    }
+                    finally { try { mutex.ReleaseMutex(); } catch { } }
                 }
-                finally { try { mutex.ReleaseMutex(); } catch { } }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to save user preferences");
-            }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to save user preferences");
+                }
+            });
         }
     }
 
